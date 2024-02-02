@@ -1,12 +1,18 @@
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
+import Login from "./assets/pages/Login"
 
 function App() {
 
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route path="/login" element={<Login/>}/>
+      </Route>
+    )
+  )
+
   return (
-    <>
-      <p>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <RouterProvider router={router}/>
   )
 }
 
