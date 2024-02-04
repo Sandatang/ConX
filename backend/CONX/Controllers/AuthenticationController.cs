@@ -1,13 +1,11 @@
 ﻿using CONX.Models;
 using CONX.Models.Authentication.Login;
 using CONX.Models.Authentication.Signup;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace CONX.Controllers
@@ -28,49 +26,86 @@ namespace CONX.Controllers
         }
 
         [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUser registerUser, string role)
+        [Route("register/women")]
+        public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
         {
             // Check user if exist in DB
             var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error" , Message = " User already exist "});
+                    new Response { Status = "Error", Message = " User already exist " });
             }
 
             // Check password format
             if (registerUser.Password == null || !IsPasswordValid(registerUser.Password))
             {
                 return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = " Error ", Message = "Password should countain alpha numeric and non-numeric characters." });
+                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters." });
             }
 
-            // Add user to DB
-            IdentityUser user = new()
+            var user = new User();
+
+            // Add women user to DB
+            user.Email = registerUser.Email;
+            user.UserName = registerUser.Username;
+            user.Firstname = registerUser.Firstname;
+            user.Lastname = registerUser.Lastname;
+            user.Middlename = registerUser.Middlename;
+            user.Birthdate = registerUser.Birthdate;
+
+
+            var result = await _userManager.CreateAsync(user, registerUser.Password);
+            if (!result.Succeeded)
             {
-                Email = registerUser.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registerUser.Username
-            };
-
-            if(await _roleManager.RoleExistsAsync(role))
-            {
-
-                var result = await _userManager.CreateAsync(user, registerUser.Password);
-                if (!result.Succeeded)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError,
-                       new Response { Status = "Error", Message = " User not created" });
-                }
-
-                await _userManager.AddToRoleAsync(user, role);
-                return StatusCode(StatusCodes.Status200OK,
-                       new Response { Status = "Success", Message = " User created successfully" });
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new Response { Status = "Error", Message = " User not created" });
             }
 
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                      new Response { Status = "Error", Message = " Something went wrong" });
+            await _userManager.AddToRoleAsync(user, "women");
+            return StatusCode(StatusCodes.Status200OK,
+                   new Response { Status = "Success", Message = " User created successfully" });
+
+
+        }
+
+        [HttpPost]
+        [Route("register/personnel")]
+        public async Task<IActionResult> RegisterPersonnel([FromBody] AddPersonnel addPersonnel)
+        {
+            // Check user if exist in DB
+            var userExist = await _userManager.FindByEmailAsync(addPersonnel.Email);
+            if (userExist != null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden,
+                    new Response { Status = "Error", Message = " User already exist " });
+            }
+
+            //Default password
+            string defaultPassword = "Barangay123@";
+
+            var user = new User();
+
+            // Add women user to DB
+            user.Email = addPersonnel.Email;
+            user.UserName = addPersonnel.Username;
+            user.Firstname = addPersonnel.Firstname;
+            user.Lastname = addPersonnel.Lastname;
+            user.Middlename = addPersonnel.Middlename;
+            user.Birthdate = addPersonnel.Birthdate;
+
+
+            var result = await _userManager.CreateAsync(user, defaultPassword);
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new Response { Status = "Error", Message = " User not created" });
+            }
+
+            await _userManager.AddToRoleAsync(user, "personnel");
+            return StatusCode(StatusCodes.Status200OK,
+                   new Response { Status = "Success", Message = " User created successfully" });
+
 
         }
 
@@ -81,8 +116,8 @@ namespace CONX.Controllers
         {
             // Check user if exist
             var user = await _userManager.FindByNameAsync(loginUser.Username);
-            
-            if(user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
+
+            if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
             {
                 var authClaims = new List<Claim>
                 {

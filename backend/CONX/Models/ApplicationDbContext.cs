@@ -6,6 +6,8 @@ namespace CONX.Models
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
+        public DbSet<User> Users { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
@@ -20,9 +22,9 @@ namespace CONX.Models
         private void SeedRoles(ModelBuilder builder)
         {
             builder.Entity<IdentityRole>().HasData(
-                    new IdentityRole() { Name = "Personnel", ConcurrencyStamp = "1", NormalizedName = "Personnel" },
-                    new IdentityRole() { Name = "Women", ConcurrencyStamp = "2", NormalizedName = "Women" },
-                    new IdentityRole() { Name = "Admin", ConcurrencyStamp = "0", NormalizedName = "Admin" }
+                    new IdentityRole() { Name = "Personnel", ConcurrencyStamp = "1", NormalizedName = "personnel" },
+                    new IdentityRole() { Name = "Women", ConcurrencyStamp = "2", NormalizedName = "women" },
+                    new IdentityRole() { Name = "Admin", ConcurrencyStamp = "0", NormalizedName = "admin" }
                 );
         }
     }

@@ -4,6 +4,7 @@ using CONX.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CONX.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240203122041_MadeAllRoleLowerCase")]
+    partial class MadeAllRoleLowerCase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,21 +53,21 @@ namespace CONX.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f4b573da-2b8c-4e4b-9f94-3c36a8626937",
+                            Id = "f47b762d-cba0-4b65-9b85-d1cdcddd4aae",
                             ConcurrencyStamp = "1",
                             Name = "Personnel",
                             NormalizedName = "personnel"
                         },
                         new
                         {
-                            Id = "42240469-58c1-4cf5-98b0-f4d134038a10",
+                            Id = "c6f6af4d-492f-40a5-bc3d-74e58bdc4db9",
                             ConcurrencyStamp = "2",
                             Name = "Women",
                             NormalizedName = "women"
                         },
                         new
                         {
-                            Id = "40e29af2-e349-4504-99bf-9acb1aed16f7",
+                            Id = "dab2b03f-bf89-4b25-852e-73684f06285c",
                             ConcurrencyStamp = "0",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -107,10 +109,6 @@ namespace CONX.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -164,8 +162,6 @@ namespace CONX.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -247,31 +243,6 @@ namespace CONX.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("CONX.Models.User", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<DateTime>("Birthdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmployeeNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Firstname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lastname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Middlename")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

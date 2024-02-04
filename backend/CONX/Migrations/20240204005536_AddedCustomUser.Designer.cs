@@ -4,6 +4,7 @@ using CONX.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CONX.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240204005536_AddedCustomUser")]
+    partial class AddedCustomUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,21 +53,21 @@ namespace CONX.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f4b573da-2b8c-4e4b-9f94-3c36a8626937",
+                            Id = "c4bcc7d2-47c7-4fc8-b98d-6f6112db2d78",
                             ConcurrencyStamp = "1",
                             Name = "Personnel",
                             NormalizedName = "personnel"
                         },
                         new
                         {
-                            Id = "42240469-58c1-4cf5-98b0-f4d134038a10",
+                            Id = "39dae08a-cce5-430f-9e74-d1478638280c",
                             ConcurrencyStamp = "2",
                             Name = "Women",
                             NormalizedName = "women"
                         },
                         new
                         {
-                            Id = "40e29af2-e349-4504-99bf-9acb1aed16f7",
+                            Id = "34552c6d-4150-4759-b0bc-3d052284f2bc",
                             ConcurrencyStamp = "0",
                             Name = "Admin",
                             NormalizedName = "admin"
@@ -252,12 +254,6 @@ namespace CONX.Migrations
             modelBuilder.Entity("CONX.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<DateTime>("Birthdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmployeeNumber")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
