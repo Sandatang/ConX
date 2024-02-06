@@ -1,13 +1,6 @@
 export async function fetchData(path, header){
-    const response = await fetch(`https://localhost:44313${path}`, header);
-    if(response.status === 200){
-        return response;
-    }else{
-        const errorBody = response.json();
-        const errorMessage = errorBody.error;
-
-        return errorMessage;
-    }
+    const response = await fetch(`https://localhost:44398${path}`, header);
+    return response
 }
 
 export async function registerWomen(data){
