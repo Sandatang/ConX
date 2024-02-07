@@ -1,19 +1,36 @@
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Box, Button, IconButton, InputAdornment, Stack, TextField } from '@mui/material';
+import { Box, Button, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import conxLogo from "../assets/logo.png";
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import conxLogo from "../assets/logo.png";
+import * as UserApi from "../network/user_api";
 
 const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
+  const { register, handleSubmit, setError, formState: { isValid, errors, isDirty } } = useForm({ mode: "onChange" });
+
+  async function signIn(data) {
+    const response = await UserApi.authenticateUser(data)
+    if (response.field) {
+      setError(response.field, {
+        type: "manual",
+        message: response.message
+      })
+    }
+    if(response.statusCode){
+      console.log(response)
+    }
+
+  }
 
   return (
     <Stack className='!flex-row !justify-evenly'>
       <Stack className='!items-center !justify-center'>
-        <img src={conxLogo} className="logo ConX" alt="ConX logo"  />
+        <img src={conxLogo} className="logo ConX" alt="ConX logo" />
         <h1 className="text-center">
           ConX: Connecting and Empowering Female Communities
           <br />
@@ -29,23 +46,33 @@ const Login = () => {
           maxWidth={450}
           width="100%"
         >
-          <h2 className="text-2xl font-semibold mb-6">Sign In</h2>
-          <form>
+          <h2 className="text-2xl font-semibold mb-2">Sign In</h2>
+          {errors && (
+            Object.keys(errors).map((field) => (
+              <Typography key={field} variant="caption" color="error">
+                {errors[field].message}
+              </Typography>
+            ))
+          )}
+          <form className="mt-2" onSubmit={handleSubmit(signIn)}>
             <TextField
-              label="Email address"
+              label="Username"
               variant="outlined"
+              name="username"
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: 'gray' } }}
+              // InputProps={{ style: { color: 'gray' } }}
+              {...register("username", { required: "Required" })}
             />
             <TextField
               label="Password"
               type={showPassword ? 'text' : 'password'}
               variant="outlined"
+              name="password"
               fullWidth
               margin="normal"
               InputProps={{
-                style: { color: 'gray' },
+                // style: { color: 'gray' },
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={togglePassword} edge="end">
@@ -54,8 +81,17 @@ const Login = () => {
                   </InputAdornment>
                 ),
               }}
+              {...register("password", { required: "Required" })}
             />
-            <Button style={{ backgroundColor: '#FF4081', color: 'white' }} variant="contained" fullWidth> Login </Button>
+            <Button
+              type="submit"
+              style={{ backgroundColor: '#FF4081', color: 'white' }}
+              variant="contained"
+              disabled={!isDirty || !isValid}
+              fullWidth
+            >
+              Login
+            </Button>
 
             <div className="text-center mt-4">
               <a href="#">Forgot Password?</a>
