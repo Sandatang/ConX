@@ -29,19 +29,27 @@ namespace CONX.Controllers
         [Route("register/women")]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
         {
-            // Check user if exist in DB
+            // Check user if email exist in DB
             var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error", Message = " User already exist " });
+                    new Response { Status = "Error",  Message = " Email already exist ", Field = "email" });
+            }
+
+            //Check if username exist in DB
+            var usernameExist = await _userManager.FindByNameAsync(registerUser.Username);
+            if(usernameExist != null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden,
+                    new Response { Status = "Error", Message = "Username already exist", Field = "username"});
             }
 
             // Check password format
             if (registerUser.Password == null || !IsPasswordValid(registerUser.Password))
             {
                 return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters." });
+                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field="password" });
             }
 
             var user = new User();
@@ -78,7 +86,16 @@ namespace CONX.Controllers
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error", Message = " User already exist " });
+                    new Response { Status = "Error", Message = " Email already exist ", Field = "email" });
+            }
+
+
+            //Check if username exist in DB
+            var usernameExist = await _userManager.FindByNameAsync(addPersonnel.Username);
+            if (usernameExist != null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden,
+                    new Response { Status = "Error", Message = "Username already exist", Field = "username" });
             }
 
             //Default password
@@ -138,6 +155,7 @@ namespace CONX.Controllers
 
                 return Ok(new
                 {
+                    StatusCode = 200,
                     token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
                     expiration = jwtToken.ValidTo
                 });
@@ -145,14 +163,15 @@ namespace CONX.Controllers
             }
 
 
-            return Unauthorized();
+            //return Unauthorized();
+            return StatusCode(StatusCodes.Status401Unauthorized,
+                        new Response { Status = "Error", Message = "Invalid Credentials", Field = "both" });
         }
 
         // addition method for validations
         private bool IsPasswordValid(string password)
         {
-            // Add your custom password validation logic here
-            // For example, check for minimum length, uppercase, lowercase, digits, etc.
+            //  check the minimum length, uppercase, lowercase, digits, etc.
             if (string.IsNullOrEmpty(password) || password.Length < 8 || !password.Any(char.IsUpper) || !password.Any(char.IsDigit))
             {
                 return false;

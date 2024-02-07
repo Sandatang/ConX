@@ -26,3 +26,16 @@ export async function addPersonnel(data){
 
     return response.json()
 }
+
+
+export async function authenticateUser(data){
+    const response = await fetchData("/api/authentication/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    });
+
+    return response.json()
+}

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { PendingOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,14 +8,15 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import conxLogo from "../assets/logo.png";
-import * as UserApi from "../network/user_api"
+import * as UserApi from "../network/user_api";
 
 
 const Register = () => {
 
-  const { register, setValue, handleSubmit, formState: { isSubmitting } } = useForm()
+  const { register, setValue, handleSubmit, reset, setError, formState: { isSubmitting, errors } } = useForm()
   const [showPassword, setShowPassword] = useState(false);
   const [checked1, setChecked1] = useState(false);
+  const [success, setSuccess] = useState("")
   const togglePassword = () => setShowPassword(!showPassword);
 
   const handleCheckboxChange1 = (event) => {
@@ -25,11 +26,23 @@ const Register = () => {
 
   async function addWomen(data) {
     const response = await UserApi.registerWomen(data)
-    if (typeof (response.status) === 'string') {
-      console.log(response.message)
+    if (response.field) {
+      setError(response.field, {
+        type: "manual",
+        message: response.message
+      })
     }
-    else if (response.status === 400) {
-      console.log(response.errors.ConfirmPassword.toString())
+
+    if (response.status === 400) {
+      setError("password", {
+        type: "manual",
+        message: response.errors.ConfirmPassword.toString()
+      })
+    }
+
+    if (response.ok) {
+      setSuccess(response.message)
+      reset()
     }
   }
 
@@ -52,8 +65,20 @@ const Register = () => {
           maxWidth={450}
           width="100%"
         >
-          <h2 className="text-2xl font-semibold mb-3">Sign Up</h2>
-          <form onSubmit={handleSubmit(addWomen)}>
+          <h2 className="text-2xl font-semibold mb-2">Sign Up</h2>
+          {errors && (
+            Object.keys(errors).map((field) => (
+              <Typography key={field} variant="caption" color="error">
+                {errors[field].message}
+              </Typography>
+            ))
+          )}
+          {success && (
+            <Typography variant="caption" color="success">
+              {success}
+            </Typography>
+          )}
+          <form className='mt-2' onSubmit={handleSubmit(addWomen)}>
 
             <TextField
               label="Username"
@@ -82,6 +107,7 @@ const Register = () => {
                 <TextField
                   label="Lastname"
                   name="lastname"
+                  className='border-r'
                   variant="outlined"
                   {...register("lastname", { required: "Required" })}
                   fullWidth
@@ -157,7 +183,14 @@ const Register = () => {
               label="I agree to the Terms and Conditions"
             />
 
-            <Button disabled={isSubmitting} type="submit" style={{ backgroundColor: '#FF4081', color: 'white' }} variant="contained" fullWidth> Register </Button>
+            <Button
+              disabled={isSubmitting} type="submit"
+              style={{ backgroundColor: '#FF4081', color: 'white' }}
+              variant="contained"
+              fullWidth
+            >
+              {isSubmitting ? <PendingOutlined /> : "Register"}
+            </Button>
             <Typography textAlign="center"> <span className='text-gray-600 '>Already have an account? </span> <Link className='text-blue-500 hover:underline' to="/login">Login</Link></Typography>
 
 

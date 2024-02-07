@@ -6,6 +6,7 @@ namespace CONX.Models.Authentication.Signup
     {
 
         [Required(ErrorMessage = "Username is required")]
+        
         public string? Username { get; set; }
 
         [Required(ErrorMessage = "Firstname is required")]
