@@ -21,23 +21,29 @@ const Login = () => {
         message: response.message
       })
     }
-    if(response.statusCode){
+    if (response.statusCode) {
       console.log(response)
     }
 
   }
 
   return (
-    <Stack className='!flex-row !justify-evenly'>
+    <Stack className='md:!flex-row !justify-evenly'>
       <Stack className='!items-center !justify-center'>
-        <img src={conxLogo} className="logo ConX" alt="ConX logo" />
-        <h1 className="text-center">
+        <img src={conxLogo} className="object-contain h-56 w-96" alt="ConX logo" />
+        <h1 className="hidden md:!block text-center">
           ConX: Connecting and Empowering Female Communities
           <br />
           within the Barangay of Metro Cebu
         </h1>
       </Stack>
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh">
+      <h1 className="block mt-[-20px] mb-2 md:!hidden text-center">
+        ConX: Connecting and Empowering Female Communities
+        <br />
+        within the Barangay of Metro Cebu
+      </h1>
+      {/* display="flex" flexDirection="column" alignItems="center" justifyContent="center"  */}
+      <Box className="!flex !flex-col md:!justify-center !items-center" minHeight="100vh">
         <Box
           p={4}
           boxShadow={3}
@@ -47,13 +53,16 @@ const Login = () => {
           width="100%"
         >
           <h2 className="text-2xl font-semibold mb-2">Sign In</h2>
-          {errors && (
+          {/* {errors && (
             Object.keys(errors).map((field) => (
               <Typography key={field} variant="caption" color="error">
                 {errors[field].message}
               </Typography>
             ))
-          )}
+          )} */}
+          <Typography variant="caption" color="error">
+            {errors.failed?.message}
+          </Typography>
           <form className="mt-2" onSubmit={handleSubmit(signIn)}>
             <TextField
               label="Username"
@@ -64,6 +73,9 @@ const Login = () => {
               // InputProps={{ style: { color: 'gray' } }}
               {...register("username", { required: "Required" })}
             />
+            <Typography variant="caption" color="error">
+              {errors.username?.message}
+            </Typography>
             <TextField
               label="Password"
               type={showPassword ? 'text' : 'password'}
@@ -83,12 +95,16 @@ const Login = () => {
               }}
               {...register("password", { required: "Required" })}
             />
+            <Typography variant="caption" color="error">
+              {errors.password?.message}
+            </Typography>
             <Button
               type="submit"
               style={{ backgroundColor: '#FF4081', color: 'white' }}
               variant="contained"
               disabled={!isDirty || !isValid}
               fullWidth
+              className='!mt-2'
             >
               Login
             </Button>
