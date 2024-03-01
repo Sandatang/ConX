@@ -4,6 +4,7 @@ using CONX.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CONX.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240223150153_AddedForumModel")]
+    partial class AddedForumModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +32,8 @@ namespace CONX.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CreatorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -44,59 +45,6 @@ namespace CONX.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Forums");
-                });
-
-            modelBuilder.Entity("CONX.Models.ForumPost", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ForumId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostingsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ForumId");
-
-                    b.HasIndex("PostingsId");
-
-                    b.ToTable("ForumPosts");
-                });
-
-            modelBuilder.Entity("CONX.Models.Postings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PostBody")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PosterId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PosterId");
-
-                    b.ToTable("ForumPostings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -124,6 +72,29 @@ namespace CONX.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "905428a2-d180-44ac-8386-022726d38dd9",
+                            ConcurrencyStamp = "1",
+                            Name = "Personnel",
+                            NormalizedName = "personnel"
+                        },
+                        new
+                        {
+                            Id = "9c144b50-5d2d-4518-9ec7-cbad7abe036f",
+                            ConcurrencyStamp = "2",
+                            Name = "Women",
+                            NormalizedName = "women"
+                        },
+                        new
+                        {
+                            Id = "e85d04ca-bb2a-4bd7-bfd5-2935558ab352",
+                            ConcurrencyStamp = "0",
+                            Name = "Admin",
+                            NormalizedName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -326,36 +297,6 @@ namespace CONX.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("User");
-                });
-
-            modelBuilder.Entity("CONX.Models.ForumPost", b =>
-                {
-                    b.HasOne("CONX.Models.Forum", "Forum")
-                        .WithMany()
-                        .HasForeignKey("ForumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CONX.Models.Postings", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Forum");
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("CONX.Models.Postings", b =>
-                {
-                    b.HasOne("CONX.Models.User", "Poster")
-                        .WithMany()
-                        .HasForeignKey("PosterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Poster");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

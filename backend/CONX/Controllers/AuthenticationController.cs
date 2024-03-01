@@ -184,7 +184,7 @@ namespace CONX.Controllers
                     new Response { Status = "Error", Message = " Something went wrong try again later.", Field = "failed" });
             }
 
-            // if success
+            // If success
             return Ok($"User {id} deleted successfully");
         }
 
@@ -232,10 +232,10 @@ namespace CONX.Controllers
         }
 
 
-        // addition method for validations
+        // Additional method for validations
         private bool IsPasswordValid(string password)
         {
-            //  check the minimum length, uppercase, lowercase, digits, etc.
+            //  Check the minimum length, uppercase, lowercase, digits, etc.
             if (string.IsNullOrEmpty(password) || password.Length < 8 || !password.Any(char.IsUpper) || !password.Any(char.IsDigit))
             {
                 return false;
