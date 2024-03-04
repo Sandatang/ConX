@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CONX.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240301143001_AddJuncTableForumAndPostings2")]
-    partial class AddJuncTableForumAndPostings2
+    [Migration("20240303040040_AddedCommentModel")]
+    partial class AddedCommentModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,7 +48,7 @@ namespace CONX.Migrations
                     b.ToTable("Forums");
                 });
 
-            modelBuilder.Entity("CONX.Models.ForumPost", b =>
+            modelBuilder.Entity("CONX.Models.JuncForumThread", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,19 +59,19 @@ namespace CONX.Migrations
                     b.Property<int>("ForumId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PostingsId")
+                    b.Property<int>("ThreadId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ForumId");
 
-                    b.HasIndex("PostingsId");
+                    b.HasIndex("ThreadId");
 
-                    b.ToTable("ForumPosts");
+                    b.ToTable("ForumThreads");
                 });
 
-            modelBuilder.Entity("CONX.Models.Postings", b =>
+            modelBuilder.Entity("CONX.Models.Thread", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +98,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("PosterId");
 
-                    b.ToTable("ForumPostings");
+                    b.ToTable("Threads");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -330,7 +330,7 @@ namespace CONX.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("CONX.Models.ForumPost", b =>
+            modelBuilder.Entity("CONX.Models.JuncForumThread", b =>
                 {
                     b.HasOne("CONX.Models.Forum", "Forum")
                         .WithMany()
@@ -338,18 +338,18 @@ namespace CONX.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CONX.Models.Postings", "Post")
+                    b.HasOne("CONX.Models.Thread", "Thread")
                         .WithMany()
-                        .HasForeignKey("PostingsId")
+                        .HasForeignKey("ThreadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Forum");
 
-                    b.Navigation("Post");
+                    b.Navigation("Thread");
                 });
 
-            modelBuilder.Entity("CONX.Models.Postings", b =>
+            modelBuilder.Entity("CONX.Models.Thread", b =>
                 {
                     b.HasOne("CONX.Models.User", "Poster")
                         .WithMany()

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CONX.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240203122041_MadeAllRoleLowerCase")]
-    partial class MadeAllRoleLowerCase
+    [Migration("20240303042456_ChangeNavigatorToThread")]
+    partial class ChangeNavigatorToThread
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,130 @@ namespace CONX.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CONX.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CommentId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("CONX.Models.Forum", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Forums");
+                });
+
+            modelBuilder.Entity("CONX.Models.JuncForumThread", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ForumId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ThreadId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ForumId");
+
+                    b.HasIndex("ThreadId");
+
+                    b.ToTable("ForumThreads");
+                });
+
+            modelBuilder.Entity("CONX.Models.JuncThreadComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ThreadId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("ThreadId");
+
+                    b.ToTable("ThreadComments");
+                });
+
+            modelBuilder.Entity("CONX.Models.Thread", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PostBody")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PosterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PosterId");
+
+                    b.ToTable("Threads");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -49,29 +173,6 @@ namespace CONX.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "f47b762d-cba0-4b65-9b85-d1cdcddd4aae",
-                            ConcurrencyStamp = "1",
-                            Name = "Personnel",
-                            NormalizedName = "personnel"
-                        },
-                        new
-                        {
-                            Id = "c6f6af4d-492f-40a5-bc3d-74e58bdc4db9",
-                            ConcurrencyStamp = "2",
-                            Name = "Women",
-                            NormalizedName = "women"
-                        },
-                        new
-                        {
-                            Id = "dab2b03f-bf89-4b25-852e-73684f06285c",
-                            ConcurrencyStamp = "0",
-                            Name = "Admin",
-                            NormalizedName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -109,6 +210,10 @@ namespace CONX.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -162,6 +267,8 @@ namespace CONX.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -243,6 +350,80 @@ namespace CONX.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("CONX.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<DateTime>("Birthdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Firstname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Middlename")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("User");
+                });
+
+            modelBuilder.Entity("CONX.Models.JuncForumThread", b =>
+                {
+                    b.HasOne("CONX.Models.Forum", "Forum")
+                        .WithMany()
+                        .HasForeignKey("ForumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CONX.Models.Thread", "Thread")
+                        .WithMany()
+                        .HasForeignKey("ThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Forum");
+
+                    b.Navigation("Thread");
+                });
+
+            modelBuilder.Entity("CONX.Models.JuncThreadComment", b =>
+                {
+                    b.HasOne("CONX.Models.Comment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CONX.Models.Thread", "Thread")
+                        .WithMany()
+                        .HasForeignKey("ThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Thread");
+                });
+
+            modelBuilder.Entity("CONX.Models.Thread", b =>
+                {
+                    b.HasOne("CONX.Models.User", "Poster")
+                        .WithMany()
+                        .HasForeignKey("PosterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Poster");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

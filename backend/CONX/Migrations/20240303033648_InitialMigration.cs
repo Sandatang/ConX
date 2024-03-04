@@ -28,6 +28,12 @@ namespace CONX.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Middlename = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Birthdate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -46,6 +52,21 @@ namespace CONX.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Forums",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Forums", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +175,55 @@ namespace CONX.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Threads",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PosterId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostBody = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Threads", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Threads_AspNetUsers_PosterId",
+                        column: x => x.PosterId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ForumThreads",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ForumId = table.Column<int>(type: "int", nullable: false),
+                    PostingsId = table.Column<int>(type: "int", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForumThreads", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ForumThreads_Forums_ForumId",
+                        column: x => x.ForumId,
+                        principalTable: "Forums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ForumThreads_Threads_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Threads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -192,6 +262,21 @@ namespace CONX.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumThreads_ForumId",
+                table: "ForumThreads",
+                column: "ForumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumThreads_PostId",
+                table: "ForumThreads",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Threads_PosterId",
+                table: "Threads",
+                column: "PosterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,7 +297,16 @@ namespace CONX.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ForumThreads");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Forums");
+
+            migrationBuilder.DropTable(
+                name: "Threads");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

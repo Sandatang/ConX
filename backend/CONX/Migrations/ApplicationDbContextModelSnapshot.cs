@@ -22,6 +22,30 @@ namespace CONX.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("CONX.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CommentId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("CONX.Models.Forum", b =>
                 {
                     b.Property<int>("Id")
@@ -46,7 +70,48 @@ namespace CONX.Migrations
                     b.ToTable("Forums");
                 });
 
-            modelBuilder.Entity("CONX.Models.ForumPost", b =>
+            modelBuilder.Entity("CONX.Models.Jobs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactPerson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("JobDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Jobs");
+                });
+
+            modelBuilder.Entity("CONX.Models.JuncForumThread", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,19 +122,42 @@ namespace CONX.Migrations
                     b.Property<int>("ForumId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PostingsId")
+                    b.Property<int>("ThreadId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ForumId");
 
-                    b.HasIndex("PostingsId");
+                    b.HasIndex("ThreadId");
 
-                    b.ToTable("ForumPosts");
+                    b.ToTable("ForumThreads");
                 });
 
-            modelBuilder.Entity("CONX.Models.Postings", b =>
+            modelBuilder.Entity("CONX.Models.JuncThreadComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ThreadId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("ThreadId");
+
+                    b.ToTable("ThreadComments");
+                });
+
+            modelBuilder.Entity("CONX.Models.Thread", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +184,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("PosterId");
 
-                    b.ToTable("ForumPostings");
+                    b.ToTable("Threads");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -328,7 +416,18 @@ namespace CONX.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("CONX.Models.ForumPost", b =>
+            modelBuilder.Entity("CONX.Models.Jobs", b =>
+                {
+                    b.HasOne("CONX.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CONX.Models.JuncForumThread", b =>
                 {
                     b.HasOne("CONX.Models.Forum", "Forum")
                         .WithMany()
@@ -336,18 +435,37 @@ namespace CONX.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CONX.Models.Postings", "Post")
+                    b.HasOne("CONX.Models.Thread", "Thread")
                         .WithMany()
-                        .HasForeignKey("PostingsId")
+                        .HasForeignKey("ThreadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Forum");
 
-                    b.Navigation("Post");
+                    b.Navigation("Thread");
                 });
 
-            modelBuilder.Entity("CONX.Models.Postings", b =>
+            modelBuilder.Entity("CONX.Models.JuncThreadComment", b =>
+                {
+                    b.HasOne("CONX.Models.Comment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CONX.Models.Thread", "Thread")
+                        .WithMany()
+                        .HasForeignKey("ThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Thread");
+                });
+
+            modelBuilder.Entity("CONX.Models.Thread", b =>
                 {
                     b.HasOne("CONX.Models.User", "Poster")
                         .WithMany()

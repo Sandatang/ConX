@@ -2,7 +2,7 @@
 
 namespace CONX.Models.ForumPostingsViewModel
 {
-    public class ForumPostings
+    public class ThreadView
     {
         [Required(ErrorMessage = "User Id is required")]
         public string UserId { get; set; }

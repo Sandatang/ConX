@@ -9,12 +9,12 @@ namespace CONX.Controllers
 {
     [Route("api/forum/postings")]
     [ApiController]
-    public class ForumPostingController : Controller
+    public class ThreadController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public ForumPostingController(UserManager<IdentityUser> userManager, ApplicationDbContext context)
+        public ThreadController(UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _context = context;
@@ -22,7 +22,7 @@ namespace CONX.Controllers
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddPosting([FromBody] ForumPostings forumPostings)
+        public async Task<IActionResult> AddPosting([FromBody] ThreadView forumPostings)
         {
 
             // Check if user is null 
@@ -43,7 +43,7 @@ namespace CONX.Controllers
 
 
             // Create new Postings
-            var postings = new Postings
+            var postings = new Models.Thread
             {
                 PosterId = forumPostings.UserId,
                 PostTitle = forumPostings.Title,
@@ -52,7 +52,7 @@ namespace CONX.Controllers
             };
 
             // Que data to be inserted in Db
-            _context.ForumPostings.Add(postings);
+            _context.Threads.Add(postings);
 
             // Save the data
             var result = await _context.SaveChangesAsync();
@@ -64,13 +64,13 @@ namespace CONX.Controllers
                     new Response { Status = "Error", Message = " Something went wrong. Try again later", Field = "failed" });
             }
 
-            var forumPost = new ForumPost
+            var forumPost = new JuncForumThread
             {
                 ForumId = forumPostings.ForumId,
-                PostingsId = postings.Id,
+                ThreadId = postings.Id,
             };
             // Que data to be inserted in 
-            _context.ForumPosts.Add(forumPost);
+            _context.ForumThreads.Add(forumPost);
 
             // Save the data
             var forumPostResult = await _context.SaveChangesAsync();
@@ -91,7 +91,7 @@ namespace CONX.Controllers
         [Route("view")]
         public async Task<IActionResult> ViewForum()
         {
-            var postings = await _context.ForumPostings.ToListAsync();
+            var postings = await _context.Threads.ToListAsync();
 
             return Ok(postings);
         }

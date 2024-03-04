@@ -8,8 +8,11 @@ namespace CONX.Models
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Forum> Forums { get; set; }
-        public DbSet<Postings> ForumPostings { get; set; }
-        public DbSet<ForumPost> ForumPosts { get; set; }
+        public DbSet<Thread> Threads { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Jobs> Jobs { get; set; }
+        public DbSet<JuncForumThread> ForumThreads { get; set; }
+        public DbSet<JuncThreadComment> ThreadComments { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

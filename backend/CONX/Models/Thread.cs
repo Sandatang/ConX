@@ -2,7 +2,7 @@
 
 namespace CONX.Models
 {
-    public class Postings
+    public class Thread
     {
         public int Id { get; set; }
 
