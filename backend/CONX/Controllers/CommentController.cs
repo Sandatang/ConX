@@ -2,6 +2,7 @@
 using CONX.Models.CommentViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CONX.Controllers
 {
@@ -74,6 +75,51 @@ namespace CONX.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateComment([FromBody] EditComment editComment)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                // Model validation failed
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "Error", Message = "Validation failed", Field = "failed" });
+            }
+
+            var comment = await _context.Comments.FindAsync(editComment.CommentId);
+
+            if (comment == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                   new Response { Status = "Error", Message = " Comment not exist", Field = "failed" });
+            }
+
+            // Update the content
+            comment.Content = editComment.Content;
+
+            // Savet the data
+            var result = await _context.SaveChangesAsync();
+
+            if (result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, 
+                    new Response { Status = "Error", Message = " Somethign went wrong ", Field = "failed" });
+            }
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("view")]
+        public async Task<IActionResult> ViewComments()
+        {
+            var comments = await _context.Comments.ToListAsync();
+
+            return Ok(comments);
         }
     }
 
