@@ -114,10 +114,20 @@ namespace CONX.Controllers
         }
 
         [HttpGet]
-        [Route("view")]
-        public async Task<IActionResult> ViewComments()
+        [Route("view/{threadId}")]
+        public async Task<IActionResult> ViewComments(string threadId)
         {
-            var comments = await _context.Comments.ToListAsync();
+            var convertedID = Int32.Parse(threadId);
+            var comments = await _context.ThreadComments
+                                            .Where(x => x.ThreadId == convertedID)
+                                            .Select(x => new
+                                            {
+                                                threadId = x.ThreadId,
+                                                commentID = x.CommentId,
+                                                commentContent = x.Comment.Content,
+
+                                            })
+                                            .ToListAsync();
 
             return Ok(comments);
         }
