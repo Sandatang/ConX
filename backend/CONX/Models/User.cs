@@ -12,6 +12,8 @@ namespace CONX.Models
 
         public DateTime Birthdate { get; set; }
 
+        public bool DeActivate { get; set; }
+
     }
 
     

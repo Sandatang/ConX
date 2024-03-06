@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CONX.Controllers
 {
-    [Route("api/forum/postings")]
+    [Route("api/forum/thread")]
     [ApiController]
     public class ThreadController : Controller
     {
@@ -89,10 +89,10 @@ namespace CONX.Controllers
         }
 
         [HttpGet]
-        [Route("view/{forumId}")]
-        public async Task<IActionResult> ViewForum(string forumId)
+        [Route("view/{threadId}")]
+        public async Task<IActionResult> ViewForum(string threadId)
         {
-            var convertedId = Int32.Parse(forumId);
+            var convertedId = Int32.Parse(threadId);
             var postings = await _context.ForumThreads
                                     .Where(x => x.ForumId == convertedId)
                                     .Select(x => new
@@ -106,6 +106,12 @@ namespace CONX.Controllers
                                         dateCreated = x.Thread.DateCreated,
 
                                     }).ToListAsync();
+
+            if(postings.Count > 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " Thread not exist", Field = "failed" });
+            }
 
             return Ok(postings);
         }

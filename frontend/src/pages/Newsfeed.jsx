@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ChatIcon from '@mui/icons-material/Chat';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import storeImage from "../assets/store.png";
+import ChatIcon from '@mui/icons-material/Chat';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import { useState } from 'react';
 import sample3Image from "../assets/sample3.png";
+import storeImage from "../assets/store.png";
 
 const Newsfeed = () => {
   const [posts, setPosts] = useState([

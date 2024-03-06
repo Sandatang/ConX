@@ -2,6 +2,7 @@
 using CONX.Models.JobViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CONX.Controllers
 {
@@ -64,6 +65,58 @@ namespace CONX.Controllers
 
             return Ok("Job added successfully");
 
+        }
+
+        [HttpGet]
+        [Route("view-all")]
+        public async Task<IActionResult> ViewAllJobs()
+        {
+            var job = await _context.Jobs
+                    .Include(x => x.User)
+                    .Select(x => new
+                    {
+                        Id = x.Id,
+                        UserId = x.UserId,
+                        User = $"{x.User.Firstname} {x.User.Firstname}",
+                        JobTitle = x.JobTitle,
+                        JobDescription = x.JobDescription,
+                        ContactPerson = x.ContactPerson,
+                        ContactNumber = x.ContactNumber,
+                        DateCreated = x.Created,
+                        isClose = x.isActive,
+                    })
+                    .ToListAsync();
+
+            return Ok(job);
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateJob([FromBody] UpdateJob updateJob)
+        {
+            var job = await _context.Jobs.FindAsync(updateJob.JobId);
+            
+            if(job == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                 new Response { Status = "Error", Message = " Job not exist", Field = "failed" });
+            }
+
+            job.JobTitle = updateJob.JobTitle;
+            job.JobDescription = updateJob.JobDescription;
+            job.ContactPerson = updateJob.ContactPerson;
+            job.ContactNumber = updateJob.ContactNumber;
+
+            // Save the data
+            var result = await _context.SaveChangesAsync();
+
+            if(result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
+            }
+
+            return Ok("Job updated");
         }
     }
 }

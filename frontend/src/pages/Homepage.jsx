@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { Button, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
-import { AccountCircle, Group, Book, People, Report, Update, ExitToApp } from '@mui/icons-material';
+import { AccountCircle, Book, Group, People, Report, Update } from '@mui/icons-material';
+import { AppBar, Button, IconButton, Stack, Toolbar } from '@mui/material';
+import { useState } from 'react';
 import conxLogo from "../assets/logo.png";
-import image2 from "../assets/1.jpg";
-import Newsfeed from './Newsfeed'; 
-import Forum from './Forum'; 
-import Resources from './Resources.jsx'; 
-import ManageUsers from './ManageUsers'; 
-import Reports from './Reports'; 
-import Updates from './Updates'; 
+import Forum from './Forum';
+import ManageUsers from './ManageUsers';
+import Newsfeed from './Newsfeed';
+// import Reports from './Reports';
+import Resources from './Resources.jsx';
+// import Updates from './Updates';
 
 const Header = () => {
   return (
@@ -54,12 +53,12 @@ const Homepage = () => {
       case 'Manage Users':
         setContent(<ManageUsers />);
         break;
-      case 'Reports':
-        setContent(<Reports />);
-        break;
-      case 'Updates':
-        setContent(<Updates />);
-        break;
+      // case 'Reports':
+      //   setContent(<Reports />);
+      //   break;
+      // case 'Updates':
+      //   setContent(<Updates />);
+      //   break;
       default:
         setContent(null);
         break;

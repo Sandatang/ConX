@@ -1,6 +1,7 @@
 ﻿using CONX.Models;
 using CONX.Models.Authentication.Login;
 using CONX.Models.Authentication.Signup;
+using CONX.Models.AuthenticationViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace CONX.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
         }
-
+        // Add a user women
         [HttpPost]
         [Route("register/women")]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
@@ -78,6 +79,7 @@ namespace CONX.Controllers
 
         }
 
+        // Add a personnel
         [HttpPost]
         [Route("register/personnel")]
         public async Task<IActionResult> RegisterPersonnel([FromBody] AddPersonnel addPersonnel)
@@ -127,7 +129,7 @@ namespace CONX.Controllers
 
         }
 
-
+        // View all women
         [HttpGet]
         [Route("view/women")]
         public async Task<IActionResult> ViewWomen()
@@ -145,6 +147,7 @@ namespace CONX.Controllers
             return Ok(user);
         }
 
+        // View all personnel
         [HttpGet]
         [Route("view/personnel")]
         public async Task<IActionResult> ViewPersonnel()
@@ -162,6 +165,7 @@ namespace CONX.Controllers
             return Ok(user);
         }
 
+        // Delete user single deletion only
         [HttpDelete]
         [Route("delete/user/{id}")]
         public async Task<IActionResult> DeleteUser(string id)
@@ -186,6 +190,37 @@ namespace CONX.Controllers
 
             // If success
             return Ok($"User {id} deleted successfully");
+        }
+
+        // De activate user
+        [HttpPut]
+        [Route("user/deActivate")]
+        public async Task<IActionResult> DeActivateUser([FromBody] DeActivateUser deActivateUser)
+        {
+            var user = await _userManager.FindByIdAsync(deActivateUser.UserId);
+
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+
+            // Cast the IdentityUser
+            var customUser = (User)user;
+
+            // Update the DeActivate property
+            customUser.DeActivate = true;
+
+            // Save the data
+            var result = await _userManager.UpdateAsync(customUser);
+
+            if (result.Succeeded)
+            {
+                return Ok(new Response { Status = "Success", Message = "User deactivated " });
+            }
+
+            // Change deactivate col to true
+            return Ok();
         }
 
 

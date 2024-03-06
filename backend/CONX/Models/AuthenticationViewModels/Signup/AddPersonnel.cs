@@ -27,5 +27,6 @@ namespace CONX.Models.Authentication.Signup
         [Required(ErrorMessage = "Email is required")]
         public string? Email { get; set; }
 
+
     }
 }
