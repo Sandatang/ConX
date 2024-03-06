@@ -7,10 +7,11 @@ namespace CONX.Models
         public int Id { get; set; }
 
         [ForeignKey("UserId")]
-        public string PosterId { get; set; }
-        public User Poster { get; set; }
+        public string UserId { get; set; }
+        public User User { get; set; }
         public string PostTitle { get; set; }
         public string PostBody { get; set; }
+        public bool isClosed { get; set; }
         public DateTime DateCreated { get; set; }
 
     }
