@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Reports = () => {

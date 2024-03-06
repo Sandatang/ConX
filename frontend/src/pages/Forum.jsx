@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -6,7 +6,7 @@ import conxLogo from "../assets/logo.png";
 import sample1 from "../assets/sample1.png";
 import sample2 from "../assets/sample2.png";
 
-const Feed = ({ section }) => {
+const Feed = () => {
   const [posts, setPosts] = useState([
     {
       id: 1,
@@ -33,7 +33,7 @@ const Feed = ({ section }) => {
   ]);
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostImage, setNewPostImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [commentPostId, setCommentPostId] = useState(null);
   const [hover, setHover] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -54,7 +54,7 @@ const Feed = ({ section }) => {
       setPosts([newPost, ...posts]);
       setNewPostContent('');
       setNewPostImage(null);
-      setIsModalOpen(false); 
+      setIsModalOpen(false);
     }
   };
 
@@ -104,7 +104,7 @@ const Feed = ({ section }) => {
           <img className="w-12 h-12 rounded-full mr-4" src={conxLogo} alt="Profile" />
           <div className="relative w-full">
             <textarea
-              onClick={() => setIsModalOpen(true)} 
+              onClick={() => setIsModalOpen(true)}
               value={newPostContent}
               onChange={(e) => setNewPostContent(e.target.value)}
               placeholder="What's on your mind?"
@@ -178,8 +178,8 @@ const Feed = ({ section }) => {
           <div className="bg-white rounded-lg shadow-xl w-full max-w-lg">
             <div className="flex justify-between items-center p-4 border-b">
               <h3 className="text-lg font-semibold text-gray-800 mx-auto">Create Post</h3>
-              <button 
-                className="text-gray-400 hover:text-red-600 " 
+              <button
+                className="text-gray-400 hover:text-red-600 "
                 onClick={() => setIsModalOpen(false)}
               >
                 X
@@ -218,7 +218,7 @@ const Feed = ({ section }) => {
                   accept="image/*"
                   onChange={(e) => setNewPostImage(URL.createObjectURL(e.target.files[0]))}
                   className="hidden"
-                  id="image-upload" 
+                  id="image-upload"
                 />
               </label>
 

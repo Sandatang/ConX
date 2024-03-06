@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
+import { useState } from 'react';
+import { Pie } from 'react-chartjs-2';
 
 const Updates = () => {
-  const [updateData, setUpdateData] = useState({
+  const [updateData] = useState({
     users: {
       count: 120,
       percentChange: 3.55,
@@ -43,7 +43,7 @@ const Updates = () => {
     plugins: {
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             let label = context.label || '';
             if (label) {
               label += ': ';
@@ -70,7 +70,7 @@ const Updates = () => {
     <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
       <h2 className="text-xl font-bold mb-4 text-gray-800">Updates</h2>
       <div className="flex justify-between items-center space-x-4">
-       
+
         <div className="flex-1 bg-gray-100 p-4 rounded-md">
           <h3 className="text-lg font-semibold text-gray-800">USERS</h3>
           <p className="text-xl font-bold text-gray-800">{updateData.users.count}</p>

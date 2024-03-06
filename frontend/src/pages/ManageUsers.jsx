@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 
 const ManageUsers = () => {
-  const [users, setUsers] = useState([
+  const [users] = useState([
     {
       id: 1,
       username: "maria_delos_santos",
