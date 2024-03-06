@@ -87,6 +87,12 @@ namespace CONX.Controllers
                     })
                     .ToListAsync();
 
+            if(job == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                 new Response { Status = "Error", Message = " No Jobs yet", Field = "failed" });
+            }
+
             return Ok(job);
         }
 
@@ -117,6 +123,33 @@ namespace CONX.Controllers
             }
 
             return Ok("Job updated");
+        }
+
+        [HttpDelete]
+        [Route("delete/{jobId}")]
+        public async Task<IActionResult> DeleteJob(string jobId)
+        {
+            var convertedId = Int32.Parse(jobId);
+            // Find the job
+            var job = await _context.Jobs.FindAsync(convertedId);
+
+            if(job == null)
+            {
+                return NotFound( new Response { Status = "Error", Message = " Job not exist ", Field = "failed"  });
+            }
+
+            // Que the query for removing
+            _context.Jobs.Remove(job);
+            // Save the data
+            var result = await _context.SaveChangesAsync();
+
+            if( result <= 0 )
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
+            }
+
+            return Ok("Deleted successfully");
         }
     }
 }

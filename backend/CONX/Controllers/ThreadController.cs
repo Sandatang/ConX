@@ -107,13 +107,46 @@ namespace CONX.Controllers
 
                                     }).ToListAsync();
 
-            if(postings.Count > 0)
+            if (postings.Count > 0)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = " Thread not exist", Field = "failed" });
             }
 
             return Ok(postings);
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateThread([FromBody] UpdateThread updateThread)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Model validation failed
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "Error", Message = "Validation failed", Field = "failed" });
+            }
+
+            var thread = await _context.Threads.FindAsync(updateThread.ThreadId);
+            if (thread == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                   new Response { Status = "Error", Message = "Thread not found", Field = "failed" });
+            }
+            // Update the thread data
+            thread.PostTitle = updateThread.Title;
+            thread.PostBody = updateThread.Content;
+            // Save the data
+            var result = await _context.SaveChangesAsync();
+
+            if(result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new Response { Status = "Error", Message = "Something went wrong", Field = "failed" });
+            }
+
+            return Ok("Update success");
         }
 
         [HttpPut]
