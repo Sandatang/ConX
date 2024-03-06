@@ -1,6 +1,8 @@
 ﻿using CONX.Models;
 using CONX.Models.Authentication.Login;
 using CONX.Models.Authentication.Signup;
+using CONX.Models.AuthenticationViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -24,7 +26,7 @@ namespace CONX.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
         }
-
+        // Add a user women
         [HttpPost]
         [Route("register/women")]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
@@ -34,7 +36,7 @@ namespace CONX.Controllers
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error",  Message = " Email already exist ", Field = "email" });
+                    new Response { Status = "Error",  Message = " Email already exist ", Field = "failed" });
             }
 
             //Check if username exist in DB
@@ -42,14 +44,14 @@ namespace CONX.Controllers
             if(usernameExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error", Message = "Username already exist", Field = "username"});
+                    new Response { Status = "Error", Message = "Username already exist", Field = "failed" });
             }
 
             // Check password format
             if (registerUser.Password == null || !IsPasswordValid(registerUser.Password))
             {
                 return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field="password" });
+                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field="failed" });
             }
 
             var user = new User();
@@ -77,6 +79,7 @@ namespace CONX.Controllers
 
         }
 
+        // Add a personnel
         [HttpPost]
         [Route("register/personnel")]
         public async Task<IActionResult> RegisterPersonnel([FromBody] AddPersonnel addPersonnel)
@@ -86,7 +89,7 @@ namespace CONX.Controllers
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error", Message = " Email already exist ", Field = "email" });
+                    new Response { Status = "Error", Message = " Email already exist ", Field = "failed" });
             }
 
 
@@ -95,7 +98,7 @@ namespace CONX.Controllers
             if (usernameExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error", Message = "Username already exist", Field = "username" });
+                    new Response { Status = "Error", Message = "Username already exist", Field = "failed" });
             }
 
             //Default password
@@ -126,7 +129,102 @@ namespace CONX.Controllers
 
         }
 
+        // View all women
+        [HttpGet]
+        [Route("view/women")]
+        public async Task<IActionResult> ViewWomen()
+        {
+            var user = await _userManager.GetUsersInRoleAsync("women");
 
+            //Check if women user is null
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent, 
+                        new Response { Status = "Success", Message = " Users currently empty" });
+            }
+
+            // return if user is not null
+            return Ok(user);
+        }
+
+        // View all personnel
+        [HttpGet]
+        [Route("view/personnel")]
+        public async Task<IActionResult> ViewPersonnel()
+        {
+            var user = await _userManager.GetUsersInRoleAsync("personnel");
+
+            //Check if personnel is null
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                        new Response { Status = "Success", Message = " Users currently empty" });
+            }
+
+            // Return if user is not null
+            return Ok(user);
+        }
+
+        // Delete user single deletion only
+        [HttpDelete]
+        [Route("delete/user/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            // Check if user exist
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = "User not found", Field = "failed" });
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            // Check if deletion not succeded
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = " Something went wrong try again later.", Field = "failed" });
+            }
+
+            // If success
+            return Ok($"User {id} deleted successfully");
+        }
+
+        // De activate user
+        [HttpPut]
+        [Route("user/deActivate")]
+        public async Task<IActionResult> DeActivateUser([FromBody] DeActivateUser deActivateUser)
+        {
+            var user = await _userManager.FindByIdAsync(deActivateUser.UserId);
+
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+
+            // Cast the IdentityUser
+            var customUser = (User)user;
+
+            // Update the DeActivate property
+            customUser.DeActivate = true;
+
+            // Save the data
+            var result = await _userManager.UpdateAsync(customUser);
+
+            if (result.Succeeded)
+            {
+                return Ok(new Response { Status = "Success", Message = "User deactivated " });
+            }
+
+            // Change deactivate col to true
+            return Ok();
+        }
+
+
+        // Authentication for logging in
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
@@ -165,13 +263,14 @@ namespace CONX.Controllers
 
             //return Unauthorized();
             return StatusCode(StatusCodes.Status401Unauthorized,
-                        new Response { Status = "Error", Message = "Invalid Credentials", Field = "both" });
+                        new Response { Status = "Error", Message = "Invalid Credentials", Field = "failed" });
         }
 
-        // addition method for validations
+
+        // Additional method for validations
         private bool IsPasswordValid(string password)
         {
-            //  check the minimum length, uppercase, lowercase, digits, etc.
+            //  Check the minimum length, uppercase, lowercase, digits, etc.
             if (string.IsNullOrEmpty(password) || password.Length < 8 || !password.Any(char.IsUpper) || !password.Any(char.IsDigit))
             {
                 return false;

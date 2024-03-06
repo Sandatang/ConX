@@ -34,9 +34,14 @@ const Register = () => {
     }
 
     if (response.status === 400) {
-      setError("password", {
+      // setError("passNotMatch", {
+      //   type: "manual",
+      //   message: response.errors.ConfirmPass.toString()
+      // })
+
+      setError("invalidEmail", {
         type: "manual",
-        message: response.errors.ConfirmPassword.toString()
+        message: response.errors.Email.toString()
       })
     }
 
@@ -47,7 +52,7 @@ const Register = () => {
   }
 
   return (
-    <Stack className='!flex-row !justify-evenly'>
+    <Stack className='md:!flex-row !justify-evenly'>
       <Stack className='!items-center !justify-center'>
         <img src={conxLogo} className="logo ConX" alt="ConX logo" />
         <h1 className="text-center">
@@ -56,7 +61,7 @@ const Register = () => {
           within the Barangay of Metro Cebu
         </h1>
       </Stack>
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" >
+      <Box className="!flex !flex-col md:!justify-center !items-center" minHeight="100vh" >
         <Box
           p={4}
           boxShadow={3}
@@ -66,13 +71,9 @@ const Register = () => {
           width="100%"
         >
           <h2 className="text-2xl font-semibold mb-2">Sign Up</h2>
-          {errors && (
-            Object.keys(errors).map((field) => (
-              <Typography key={field} variant="caption" color="error">
-                {errors[field].message}
-              </Typography>
-            ))
-          )}
+          <Typography variant="caption" color="error">{errors.failed?.message}</Typography>
+          {/* <Typography variant="caption" color="error">{errors.passNotMatch?.message}</Typography> */}
+          <Typography variant="caption" color="error">{errors.invalidEmail?.message}</Typography>
           {success && (
             <Typography variant="caption" color="success">
               {success}
@@ -88,7 +89,7 @@ const Register = () => {
               fullWidth
             />
 
-            <Stack className='!flex-row gap-2 mt-2'>
+            <Stack className='md:!flex-row gap-2 mt-2'>
               <Stack className='gap-2'>
                 <TextField
                   label="Firstname"
@@ -112,7 +113,6 @@ const Register = () => {
                   {...register("lastname", { required: "Required" })}
                   fullWidth
                 />
-
 
                 <TextField
                   label="Email Address"
