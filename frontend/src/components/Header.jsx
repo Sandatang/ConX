@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // import React from 'react'
 import { useState } from "react";
-import logoImg from "../assets/logo.png"
+import logoImg from "../assets/logo.png";
 import SmallDeviceDrawer from "./Drawer";
 import Logout from "./Logout";
 
@@ -10,10 +10,8 @@ export const Header = () => {
     // eslint-disable-next-line no-unused-vars
     const [userName, setUserName] = useState("Maria Ty");
 
-    // Function to handle the logout action
     const handleLogout = () => {
-        setProfileOpen(!isProfileOpen); // Close the profile dropdown
-        // Add logout logic here
+        setProfileOpen(!isProfileOpen);
     };
 
     return (
@@ -45,7 +43,6 @@ export const Header = () => {
                 </div>
             </div>
 
-
             {isProfileOpen && (
                 <div
                     onClick={handleLogout}
@@ -61,7 +58,7 @@ export const Header = () => {
                             className="block px-4 py-2 text-sm text-white"
                             onClick={handleLogout}
                         >
-                            <Logout/>
+                            <Logout />
                         </button>
                     </div>
                 </div>

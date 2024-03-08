@@ -4,9 +4,6 @@ import { useState } from 'react';
 import * as UserApi from "../network/user_api";
 import AddPeronnelModal from '../components/AddPersonnelModal';
 
-
-
-
 const ManageUsers = () => {
   const [active1, setActive1] = useState(null);
   const [active2, setActive2] = useState(null);
@@ -42,7 +39,8 @@ const ManageUsers = () => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <Stack className='!flex-row justify-between items-center mb-2'>
-        {/* <h2 className="text-xl font-bold mb-4 text-gray-800">Manage Users</h2> */}
+
+        {/* Button for showing user base on role */}
         <Stack className='!flex-row gap-2'>
           <Button onClick={() => {
             generateWomenUser()
@@ -55,8 +53,12 @@ const ManageUsers = () => {
             setActive1(false)
           }} variant={active2 ? 'contained' : 'text'}>Add Personnel</Button>
         </Stack>
-        <Button variant='contained' onClick={() => setAdd(!add)}>Add Personnel</Button>
+        {/* End button for showing user base on role */}
+
+        <Button variant='contained' onClick={() => setAdd(!add)}>Add Personnel</Button>  {/* For adding personnel */}
       </Stack>
+
+      {/* Search and Sort  */}
       <Stack className="!flex-row justify-between mb-4">
         <input
           type="text"
@@ -80,6 +82,9 @@ const ManageUsers = () => {
           </select>
         </Stack>
       </Stack>
+      {/* End of search and Sort */}
+
+      {/* Users Table */}
       <Stack className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-300 border border-solid">
@@ -140,11 +145,10 @@ const ManageUsers = () => {
           </tbody>
         </table>
       </Stack>
-      {add && <AddPeronnelModal onClose={() => setAdd(false)} />}
-      {/* <div className="mt-4">
-        <p className="text-gray-800">Verified Users: {verifiedUsersCount}</p>
-        <p className="text-gray-800">Non-Verified Users: {nonVerifiedUsersCount}</p>
-      </div> */}
+      {/* End Users Table */}
+
+      {add && <AddPeronnelModal onClose={() => setAdd(false)} />} {/* Modal */}
+
     </div>
   );
 };

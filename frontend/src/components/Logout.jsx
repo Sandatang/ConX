@@ -1,4 +1,4 @@
-import { NotificationsSharp } from "@mui/icons-material";
+import { LogoutOutlined, Notifications, NotificationsSharp } from "@mui/icons-material";
 import { Badge, IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import conxlogo from "../assets/logo.png";
 import { useAuth } from "../utils/AuthContext";
@@ -26,25 +26,21 @@ const Logout = () => {
         <Stack className="!flex-row items-center">
             <Typography fontSize="small" className="!mr-2">Name of the user here</Typography>
             <section>
-                <IconButton
-                    className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    edge="end"
-                    color="inherit"
-                    aria-label="menu"
-                    onClick={handleClick}
-                >
-                    {/* <span className="absolute -inset-1.5"></span>
-                    <span className="sr-only">Open user menu</span> */}
-                    <span className="relative">
-                        <img
-                            className="h-4 w-4 rounded-full"
-                            src={conxlogo}
-                        />
-                        <Badge color="error" badgeContent={2} className="!absolute top-5">
-                            <NotificationsSharp />
-                        </Badge>
-                    </span>
-                </IconButton>
+                <div onClick={handleClick} className="cursor-pointer">
+
+                    <Badge color="error">
+                        <NotificationsSharp />
+                    </Badge>
+                    <IconButton
+                        className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+                        edge="end"
+                        color="inherit"
+                        aria-label="menu"
+                    >
+                        <img className="h-4 w-4 rounded-full" src={conxlogo} />
+                    </IconButton>
+                </div>
+
 
                 <Stack className="shadow-md">
                     <Menu
@@ -54,17 +50,19 @@ const Logout = () => {
                         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                         transformOrigin={{ vertical: "top", horizontal: "right" }}
                     >
-                        <MenuItem>
-                            <Typography className="!text-md uppercase ">Notifications</Typography>
+                        <MenuItem className="!text-slate-600 hover:!text-black">
+                            <Notifications fontSize="small" />
+                            <Typography className="!text-[0.9em] !tracking-wider ">Notifications</Typography>
                         </MenuItem>
-                        <MenuItem onClick={handleLogout}>
-                            <Typography className="!text-md uppercase !font-bold">Logout</Typography>
+                        <MenuItem onClick={handleLogout} className="!text-slate-600 hover:!text-black">
+                            <LogoutOutlined fontSize="small" />
+                            <Typography className="!text-[0.9em] !tracking-wider ">Logout</Typography>
                         </MenuItem>
                     </Menu>
                 </Stack>
 
             </section>
-        </Stack>
+        </Stack >
     );
 };
 
