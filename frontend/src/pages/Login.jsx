@@ -3,26 +3,24 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Box, Button, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import conxLogo from "../assets/logo.png";
-import * as UserApi from "../network/user_api";
-
+import { useAuth } from '../utils/AuthContext';
 const Login = () => {
-
+  const navigate = useNavigate()
+  const { loginUser, error } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
-  const { register, handleSubmit, setError, formState: { isValid, errors, isDirty } } = useForm({ mode: "onChange" });
+  const { register, handleSubmit, formState: { isValid, errors, isDirty } } = useForm({ mode: "onChange" });
 
   async function signIn(data) {
-    const response = await UserApi.authenticateUser(data)
-    if (response.field) {
-      setError(response.field, {
-        type: "manual",
-        message: response.message
-      })
-    }
-    if (response.statusCode) {
-      console.log(response)
+    try {
+      const result = await loginUser(data)
+      if (result === true) {
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error(error)
     }
 
   }
@@ -42,7 +40,6 @@ const Login = () => {
         <br />
         within the Barangay of Metro Cebu
       </h1>
-      {/* display="flex" flexDirection="column" alignItems="center" justifyContent="center"  */}
       <Box className="!flex !flex-col md:!justify-center !items-center" minHeight="100vh">
         <Box
           p={4}
@@ -53,29 +50,30 @@ const Login = () => {
           width="100%"
         >
           <h2 className="text-2xl font-semibold mb-2">Sign In</h2>
-          {/* {errors && (
-            Object.keys(errors).map((field) => (
-              <Typography key={field} variant="caption" color="error">
-                {errors[field].message}
-              </Typography>
-            ))
-          )} */}
+
+          {/* Response error message */}
           <Typography variant="caption" color="error">
             {errors.failed?.message}
+            {error && <span>{error}</span>}
           </Typography>
+
           <form className="mt-2" onSubmit={handleSubmit(signIn)}>
+
+            {/* Username text field */}
             <TextField
               label="Username"
               variant="outlined"
               name="username"
               fullWidth
               margin="normal"
-              // InputProps={{ style: { color: 'gray' } }}
               {...register("username", { required: "Required" })}
             />
+            {/* Username error required message */}
             <Typography variant="caption" color="error">
               {errors.username?.message}
             </Typography>
+
+            {/* Password text field */}
             <TextField
               label="Password"
               type={showPassword ? 'text' : 'password'}
@@ -84,7 +82,6 @@ const Login = () => {
               fullWidth
               margin="normal"
               InputProps={{
-                // style: { color: 'gray' },
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={togglePassword} edge="end">
@@ -95,9 +92,12 @@ const Login = () => {
               }}
               {...register("password", { required: "Required" })}
             />
+
+            {/* Password error required message */}
             <Typography variant="caption" color="error">
               {errors.password?.message}
             </Typography>
+
             <Button
               type="submit"
               style={{ backgroundColor: '#FF4081', color: 'white' }}
