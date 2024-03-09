@@ -110,6 +110,7 @@ export const AuthProvider = ({ children }) => {
 
     const contextData = {
         ...authState,
+        setLoading: (isLoading) => setAuthState((prev) => ({...prev, loading: isLoading})),
         setError: (error) => setAuthState((prev) => ({ ...prev, error })),
         loginUser,
         logOutUser,

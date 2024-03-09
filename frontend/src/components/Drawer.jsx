@@ -7,7 +7,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { useState } from "react";
 import { BiMenu } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { studentLinks } from "../constants/index";
+import { brgyLinks } from "../constants/index";
 
 export default function SmallDeviceDrawer() {
     const [open, setOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function SmallDeviceDrawer() {
                     <List>
                         {/* {userRole === "Student" && */}
                         {
-                            studentLinks.map((route, index) => (
+                            brgyLinks.map((route, index) => (
                                 <ListItem key={index}>
                                     <ListItemButton>
                                         <ListItemIcon>

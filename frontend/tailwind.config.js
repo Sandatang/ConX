@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       fontSize: {
@@ -18,10 +15,13 @@ export default {
         h2: "3.3125rem",
         h1: "4.1875rem",
       },
+      colors: {
+        mainColor: "#ff9ae6",
+      },
     },
     fontFamily: {
-      'body': ['ui-serif', 'Georgia'],
+      body: ["ui-serif", "Georgia"],
     },
   },
   plugins: [],
-}
+};

@@ -53,6 +53,7 @@ export default function AddPeronnelModal(props) {
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("employeeNumber", { required: true })}
                                 />
+
                                 <TextField
                                     id="outline-idno"
                                     name="username"
