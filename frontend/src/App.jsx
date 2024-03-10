@@ -7,6 +7,7 @@ import ManageUsers from "./pages/ManageUsers"
 import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
+import ChangeUnConfirmed from "./components/ChangeUnConfirmed"
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
             <Route path="/settings/*" element={<Settings />} >
               <Route path="personal-information" element={<PersonalInformation />} />
               <Route path="change-password" element={<ChangePassword />} />
+              <Route path="confirm-password" element={<ChangeUnConfirmed />} />
             </Route>
 
           </Route>

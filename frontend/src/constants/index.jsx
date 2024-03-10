@@ -45,7 +45,7 @@ export const settingLinks = [
   },
   {
     id: "changepassword",
-    link: "/change-password",
+    link: "/confirm-password",
     title: "Change Password",
     icon: <Password fontSize="small" className="!text-slate-600 mr-2  self-end" />
   },
