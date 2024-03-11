@@ -10,6 +10,7 @@ using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Xml.Linq;
 
 namespace CONX.Controllers
 {
@@ -37,12 +38,12 @@ namespace CONX.Controllers
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error",  Message = " Email already exist ", Field = "failed" });
+                    new Response { Status = "Error", Message = " Email already exist ", Field = "failed" });
             }
 
             //Check if username exist in DB
             var usernameExist = await _userManager.FindByNameAsync(registerUser.Username);
-            if(usernameExist != null)
+            if (usernameExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
                     new Response { Status = "Error", Message = "Username already exist", Field = "failed" });
@@ -52,7 +53,7 @@ namespace CONX.Controllers
             if (registerUser.Password == null || !IsPasswordValid(registerUser.Password))
             {
                 return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field="failed" });
+                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field = "failed" });
             }
 
             var user = new User();
@@ -138,9 +139,9 @@ namespace CONX.Controllers
             var user = await _userManager.GetUsersInRoleAsync("women");
 
             //Check if women user is null
-            if(user == null)
+            if (user == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent, 
+                return StatusCode(StatusCodes.Status204NoContent,
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
@@ -156,7 +157,7 @@ namespace CONX.Controllers
             var user = await _userManager.GetUsersInRoleAsync("personnel");
 
             //Check if personnel is null
-            if(user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent,
                         new Response { Status = "Success", Message = " Users currently empty" });
@@ -172,13 +173,14 @@ namespace CONX.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
 
-            if(user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                         new Response { Status = "Error", Message = " User not found", Field = "failed" });
             }
             var selectedUser = (User)user;
-            var data = new 
+            // Returned only specific data
+            var data = new
             {
                 firstname = selectedUser.Firstname,
                 middlename = selectedUser.Middlename,
@@ -187,10 +189,66 @@ namespace CONX.Controllers
                 username = selectedUser.UserName,
                 employeNum = selectedUser.EmployeeNumber,
                 email = selectedUser.Email,
-                
+
             };
 
             return Ok(data);
+        }
+        [HttpPost]
+        [Route("password-confirmation")]
+        public async Task<IActionResult> PasswordConfirmation([FromBody] PasswordConfirmation passwordConfirmation)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Find the user
+            var user = await _userManager.FindByIdAsync(passwordConfirmation.UserId);
+
+            if (user != null && await _userManager.CheckPasswordAsync(user, passwordConfirmation.Password))
+            {
+                return Ok(new Response { Status = "Success" });
+
+            }
+
+            return StatusCode(StatusCodes.Status404NotFound,
+                        new Response { Status = "Error", Message = " Password not match", Field = "failed" });
+        }
+
+        [HttpPut]
+        [Route("changepass")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePassword changePassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByIdAsync(changePassword.UserId);
+
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                     new Response { Status = " Error ", Message = " User not found", Field = "failed" });
+
+            }
+
+            // Check password format
+            if (changePassword.NewPassword == null || !IsPasswordValid(changePassword.NewPassword))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field = "failed" });
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                     new Response { Status = " Error ", Message = " Something went wrong", Field = "failed" });
+            }
+
+            return Ok(new Response { Status = "Success", Message="Password change successfully"});
         }
 
         // User Update
@@ -198,12 +256,18 @@ namespace CONX.Controllers
         [Route("update/user/")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUser updateUser)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = await _userManager.FindByIdAsync(updateUser.UserId);
             if(user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                         new Response { Status = "Error", Message = " User not found", Field = "failed" });
             }
+            // Update the users data
             var userToUpdate = (User)user;
             userToUpdate.Firstname = updateUser.Firstname;
             userToUpdate.Middlename = updateUser.Middlename;
