@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom"
 import Login from "../pages/Login";
-
+    
 const IsLogged = () => {
     const navigate = useNavigate();
 

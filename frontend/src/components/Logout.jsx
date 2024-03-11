@@ -1,4 +1,4 @@
-import { LogoutOutlined, Notifications, NotificationsSharp } from "@mui/icons-material";
+import { AccountCircle, LogoutOutlined, Notifications, NotificationsSharp } from "@mui/icons-material";
 import { Badge, IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import conxlogo from "../assets/logo.png";
 import { useAuth } from "../utils/AuthContext";
@@ -32,12 +32,12 @@ const Logout = () => {
                         <NotificationsSharp />
                     </Badge>
                     <IconButton
-                        className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+                        className=" relative !w-10 !h-10 flex rounded-full bg-black text-sm focus:outline-none ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
                         edge="end"
                         color="inherit"
                         aria-label="menu"
                     >
-                        <img className="h-4 w-4 rounded-full" src={conxlogo} />
+                        <AccountCircle fontSize="large" className="!absolute "/>
                     </IconButton>
                 </div>
 

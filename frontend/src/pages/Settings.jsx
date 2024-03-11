@@ -1,9 +1,9 @@
+import SettingsIcon from '@mui/icons-material/Settings'
 import { Button, Stack, Typography } from "@mui/material"
 import { useState } from "react"
 import { Link, Outlet } from "react-router-dom"
-import ChangePassword from "../components/Settings/ChangePassword"
+import ChangePasswordAuth from "../components/Settings/ChangePasswordAuth"
 import { settingLinks } from "../constants"
-import SettingsIcon from '@mui/icons-material/Settings';
 
 const Settings = () => {
     const [changePasswordClick, setChangePasswordClick] = useState(false);
@@ -45,7 +45,7 @@ const Settings = () => {
                     <Outlet />
                 </Stack>
             </Stack>
-            {changePasswordClick && <ChangePassword isSet={() => setChangePasswordClick(false)} />}
+            {changePasswordClick && <ChangePasswordAuth isSet={() => setChangePasswordClick(false)} />}
         </>
     )
 }

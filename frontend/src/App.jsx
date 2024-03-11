@@ -23,8 +23,9 @@ function App() {
             <Route path="/manage-users" element={<ManageUsers />} />
             <Route path="/settings/*" element={<Settings />} >
               <Route path="personal-information" element={<PersonalInformation />} />
-              <Route path="change-password" element={<ChangePassword />} />
-              <Route path="confirm-password" element={<ChangeUnConfirmed />} />
+              <Route path="confirmation/*" element={<ChangeUnConfirmed />} >
+                <Route path="change-password" element={<ChangePassword />} />
+              </Route>
             </Route>
 
           </Route>

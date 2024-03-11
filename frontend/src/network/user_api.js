@@ -89,3 +89,25 @@ export async function updateUser(data) {
   });
   return response.json();
 }
+
+export async function passwordConfirmation(data) {
+  const response = await fetchData(`/api/auth/password-confirmation`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+export async function changePassword(data) {
+  const response = await fetchData(`/api/auth/changepass`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
