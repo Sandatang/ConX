@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace CONX.Controllers
 {
-    [Route("api/authentication")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -165,6 +166,62 @@ namespace CONX.Controllers
             return Ok(user);
         }
 
+        [HttpGet]
+        [Route("get/user/{id}")]
+        public async Task<IActionResult> GetOneUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                        new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+            var selectedUser = (User)user;
+            var data = new 
+            {
+                firstname = selectedUser.Firstname,
+                middlename = selectedUser.Middlename,
+                lastname = selectedUser.Lastname,
+                birthdate = selectedUser.Birthdate,
+                username = selectedUser.UserName,
+                employeNum = selectedUser.EmployeeNumber,
+                email = selectedUser.Email,
+                
+            };
+
+            return Ok(data);
+        }
+
+        // User Update
+        [HttpPut]
+        [Route("update/user/")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUser updateUser)
+        {
+            var user = await _userManager.FindByIdAsync(updateUser.UserId);
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                        new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+            var userToUpdate = (User)user;
+            userToUpdate.Firstname = updateUser.Firstname;
+            userToUpdate.Middlename = updateUser.Middlename;
+            userToUpdate.Lastname= updateUser.Lastname;
+            userToUpdate.Email= updateUser.Email;
+            userToUpdate.Birthdate = updateUser.Birthdate;
+
+            var result = await _userManager.UpdateAsync(userToUpdate);
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                       new Response { Status = "Error", Message = " Something went wrong", Field = "failed" });
+            }
+
+
+            return Ok(new Response { Status = " Success", Message = "Update Successfully"});
+        }
+
         // Delete user single deletion only
         [HttpDelete]
         [Route("delete/user/{id}")]
@@ -214,13 +271,14 @@ namespace CONX.Controllers
             // Save the data
             var result = await _userManager.UpdateAsync(customUser);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                return Ok(new Response { Status = "Success", Message = "User deactivated " });
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = " Something went wrong", Field = "failed" });
             }
 
-            // Change deactivate col to true
-            return Ok();
+            // Change deactivate col to 
+            return Ok(new Response { Status = "Success", Message = "User deactivated " });
         }
 
 
@@ -238,6 +296,7 @@ namespace CONX.Controllers
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("id", user.Id),
                 };
 
 
