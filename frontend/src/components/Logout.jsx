@@ -15,8 +15,8 @@ const Logout = () => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleLogout = () => {
-        const result = logOutUser(true);
+    const  handleLogout = async () => {
+        const result = await logOutUser(true);
         if (result) {
             navigate("/login")
             setAnchorEl(!anchorEl);

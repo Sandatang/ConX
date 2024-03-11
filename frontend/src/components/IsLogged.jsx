@@ -1,28 +1,31 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom"
 import Login from "../pages/Login";
-import { useAuth } from "../utils/AuthContext";
 
 const IsLogged = () => {
     const navigate = useNavigate();
-    const { loading, setLoading } = useAuth()
-    setLoading(true)
 
     useEffect(() => {
-        const isLoggedIn = localStorage.getItem("token");
-        try {
-            if (isLoggedIn) {
-                navigate("/newsfeed");
+        const checkLoginStatus = () => {
+            try {
+                const isLoggedInValue = localStorage.getItem("token");
+                if (isLoggedInValue) {
+                    navigate("/settings");
+                }
+            } catch (error) {
+                console.error(error);
             }
+        };
 
-        } catch (error) {
-            console.error(error)
-        } finally {
-            setLoading(false)
-        }
-    }, [navigate, setLoading])
+        checkLoginStatus();
+    }, [navigate])
 
-    return ( loading && <Login />)
+    return (
+        <>
+            {!localStorage.getItem("token") && <Login />}
+
+        </>
+    )
 }
 
 export default IsLogged

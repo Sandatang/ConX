@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Password } from "@mui/icons-material"
 import { Button, Stack, TextField } from "@mui/material"
-import Modal from "./Modal"
-import ModalHeading from "./ModalHeading"
+import Modal from "../Modal"
+import ModalHeading from "../ModalHeading"
 
 const ChangePasswordAuth = (props) => {
 

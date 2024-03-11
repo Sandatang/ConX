@@ -1,15 +1,19 @@
 import { Button, Stack, Typography } from "@mui/material"
 import { useState } from "react"
 import { Link, Outlet } from "react-router-dom"
-import ChangePassword from "../components/ChangePassword"
+import ChangePassword from "../components/Settings/ChangePassword"
 import { settingLinks } from "../constants"
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const Settings = () => {
     const [changePasswordClick, setChangePasswordClick] = useState(false);
     return (
         <>
 
-            <Typography className="p-4 !text-[2em] font-bold"> Settings </Typography>
+            <Typography className="p-4 !text-[2em] font-bold">
+                Settings
+                <SettingsIcon fontSize="large" className="ml-2"/>
+            </Typography>
 
             {/* <Divider /> */}
             <Stack className="border-t-2 !flex-row">

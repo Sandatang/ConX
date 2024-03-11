@@ -4,7 +4,7 @@ export async function fetchData(path, header) {
 }
 
 export async function registerWomen(data) {
-  const response = await fetchData("/api/authentication/register/women", {
+  const response = await fetchData("/api/auth/register/women", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export async function registerWomen(data) {
 }
 
 export async function addPersonnel(data) {
-  const response = await fetchData("/api/authentication/register/personnel", {
+  const response = await fetchData("/api/auth/register/personnel", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export async function addPersonnel(data) {
 }
 
 export async function authenticateUser(data) {
-  const response = await fetchData("/api/authentication/login", {
+  const response = await fetchData("/api/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,7 +40,7 @@ export async function authenticateUser(data) {
 }
 
 export async function viewAllWomen() {
-  const response = await fetchData("/api/authentication/view/women", {
+  const response = await fetchData("/api/auth/view/women", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export async function viewAllWomen() {
 }
 
 export async function viewAllPersonnel() {
-  const response = await fetchData("/api/authentication/view/personnel", {
+  const response = await fetchData("/api/auth/view/personnel", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -62,12 +62,30 @@ export async function viewAllPersonnel() {
 }
 
 export async function registerPersonnel(data) {
-  const response = await fetchData("/api/authentication/register/personnel", {
+  const response = await fetchData("/api/auth/register/personnel", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   });
-  return response.json()
+  return response.json();
+}
+
+export async function specificUserData(data) {
+  const response = await fetchData(`/api/auth/get/user/${data}`, {
+    method: "GET",
+  });
+  return response.json();
+}
+
+export async function updateUser(data) {
+  const response = await fetchData(`/api/auth/update/user`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
 }

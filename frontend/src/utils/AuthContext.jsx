@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
             setAuthState((prev) => ({ ...prev, error: storedError }));
             localStorage.removeItem('authError');
         }
+
     }, []);
 
     const loginUser = async (userInfo) => {
@@ -33,9 +34,10 @@ export const AuthProvider = ({ children }) => {
                 const decodedToken = jwtDecode(response.token);
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("expiration", decodedToken.exp);
+                localStorage.setItem("userId", decodedToken.id)
                 setAuthState((prev) => ({
                     ...prev,
-                    userId: decodedToken["jti"],
+                    userId: decodedToken["id"],
                     userRole: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"],
                     error: null,
                 }));
@@ -102,7 +104,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const isLoggedIn = () => {
-        if(localStorage.getItem("token")){
+        if (localStorage.getItem("token")) {
             return true;
         }
         return false
@@ -110,7 +112,6 @@ export const AuthProvider = ({ children }) => {
 
     const contextData = {
         ...authState,
-        setLoading: (isLoading) => setAuthState((prev) => ({...prev, loading: isLoading})),
         setError: (error) => setAuthState((prev) => ({ ...prev, error })),
         loginUser,
         logOutUser,
