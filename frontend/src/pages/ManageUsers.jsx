@@ -88,9 +88,9 @@ const ManageUsers = () => {
       {/* End of search and Sort */}
 
       {/* Users Table */}
-      <Stack className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-300 border border-solid">
+      <Stack className="overflow-x-auto max-h-[70%] ">
+        <table className="min-w-full divide-y divide-gray-200 relative">
+          <thead className="bg-gray-300 border border-solid sticky top-0 z-50">
             <tr>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Name</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Birthdate</th>
@@ -101,8 +101,12 @@ const ManageUsers = () => {
               <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Update</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {user && user.map(user => (
+          <tbody className="bg-white divide-y  divide-gray-200">
+            {user && user.slice().sort((a, b) => {
+              const nameA = a.lastname.toLowerCase();
+              const nameB = b.lastname.toLowerCase();
+              return nameA.localeCompare(nameB);
+            }).map(user => (
               <tr key={user.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
@@ -110,7 +114,7 @@ const ManageUsers = () => {
                       <AccountCircleIcon className="w-10 h-10 rounded-full text-gray-800" />
                     </div>
                     <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900 capitalize">{user.firstname} {user.middlename} {user.lastname}</div>
+                      <div className="text-sm font-medium text-gray-900 capitalize"> {user.lastname}, {user.firstname} {user.middlename}</div>
                       {/* <div className="text-sm text-gray-500">{user.userName}</div> */}
                     </div>
                   </div>

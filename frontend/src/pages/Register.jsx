@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { PendingOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoItem } from '@mui/x-date-pickers/internals/demo';
@@ -12,11 +12,11 @@ import * as UserApi from "../network/user_api";
 
 
 const Register = () => {
-
-  const { register, setValue, handleSubmit, reset, setError, formState: { isSubmitting, errors } } = useForm()
+  const { register, setValue, handleSubmit, reset, formState: { isSubmitting, errors } } = useForm()
   const [showPassword, setShowPassword] = useState(false);
   const [checked1, setChecked1] = useState(false);
   const [success, setSuccess] = useState("")
+  const [error, setError] = useState("")
   const togglePassword = () => setShowPassword(!showPassword);
 
   const handleCheckboxChange1 = (event) => {
@@ -25,30 +25,30 @@ const Register = () => {
 
 
   async function addWomen(data) {
-    const response = await UserApi.registerWomen(data)
-    if (response.field) {
-      setError(response.field, {
-        type: "manual",
-        message: response.message
-      })
+    try {
+
+      const response = await UserApi.registerWomen(data);
+      console.log(response)
+      if (response.field) {
+        setError(response.message)
+      }
+
+      if (response.status === 400) {
+        setError(response.errors.Email ? response.errors.Email.toString() : response.errors.ConfirmPassword.toString())
+      }
+
+      if (response.status === "Success") {
+        setError(null)
+        setSuccess(response.message)
+        setValue('birthdate', null);
+        reset()
+      }
+    } catch (error) {
+      console.error(error)
     }
 
-    if (response.status === 400) {
-      // setError("passNotMatch", {
-      //   type: "manual",
-      //   message: response.errors.ConfirmPass.toString()
-      // })
 
-      setError("invalidEmail", {
-        type: "manual",
-        message: response.errors.Email.toString()
-      })
-    }
 
-    if (response.ok) {
-      setSuccess(response.message)
-      reset()
-    }
   }
 
   return (
@@ -63,7 +63,8 @@ const Register = () => {
       </Stack>
       <Box className="!flex !flex-col md:!justify-center !items-center" minHeight="100vh" >
         <Box
-          p={4}
+          px={4}
+          py={2}
           boxShadow={3}
           borderRadius={8}
           bgcolor="white"
@@ -71,16 +72,10 @@ const Register = () => {
           width="100%"
         >
           <h2 className="text-2xl font-semibold mb-2">Sign Up</h2>
-          <Typography variant="caption" color="error">{errors.failed?.message}</Typography>
-          {/* <Typography variant="caption" color="error">{errors.passNotMatch?.message}</Typography> */}
-          <Typography variant="caption" color="error">{errors.invalidEmail?.message}</Typography>
-          {success && (
-            <Typography variant="caption" color="success">
-              {success}
-            </Typography>
-          )}
-          <form className='mt-2' onSubmit={handleSubmit(addWomen)}>
+          {error && <Typography variant="caption" color="error">{error}</Typography>}
+          {success && <Alert severity='success'>{success}</Alert>}
 
+          <form className='mt-2' onSubmit={handleSubmit(addWomen)}>
             <TextField
               label="Username"
               name="username"
@@ -88,6 +83,7 @@ const Register = () => {
               {...register("username", { required: "Required" })}
               fullWidth
             />
+            <Typography variant="caption" color="error">{errors.username?.message}</Typography>
 
             <Stack className='md:!flex-row gap-2 mt-2'>
               <Stack className='gap-2'>
@@ -98,6 +94,8 @@ const Register = () => {
                   {...register("firstname", { required: "Required" })}
                   fullWidth
                 />
+                <Typography variant="caption" color="error">{errors.firstname?.message}</Typography>
+
                 <TextField
                   label="Middlename"
                   name="middlename"
@@ -105,6 +103,8 @@ const Register = () => {
                   {...register("middlename")}
                   fullWidth
                 />
+                <Typography variant="caption" color="error">{errors.middlename?.message}</Typography>
+
                 <TextField
                   label="Lastname"
                   name="lastname"
@@ -113,6 +113,11 @@ const Register = () => {
                   {...register("lastname", { required: "Required" })}
                   fullWidth
                 />
+                <Typography variant="caption" color="error">{errors.lastname?.message}</Typography>
+
+              </Stack>
+
+              <Stack className='gap-2'>
 
                 <TextField
                   label="Email Address"
@@ -121,10 +126,8 @@ const Register = () => {
                   {...register("email", { required: "Required" })}
                   fullWidth
                 />
+                <Typography variant="caption" color="error">{errors.email?.message}</Typography>
 
-              </Stack>
-
-              <Stack className='gap-2'>
                 <TextField
                   label="Password"
                   name="password"
@@ -142,6 +145,8 @@ const Register = () => {
                   }}
                   {...register("password", { required: "Required" })}
                 />
+                <Typography variant="caption" color="error">{errors.password?.message}</Typography>
+
 
                 <TextField
                   label="Confirm Password"
@@ -160,23 +165,24 @@ const Register = () => {
                   }}
                   {...register("confirmPassword", { required: "Required" })}
                 />
+                <Typography variant="caption" color="error">{errors.confirmPassword?.message}</Typography>
 
-                <LocalizationProvider dateAdapter={AdapterDayjs} >
-                  <DemoItem>
-                    <DatePicker name="birthdate" label="Birthdate" disabledTime onChange={(date) => { setValue('birthdate', date, { shouldValidate: true }); }} />
-                  </DemoItem>
-                </LocalizationProvider>
 
-                <TextField
-                  label="Phone Number"
-                  name="phonenumber"
-                  variant="outlined"
-                  {...register("phonenumber", { required: "Required" })}
-                  fullWidth
-
-                />
               </Stack>
+
+
+
             </Stack>
+
+            {/* BIRTHDAY */}
+            <LocalizationProvider dateAdapter={AdapterDayjs} >
+              <DemoItem>
+                <DatePicker name="birthdate" label="Birthdate" disabledTime onChange={(date) => { setValue('birthdate', date, { shouldValidate: true }); }} />
+              </DemoItem>
+            </LocalizationProvider>
+            <Typography variant="caption" color="error">{errors.birthdate?.message}</Typography>
+            {/* END BIRTHDAY */}
+
 
             <FormControlLabel
               control={<Checkbox checked={checked1} onChange={handleCheckboxChange1} name="checkbox1" />}
@@ -184,7 +190,8 @@ const Register = () => {
             />
 
             <Button
-              disabled={isSubmitting} type="submit"
+              // disabled={isSubmitting}
+              type="submit"
               style={{ backgroundColor: '#FF4081', color: 'white' }}
               variant="contained"
               fullWidth

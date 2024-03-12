@@ -28,7 +28,7 @@ const Login = () => {
   return (
     <Stack className='md:!flex-row !justify-evenly'>
       <Stack className='!items-center !justify-center'>
-        <img src={conxLogo} className="object-contain h-56 w-96" alt="ConX logo" />
+        <img src={conxLogo} className="object-contain" alt="ConX logo" />
         <h1 className="hidden md:!block text-center">
           ConX: Connecting and Empowering Female Communities
           <br />
