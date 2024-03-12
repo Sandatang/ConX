@@ -4,7 +4,6 @@ namespace CONX.Models.Authentication.Signup
 {
     public class AddPersonnel
     {
-        public string Role { get; set; } = "personnel";
 
         [Required(ErrorMessage = "Username is required")]
         public string? Username { get; set; }

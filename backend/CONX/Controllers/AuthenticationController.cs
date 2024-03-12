@@ -6,13 +6,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Xml.Linq;
 
 namespace CONX.Controllers
 {
-    [Route("api/authentication")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -36,12 +38,12 @@ namespace CONX.Controllers
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error",  Message = " Email already exist ", Field = "failed" });
+                    new Response { Status = "Error", Message = " Email already exist ", Field = "failed" });
             }
 
             //Check if username exist in DB
             var usernameExist = await _userManager.FindByNameAsync(registerUser.Username);
-            if(usernameExist != null)
+            if (usernameExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
                     new Response { Status = "Error", Message = "Username already exist", Field = "failed" });
@@ -51,7 +53,7 @@ namespace CONX.Controllers
             if (registerUser.Password == null || !IsPasswordValid(registerUser.Password))
             {
                 return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field="failed" });
+                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field = "failed" });
             }
 
             var user = new User();
@@ -134,17 +136,30 @@ namespace CONX.Controllers
         [Route("view/women")]
         public async Task<IActionResult> ViewWomen()
         {
-            var user = await _userManager.GetUsersInRoleAsync("women");
+            var iUsers = await _userManager.GetUsersInRoleAsync("women");
 
             //Check if women user is null
-            if(user == null)
+            if (iUsers == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent, 
+                return StatusCode(StatusCodes.Status204NoContent,
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
+            var users = iUsers.Select(user => new User
+            {
+                Id = user.Id,
+                Firstname = ((User)user).Firstname, // Cast to your custom User class
+                Middlename = ((User)user).Middlename,
+                Birthdate = ((User)user).Birthdate,
+                Lastname = ((User)user).Lastname,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                DeActivate = ((User)user).DeActivate,
+            }).ToList();
+
             // return if user is not null
-            return Ok(user);
+            return Ok(users);
         }
 
         // View all personnel
@@ -152,17 +167,153 @@ namespace CONX.Controllers
         [Route("view/personnel")]
         public async Task<IActionResult> ViewPersonnel()
         {
-            var user = await _userManager.GetUsersInRoleAsync("personnel");
+            var iUsers = await _userManager.GetUsersInRoleAsync("personnel");
 
             //Check if personnel is null
-            if(user == null)
+            if (iUsers == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent,
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
+            var users = iUsers.Select(user => new User
+            {
+                Id = user.Id,
+                Firstname = ((User)user).Firstname, // Cast to your custom User class
+                Middlename = ((User)user).Middlename,
+                Birthdate = ((User)user).Birthdate,
+                Lastname = ((User)user).Lastname,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                DeActivate = ((User)user).DeActivate,
+            }).ToList();
+
             // Return if user is not null
-            return Ok(user);
+            return Ok(users);
+        }
+
+        [HttpGet]
+        [Route("get/user/{id}")]
+        public async Task<IActionResult> GetOneUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                        new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+            var selectedUser = (User)user;
+            // Returned only specific data
+            var data = new
+            {
+                firstname = selectedUser.Firstname,
+                middlename = selectedUser.Middlename,
+                lastname = selectedUser.Lastname,
+                birthdate = selectedUser.Birthdate,
+                username = selectedUser.UserName,
+                employeNum = selectedUser.EmployeeNumber,
+                email = selectedUser.Email,
+
+            };
+
+            return Ok(data);
+        }
+        [HttpPost]
+        [Route("password-confirmation")]
+        public async Task<IActionResult> PasswordConfirmation([FromBody] PasswordConfirmation passwordConfirmation)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Find the user
+            var user = await _userManager.FindByIdAsync(passwordConfirmation.UserId);
+
+            if (user != null && await _userManager.CheckPasswordAsync(user, passwordConfirmation.Password))
+            {
+                return Ok(new Response { Status = "Success" });
+
+            }
+
+            return StatusCode(StatusCodes.Status404NotFound,
+                        new Response { Status = "Error", Message = " Password not match", Field = "failed" });
+        }
+
+        [HttpPut]
+        [Route("changepass")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePassword changePassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByIdAsync(changePassword.UserId);
+
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                     new Response { Status = " Error ", Message = " User not found", Field = "failed" });
+
+            }
+
+            // Check password format
+            if (changePassword.NewPassword == null || !IsPasswordValid(changePassword.NewPassword))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = " Error ", Message = "Password should have a 8 min. of characaters, countain alpha numeric and non-numeric characters.", Field = "failed" });
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                     new Response { Status = " Error ", Message = " Something went wrong", Field = "failed" });
+            }
+
+            return Ok(new Response { Status = "Success", Message="Password change successfully"});
+        }
+
+        // User Update
+        [HttpPut]
+        [Route("update/user/")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUser updateUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByIdAsync(updateUser.UserId);
+            if(user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                        new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+            // Update the users data
+            var userToUpdate = (User)user;
+            if(updateUser.UserName != null)
+            {
+                userToUpdate.UserName = updateUser.UserName;
+            }
+            userToUpdate.Firstname = updateUser.Firstname;
+            userToUpdate.Middlename = updateUser.Middlename;
+            userToUpdate.Lastname= updateUser.Lastname;
+            userToUpdate.Email= updateUser.Email;
+            userToUpdate.Birthdate = updateUser.Birthdate;
+
+            var result = await _userManager.UpdateAsync(userToUpdate);
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                       new Response { Status = "Error", Message = " Something went wrong", Field = "failed" });
+            }
+
+
+            return Ok(new Response { Status = " Success", Message = "Update Successfully"});
         }
 
         // Delete user single deletion only
@@ -209,18 +360,19 @@ namespace CONX.Controllers
             var customUser = (User)user;
 
             // Update the DeActivate property
-            customUser.DeActivate = true;
+            customUser.DeActivate = !customUser.DeActivate;
 
             // Save the data
             var result = await _userManager.UpdateAsync(customUser);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                return Ok(new Response { Status = "Success", Message = "User deactivated " });
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = " Something went wrong", Field = "failed" });
             }
 
-            // Change deactivate col to true
-            return Ok();
+            // Change deactivate col to 
+            return Ok(new Response { Status = "Success", Message = "User deactivated " });
         }
 
 
@@ -238,6 +390,7 @@ namespace CONX.Controllers
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("id", user.Id),
                 };
 
 

@@ -1,5 +1,6 @@
 ﻿using CONX.Models;
 using CONX.Models.ForumViewModel;
+using CONX.Models.ThreadViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -64,7 +65,45 @@ namespace CONX.Controllers
         {
             var forums = await _context.Forums.ToListAsync();
 
+            if(forums == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                    new Response { Status = "Error", Message = " No forums created ", Field = "failed" });
+            }
+
             return Ok(forums);
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateThread([FromBody] UpdateForum updateForum)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Model validation failed
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "Error", Message = "Validation failed", Field = "failed" });
+            }
+
+            var forum = await _context.Forums.FindAsync(updateForum.ForumId);
+            if (forum == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                   new Response { Status = "Error", Message = "Forum not found", Field = "failed" });
+            }
+            // Update the thread data
+            forum.Title = updateForum.Title;
+            // Save the data
+            var result = await _context.SaveChangesAsync();
+
+            if (result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new Response { Status = "Error", Message = "Something went wrong", Field = "failed" });
+            }
+
+            return Ok("Update success");
         }
     }
 }

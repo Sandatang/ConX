@@ -1,18 +1,34 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
-import Layout from "./Layout"
-import Login from "./pages/Login"
+import ChangePassword from "./components/Settings/ChangePassword"
+import ChangeUnConfirmed from "./components/Settings/ChangeUnConfirmed"
+import IsLogged from "./components/IsLogged"
+import PersonalInformation from "./components/Settings/PersonalInformation"
+import MainContent from "./pages/MainContent"
+import ManageUsers from "./pages/ManageUsers"
+import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
-import Homepage from "./pages/Homepage"
+import Settings from "./pages/Settings"
 
 function App() {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
-        <Route path="/" element={<Layout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Homepage/>}/>
+        <Route path="/login" element={<IsLogged />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoutes />}>
+          <Route element={<MainContent />}>
+            <Route path="/manage-users" element={<ManageUsers />} />
+            <Route path="/settings/*" element={<Settings />} >
+              <Route path="personal-information" element={<PersonalInformation />} />
+              <Route path="confirmation/*" element={<ChangeUnConfirmed />} >
+                <Route path="change-password" element={<ChangePassword />} />
+              </Route>
+            </Route>
+
+          </Route>
         </Route>
       </Route >
     )
