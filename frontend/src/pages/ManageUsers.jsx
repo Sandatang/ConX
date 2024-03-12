@@ -3,11 +3,14 @@ import { Button, Stack } from '@mui/material';
 import { useState } from 'react';
 import * as UserApi from "../network/user_api";
 import AddPeronnelModal from '../components/AddPersonnelModal';
+import ModalDeActivate from "../components/UserManagement/ModalDeActivate"
 
 const ManageUsers = () => {
   const [active1, setActive1] = useState(null);
   const [active2, setActive2] = useState(null);
   const [add, setAdd] = useState(false)
+  const [update, setUpdate] = useState(false)
+  const [userToUpdate, setUserToUpdate] = useState(null)
   const [user, setUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -90,11 +93,12 @@ const ManageUsers = () => {
           <thead className="bg-gray-300 border border-solid">
             <tr>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Name</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Birthdate</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Username</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Address</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User Type</th>
-              <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Action</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Deactivate</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Update</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -106,29 +110,41 @@ const ManageUsers = () => {
                       <AccountCircleIcon className="w-10 h-10 rounded-full text-gray-800" />
                     </div>
                     <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">{user.userName}</div>
-                      <div className="text-sm text-gray-500">{user.userName}</div>
+                      <div className="text-sm font-medium text-gray-900 capitalize">{user.firstname} {user.middlename} {user.lastname}</div>
+                      {/* <div className="text-sm text-gray-500">{user.userName}</div> */}
                     </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{user.userName}</div>
+                  <div className="text-sm font-medium text-gray-900">{new Date(user.birthdate).toDateString().split(" ").splice(1).join(" ")}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{user.email}</div>
+                  <div className="text-sm font-medium text-gray-900">{user.userName}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{user.address}</div>
+                  <div className="text-sm font-medium text-gray-900">{user.email}</div>
                 </td>
+
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.verified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    {user.verified ? 'Verified' : 'Not Verified'}
-                  </span>
+                  {/* <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.verified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}> */}
+
+                  <div className="text-sm font-medium text-gray-900">{active1 ? 'Women' : 'Personnel'}</div>
+                  {/* </span> */}
                 </td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-center">
-                  <Button className='!text-red-400 !text-[0.7em] !font-thin hover:!underline hover:!underline-offset-2 hover:!text-red-600'>
+                  {/* <Button className='!text-red-400 !text-[0.7em] !font-thin hover:!underline hover:!underline-offset-2 hover:!text-red-600'>
                     DeActivate
-                  </Button>
+                  </Button> */}
+                  <ModalDeActivate userId={user.id} status={user.deActivate} />
+                </td>
+
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <Button onClick={() => {
+                    setUserToUpdate(user)
+                    setUpdate(true)
+                    setAdd(true)
+                  }} className="!text-sm !font-medium !text-gray-900" variant='outlined'>Edit</Button>
                 </td>
                 {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {user.verified ? (
@@ -145,9 +161,14 @@ const ManageUsers = () => {
           </tbody>
         </table>
       </Stack>
+
       {/* End Users Table */}
 
-      {add && <AddPeronnelModal onClose={() => setAdd(false)} />} {/* Modal */}
+      {add && <AddPeronnelModal user={userToUpdate} update={update} onClose={() => {
+        setUpdate(false)
+        setAdd(false)
+      }} />}
+      {/* Modal */}
 
     </div>
   );

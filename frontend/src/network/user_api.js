@@ -111,3 +111,14 @@ export async function changePassword(data) {
   });
   return response.json();
 }
+
+export async function deActivateUser(data) {
+  const response = await fetchData("/api/auth/user/deActivate", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}

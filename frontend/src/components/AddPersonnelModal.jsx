@@ -7,14 +7,37 @@ import { useForm } from "react-hook-form";
 import * as UserApi from "../network/user_api";
 import Modal from "./Modal";
 import ModalHeading from "./ModalHeading";
+import dayjs from "dayjs";
 
 export default function AddPeronnelModal(props) {
     const { register, setValue, handleSubmit, formState: { isSubmitting }, } = useForm();
     const [error, setError] = useState(null);
 
-    async function onSubmit(credentials) {
+    async function onAddPersonnel(credentials) {
         try {
+            
             const response = await UserApi.registerPersonnel(credentials);
+
+            console.log(response)
+
+
+        } catch (error) {
+            console.error('An unexpected error occurred:', error);
+            setError('An unexpected error occurred. Please check your inputs.');
+        } finally {
+            setTimeout(() => {
+                setError(null)
+            }, 3000);
+        }
+    }
+
+    async function onUpdateDetails(credentials) {
+        try {
+            const formData = {
+                ...credentials,
+                userId: props.user.id
+            }
+            const response = await UserApi.updateUser(formData);
 
             console.log(response)
 
@@ -32,7 +55,7 @@ export default function AddPeronnelModal(props) {
     return (
         <Modal
             onDismiss={props.onClose}
-            heading={<ModalHeading title="Add Personnel" desc="" />}
+            heading={<ModalHeading title={`${props.update ? "Update user" : "Add personnel"}`} desc="" />}
             width=" w-[35%]"
         >
             {
@@ -40,19 +63,21 @@ export default function AddPeronnelModal(props) {
             }
             <div className="w-full ">
                 <div className="p-2">
-                    <form action="" onSubmit={handleSubmit(onSubmit)} >
+                    <form action="" onSubmit={handleSubmit(props.update ? onUpdateDetails : onAddPersonnel)} >
                         <div className="w-full sm:gap-1">
-                            <div className="w-full flex-col sm:flex  md:gap-[3px]">
+                            <div className="w-full flex-col flex gap-3">
 
-                                <TextField
-                                    id="outline-idno"
-                                    name="employeeNumber"
-                                    label="employeeNumber # "
-                                    size="small"
-                                    className="!w-full"
-                                    InputLabelProps={{ style: { fontSize: '0.775rem' } }}
-                                    {...register("employeeNumber", { required: true })}
-                                />
+                                {!props.update &&
+                                    <TextField
+                                        id="outline-idno"
+                                        name="employeeNumber"
+                                        label="employeeNumber # "
+                                        size="small"
+                                        className="!w-full"
+                                        InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                                        {...register("employeeNumber", { required: true })}
+                                    />
+                                }
 
                                 <TextField
                                     id="outline-idno"
@@ -60,6 +85,7 @@ export default function AddPeronnelModal(props) {
                                     label="username "
                                     size="small"
                                     className="!w-full"
+                                    defaultValue={props.update ? props.user.userName : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("username", { required: true })}
                                 />
@@ -69,6 +95,7 @@ export default function AddPeronnelModal(props) {
                                     name="firstname"
                                     label="Firstname"
                                     size="small"
+                                    defaultValue={props.update ? props.user.firstname : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
 
                                     // value={selectedItem.id || ''}
@@ -81,6 +108,7 @@ export default function AddPeronnelModal(props) {
                                     name="middlename"
                                     label="Middlename"
                                     size="small"
+                                    defaultValue={props.update ? props.user.middlename : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("middlename", { required: false })}
                                 />
@@ -90,6 +118,7 @@ export default function AddPeronnelModal(props) {
                                     name="lastname"
                                     label="Lastname"
                                     size="small"
+                                    defaultValue={props.update ? props.user.lastname : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("lastname", { required: true })}
                                 />
@@ -99,6 +128,7 @@ export default function AddPeronnelModal(props) {
                                     name="email"
                                     label="Email"
                                     size="small"
+                                    defaultValue={props.update ? props.user.email : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("email", { required: true })}
                                 />
@@ -108,6 +138,7 @@ export default function AddPeronnelModal(props) {
                                         name="birthdate"
                                         label="Birthdate"
                                         sx={{ '& .MuiInputBase-root': { fontSize: '0.775rem' } }}
+                                        value={props.update ? dayjs(props.user.birthdate) : null}
                                         disabledTime onChange={(date) => {
                                             setValue('birthdate',
                                                 date, { shouldValidate: true });
@@ -124,7 +155,7 @@ export default function AddPeronnelModal(props) {
                                     w-full md:w-full flex place-self-end justify-end  rounded-lg
                                     py-4 !mt-2 tracking-wider md:py-2"
                                 >
-                                    Add account
+                                    {props.update ? "Update" : "Add"}
                                 </Button>
                             </div>
 
