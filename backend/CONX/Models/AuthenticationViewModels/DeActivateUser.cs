@@ -6,7 +6,5 @@ namespace CONX.Models.AuthenticationViewModels
     {
         [Required]
         public string UserId { get; set; }
-        [Required]
-        public bool Status { get; set; }
     }
 }

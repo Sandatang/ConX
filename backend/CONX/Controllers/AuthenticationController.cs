@@ -136,17 +136,30 @@ namespace CONX.Controllers
         [Route("view/women")]
         public async Task<IActionResult> ViewWomen()
         {
-            var user = await _userManager.GetUsersInRoleAsync("women");
+            var iUsers = await _userManager.GetUsersInRoleAsync("women");
 
             //Check if women user is null
-            if (user == null)
+            if (iUsers == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent,
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
+            var users = iUsers.Select(user => new User
+            {
+                Id = user.Id,
+                Firstname = ((User)user).Firstname, // Cast to your custom User class
+                Middlename = ((User)user).Middlename,
+                Birthdate = ((User)user).Birthdate,
+                Lastname = ((User)user).Lastname,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                DeActivate = ((User)user).DeActivate,
+            }).ToList();
+
             // return if user is not null
-            return Ok(user);
+            return Ok(users);
         }
 
         // View all personnel
@@ -154,17 +167,30 @@ namespace CONX.Controllers
         [Route("view/personnel")]
         public async Task<IActionResult> ViewPersonnel()
         {
-            var user = await _userManager.GetUsersInRoleAsync("personnel");
+            var iUsers = await _userManager.GetUsersInRoleAsync("personnel");
 
             //Check if personnel is null
-            if (user == null)
+            if (iUsers == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent,
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
+            var users = iUsers.Select(user => new User
+            {
+                Id = user.Id,
+                Firstname = ((User)user).Firstname, // Cast to your custom User class
+                Middlename = ((User)user).Middlename,
+                Birthdate = ((User)user).Birthdate,
+                Lastname = ((User)user).Lastname,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                DeActivate = ((User)user).DeActivate,
+            }).ToList();
+
             // Return if user is not null
-            return Ok(user);
+            return Ok(users);
         }
 
         [HttpGet]
@@ -269,6 +295,10 @@ namespace CONX.Controllers
             }
             // Update the users data
             var userToUpdate = (User)user;
+            if(updateUser.UserName != null)
+            {
+                userToUpdate.UserName = updateUser.UserName;
+            }
             userToUpdate.Firstname = updateUser.Firstname;
             userToUpdate.Middlename = updateUser.Middlename;
             userToUpdate.Lastname= updateUser.Lastname;
@@ -330,7 +360,7 @@ namespace CONX.Controllers
             var customUser = (User)user;
 
             // Update the DeActivate property
-            customUser.DeActivate = true;
+            customUser.DeActivate = !customUser.DeActivate;
 
             // Save the data
             var result = await _userManager.UpdateAsync(customUser);
