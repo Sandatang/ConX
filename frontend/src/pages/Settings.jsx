@@ -1,18 +1,27 @@
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Button, Stack, Typography } from "@mui/material"
 import { useState } from "react"
-import { Link, Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import ChangePasswordAuth from "../components/Settings/ChangePasswordAuth"
 import { settingLinks } from "../constants"
 
 const Settings = () => {
+    const navigate = useNavigate()
     const [changePasswordClick, setChangePasswordClick] = useState(false);
+
+    const changeLink = (link) => {
+        navigate(`../settings${link}`)
+        if (link === "/confirmation") {
+
+            setChangePasswordClick(true)
+        }
+    }
     return (
         <>
 
             <Typography className="p-4 !text-[2em] font-bold">
                 Settings
-                <SettingsIcon fontSize="large" className="ml-2"/>
+                <SettingsIcon fontSize="large" className="ml-2" />
             </Typography>
 
             {/* <Divider /> */}
@@ -23,19 +32,20 @@ const Settings = () => {
                         {
                             settingLinks.map((data) => (
                                 <Button
-                                    onClick={
-                                        data.id === "changepassword"
-                                            ? () => setChangePasswordClick(true)
-                                            : undefined
-                                    }
+                                    // onClick={
+                                    //     data.id === "changepassword"
+                                    //         ? () => setChangePasswordClick(true)
+                                    //         : undefined
+                                    // }
+                                    onClick={() => changeLink(data.link)}
                                     key={data.id}
-                                    className="!w-full !font-semibold !tracking-tighter">
-                                    <Link
-                                        to={`../settings${data.link}`}
-                                        className="flex px-2 gap-4 items-center w-full !text-slate-700 hover:!text-slate-500">
-                                        {data.icon}
-                                        <span className="!capitalize !text-[1em]  tracking-wide">{data.title}</span>
-                                    </Link>
+                                    className="!w-full !font-semibold !tracking-tighter px-2 gap-4 !justify-start items-center !text-slate-800 hover:!text-slate-700">
+                                    {/* <Link */}
+                                    {/* // to={`../settings${data.link}`} */}
+                                    {/* className="flex px-2 gap-4 items-center w-full !text-slate-700 hover:!text-slate-500"> */}
+                                    {data.icon}
+                                    <span className="!capitalize !text-[1em]   tracking-wide">{data.title}</span>
+                                    {/* </Link> */}
                                 </Button>
                             ))
                         }

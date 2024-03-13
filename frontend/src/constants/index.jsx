@@ -41,18 +41,18 @@ export const settingLinks = [
     id: "personal",
     link: "/personal-information",
     title: "Personal Information",
-    icon: <AccountCircle fontSize="small" className="!text-slate-600 mr-2  self-end" />
+    icon: <AccountCircle fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
   {
     id: "changepassword",
     link: "/confirmation",
     title: "Change Password",
-    icon: <Password fontSize="small" className="!text-slate-600 mr-2  self-end" />
+    icon: <Password fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
   {
     id: "contacts",
     link: "/contacts",
     title: "Contacts",
-    icon: <ContactEmergency fontSize="small" className="!text-slate-600 mr-2  self-end" />
+    icon: <ContactEmergency fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
 ]

@@ -17,6 +17,7 @@ export default {
       },
       colors: {
         mainColor: "#ff9ae6",
+        pinkish: "#EB80D9",
       },
     },
     fontFamily: {

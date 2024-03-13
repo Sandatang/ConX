@@ -69,9 +69,7 @@ const Login = () => {
               {...register("username", { required: "Required" })}
             />
             {/* Username error required message */}
-            <Typography variant="caption" color="error">
-              {errors.username?.message}
-            </Typography>
+            <Typography variant="caption" color="error">{errors.username?.message}</Typography>
 
             {/* Password text field */}
             <TextField
