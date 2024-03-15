@@ -1,4 +1,4 @@
-import { AccountCircle, LogoutOutlined, Notifications, NotificationsSharp } from "@mui/icons-material";
+import { AccountCircle, KeyboardArrowDown, KeyboardArrowUp, LogoutOutlined, Notifications, NotificationsSharp } from "@mui/icons-material";
 import { Badge, IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,10 +30,11 @@ const Logout = () => {
                         <Badge color="error">
                             <NotificationsSharp />
                         </Badge>
-                        <Typography fontSize="small" className="!mr-2">Name of the user here</Typography>
+                        <Typography fontSize="small" className="!mr-2 !text-slate-900 capitalize !font-semibold">{localStorage.getItem("username")}</Typography>
                         <IconButton>
                             <AccountCircle fontSize="large" className=" !absolute !text-slate-600" />
                         </IconButton>
+                        {anchorEl ? <KeyboardArrowUp fontSize="small"/> : <KeyboardArrowDown fontSize="small"/>}
                     </Stack>
                 </div>
 

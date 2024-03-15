@@ -1,8 +1,12 @@
 import { AccountCircle, ArrowCircleRight } from "@mui/icons-material";
 import { Button, Stack, Typography } from "@mui/material";
-import woman from "../../assets/women.png";
+import woman from "../assets/women.png";
+import ForumAddTopic from "../components/Forum/ForumAddTopic";
+import { useState } from "react";
 
 const Forum = () => {
+    const [addTopic, setAddTopic] = useState(false);
+
     return (
         <Stack className=" h-screen mx-8 my-4 !flex-row">
             {/* Empowering text and Picture Container*/}
@@ -14,7 +18,7 @@ const Forum = () => {
                             <span className="text-sm text-blue-800">Join the community</span>
                         </Stack>
                         <Stack className="!flex-row gap-4">
-                            <Button variant="contained" size="small" className="!bg-white !text-[12px] !text-pinkish !capitalize">Start new discussion</Button>
+                            <Button onClick={() => setAddTopic(true)} variant="contained" size="small" className="!bg-white !text-[12px] !text-pinkish !capitalize">Start new discussion</Button>
                             <Button size="small" className="!bg-white !text-[12px] !text-pinkis !capitalize" >Learn more</Button>
                         </Stack>
                     </Stack>
@@ -25,7 +29,7 @@ const Forum = () => {
                 </Stack>
                 {/* Forum navigations */}
                 <Stack className="!flex-row my-4">
-                    <Button variant="contained" className="!bg-pinkish !text-[10px] !text-white !capitalize">Forum</Button> {/*List the forums and set the button active*/}
+                    <Button variant="contained" className="!bg-pinkish !text-[10px] !text-white !capitalize">Topics</Button> {/*List the forums and set the button active*/}
                     <Button className="!bg-white !text-[11px] !text-slate-400 !font-semibold !capitalize">Following</Button>
                     <Button className="!bg-white !text-[11px] !text-slate-400 !font-semibold !capitalize">Threads</Button>
                     <Button className="!bg-white !text-[11px] !text-slate-400 !font-semibold !capitalize">Announcement</Button>
@@ -105,6 +109,7 @@ const Forum = () => {
             </Stack>
             {/* End Threads right aside */}
 
+            {addTopic && <ForumAddTopic onClose={() => setAddTopic(false)}/>}
         </Stack>
     )
 }
