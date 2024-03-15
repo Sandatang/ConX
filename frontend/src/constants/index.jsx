@@ -56,3 +56,20 @@ export const settingLinks = [
     icon: <ContactEmergency fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
 ]
+
+
+export const topics = [
+  {
+      link: "/topics",
+      title: "Threads"
+  },
+  {
+      link: "/following",
+      title: "Following"
+  },
+  {
+      link: "/my-forum",
+      title: "My Forum"
+  },
+]
+

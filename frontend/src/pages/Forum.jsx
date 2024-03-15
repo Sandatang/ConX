@@ -3,6 +3,9 @@ import { Button, Stack, Typography } from "@mui/material";
 import woman from "../assets/women.png";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
 import { useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
+import { topics } from "../constants";
+
 
 const Forum = () => {
     const [addTopic, setAddTopic] = useState(false);
@@ -29,31 +32,33 @@ const Forum = () => {
                 </Stack>
                 {/* Forum navigations */}
                 <Stack className="!flex-row my-4">
-                    <Button variant="contained" className="!bg-pinkish !text-[10px] !text-white !capitalize">Topics</Button> {/*List the forums and set the button active*/}
-                    <Button className="!bg-white !text-[11px] !text-slate-400 !font-semibold !capitalize">Following</Button>
-                    <Button className="!bg-white !text-[11px] !text-slate-400 !font-semibold !capitalize">Threads</Button>
-                    <Button className="!bg-white !text-[11px] !text-slate-400 !font-semibold !capitalize">Announcement</Button>
+                    <>
+                        {topics.map((topic) => (
+                            <Button
+                                key={topic.link}
+                                component={NavLink} // Pass NavLink directly here
+                                to={`../forum${topic.link}`}
+                                variant="text"
+                                sx={{
+                                    '&.active': {
+                                        background: '#EB80D9',
+                                        color: '#fff',
+
+                                    },
+                                    color: 'rgb(148 163 184 )',
+                                }}
+                                className=" !text-[11px] !font-semibold !capitalize"
+                            >
+                                <span className=" !text-[11px] !font-semibold !capitalize">{topic.title}</span>
+                            </Button>
+                        ))}
+                    </>
                 </Stack>
                 {/* End of Forum navigators */}
 
                 {/* Navigations content  */}
-                <Stack className="mt-2 gap-4 px-4">
-                    <Stack>
-                        <Typography className="!text-[16px] !font-semibold">How husband affects you?</Typography>
-                        <Typography className="!text-[12px] !text-slate-500">description of the forum here put it here in order for the users to know</Typography>
-                    </Stack>
-                    <Stack>
-                        <Typography className="!text-[16px] !font-semibold">How husband affects you?</Typography>
-                        <Typography className="!text-[12px] !text-slate-500">description of the forum here put it here in order for the users to know</Typography>
-                    </Stack>
-                    <Stack>
-                        <Typography className="!text-[16px] !font-semibold">How husband affects you?</Typography>
-                        <Typography className="!text-[12px] !text-slate-500">description of the forum here put it here in order for the users to know</Typography>
-                    </Stack>
-                    <Stack>
-                        <Typography className="!text-[16px] !font-semibold">How husband affects you?</Typography>
-                        <Typography className="!text-[12px] !text-slate-500">description of the forum here put it here in order for the users to know</Typography>
-                    </Stack>
+                <Stack className="mt-2 gap-3 px-4">
+                    <Outlet />
                 </Stack>
                 {/* End Navigations content  */}
 
@@ -109,7 +114,7 @@ const Forum = () => {
             </Stack>
             {/* End Threads right aside */}
 
-            {addTopic && <ForumAddTopic onClose={() => setAddTopic(false)}/>}
+            {addTopic && <ForumAddTopic onClose={() => setAddTopic(false)} />}
         </Stack>
     )
 }

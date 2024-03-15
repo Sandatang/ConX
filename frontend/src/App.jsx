@@ -9,6 +9,7 @@ import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
 import Forum from "./pages/Forum"
+import Topics from "./components/Forum/Topics"
 function App() {
 
   const router = createBrowserRouter(
@@ -21,7 +22,9 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route element={<MainContent />}>
             <Route path="/manage-users" element={<ManageUsers />} />
-            <Route path="/forum" element={<Forum />} />
+            <Route path="/forum/topics/*" element={<Forum />} >
+              <Route index element={<Topics/>}/>
+            </Route>
             <Route path="/settings/*" element={<Settings />} >
               <Route path="personal-information" element={<PersonalInformation />} />
               <Route path="confirmation/*" element={<ChangeUnConfirmed />} >
