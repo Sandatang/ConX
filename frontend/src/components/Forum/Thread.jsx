@@ -10,7 +10,7 @@ const Thread = () => {
     const { forumTitle } = useParams()
     const [addComment, setAddComment] = useState(false)
     const breadCrumbUrl = [
-        { url: '../', name: "Forum" },
+        { url: '../forum/topics', name: "Forum" },
         { name: `Forum` }
     ]
     return (

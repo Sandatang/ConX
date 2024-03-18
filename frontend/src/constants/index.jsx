@@ -1,4 +1,4 @@
-import { AccountCircle, Announcement, ContactEmergency, Forum, ManageAccounts, Newspaper, Password, Settings } from "@mui/icons-material";
+import { AccountCircle, Announcement, Book, ContactEmergency, Forum, ManageAccounts, Newspaper, Password, Settings } from "@mui/icons-material";
 
 export const brgyLinks = [
   {
@@ -13,6 +13,13 @@ export const brgyLinks = [
     link: "/newsfeed",
     title: "News Feed",
     icon: <Newspaper fontSize="medium" className="!text-yellow-500" />
+  },
+
+  {
+    id: "joblistings",
+    link: "/jobs",
+    title: "Job Listings",
+    icon: <Book fontSize="medium" className="!text-pink-500" />
   },
   {
     id: "forum",
@@ -60,16 +67,16 @@ export const settingLinks = [
 
 export const topics = [
   {
-      link: "/topics",
-      title: "Threads"
+    link: "/topics",
+    title: "Threads"
   },
   {
-      link: "/following",
-      title: "Following"
+    link: "/following",
+    title: "Following"
   },
   {
-      link: "/my-forum",
-      title: "My Forum"
+    link: "/my-forum",
+    title: "My Forum"
   },
 ]
 

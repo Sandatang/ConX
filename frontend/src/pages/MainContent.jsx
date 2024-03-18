@@ -9,7 +9,7 @@ const MainContent = () => {
         <>
 
             <Header />
-            <Stack className="!flex-row !h-screen overflow-x-hidden bg-gray-200 flex">
+            <Stack className="!flex-row !h-screen overflow-hidden bg-gray-200 flex">
 
                 <Stack className="!flex-row  flex-none w-[250px] justify-start bg-white p-4 shadow-md">
                     <Stack spacing={2} className='w-full'>

@@ -13,6 +13,7 @@ import Register from "./pages/Register"
 import Settings from "./pages/Settings"
 import Thread from "./components/Forum/Thread"
 import ForumContentContainer from "./components/Forum/ForumContentContainer"
+import JobLisintgs from "./pages/JobLisintgs"
 function App() {
 
   const router = createBrowserRouter(
@@ -24,6 +25,7 @@ function App() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
           <Route element={<MainContent />}>
+            {/* BRGY Links */}
             <Route path="/manage-users" element={<ManageUsers />} />
             <Route path="/forum/*" element={<Forum />} >
               <Route path="topics/*" element={<ForumContentContainer />} >
@@ -33,9 +35,9 @@ function App() {
             <Route path="forum/topics/:forumTitle" element={<ForumSpecificTopicContainer />} >
               <Route index element={<Thread />} />
             </Route>
-            {/* <Route path="/forum/topics/:forumTitle" element={<ForumSpecificTopicContainer />} >
-              <Route index element={<Thread />} />
-            </Route> */}
+            <Route path="/jobs" element={<JobLisintgs/>}/>
+            {/* End of BRGY Links */}
+
 
             <Route path="/settings/*" element={<Settings />} >
               <Route path="personal-information" element={<PersonalInformation />} />
