@@ -16,7 +16,7 @@ export const brgyLinks = [
   },
   {
     id: "forum",
-    link: "/forum",
+    link: "/forum/topics",
     title: "Forum",
     icon: <Forum fontSize="medium" className="!text-red-500" />
   },

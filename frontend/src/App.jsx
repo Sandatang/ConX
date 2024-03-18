@@ -1,15 +1,18 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
+import ForumSpecificTopicContainer from "./components/Forum/ForumSpecificTopicContainer"
+import Topics from "./components/Forum/Topics"
+import IsLogged from "./components/IsLogged"
 import ChangePassword from "./components/Settings/ChangePassword"
 import ChangeUnConfirmed from "./components/Settings/ChangeUnConfirmed"
-import IsLogged from "./components/IsLogged"
 import PersonalInformation from "./components/Settings/PersonalInformation"
+import Forum from "./pages/Forum"
 import MainContent from "./pages/MainContent"
 import ManageUsers from "./pages/ManageUsers"
 import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
-import Forum from "./pages/Forum"
-import Topics from "./components/Forum/Topics"
+import Thread from "./components/Forum/Thread"
+import ForumContentContainer from "./components/Forum/ForumContentContainer"
 function App() {
 
   const router = createBrowserRouter(
@@ -22,9 +25,18 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route element={<MainContent />}>
             <Route path="/manage-users" element={<ManageUsers />} />
-            <Route path="/forum/topics/*" element={<Forum />} >
-              <Route index element={<Topics/>}/>
+            <Route path="/forum/*" element={<Forum />} >
+              <Route path="topics/*" element={<ForumContentContainer />} >
+                <Route index element={<Topics />} />
+              </Route>
             </Route>
+            <Route path="forum/topics/:forumTitle" element={<ForumSpecificTopicContainer />} >
+              <Route index element={<Thread />} />
+            </Route>
+            {/* <Route path="/forum/topics/:forumTitle" element={<ForumSpecificTopicContainer />} >
+              <Route index element={<Thread />} />
+            </Route> */}
+
             <Route path="/settings/*" element={<Settings />} >
               <Route path="personal-information" element={<PersonalInformation />} />
               <Route path="confirmation/*" element={<ChangeUnConfirmed />} >

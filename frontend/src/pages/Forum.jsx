@@ -1,9 +1,10 @@
 import { AccountCircle, ArrowCircleRight } from "@mui/icons-material";
 import { Button, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import woman from "../assets/women.png";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
-import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import ForumContentContainer from "../components/Forum/ForumContentContainer";
 import { topics } from "../constants";
 
 
@@ -11,9 +12,9 @@ const Forum = () => {
     const [addTopic, setAddTopic] = useState(false);
 
     return (
-        <Stack className=" h-screen mx-8 my-4 !flex-row">
+        <Stack className=" h-full overflow-auto mx-4 !flex-row">
             {/* Empowering text and Picture Container*/}
-            <Stack className="w-[65%]">
+            <Stack className="h-auto w-[650px] pt-2">
                 <Stack className=" bg-pinkish !flex-row rounded-xl mb-2 ">
                     <Stack className="w-[55%] mx-4 gap-4 p-4">
                         <Stack className="!text-white h-3/4 ">
@@ -57,9 +58,7 @@ const Forum = () => {
                 {/* End of Forum navigators */}
 
                 {/* Navigations content  */}
-                <Stack className="mt-2 gap-3 px-4">
-                    <Outlet />
-                </Stack>
+                <ForumContentContainer/>
                 {/* End Navigations content  */}
 
 
@@ -67,7 +66,7 @@ const Forum = () => {
             {/* End Empowering text and Picture */}
 
             {/* Threads right aside */}
-            <Stack className="ml-8 mt-2">
+            <Stack className="border-l-2 w-[300px] px-4 mx-4 sticky top-0">
                 <Typography className="!text-[18px] pb-2 !font-semibold">Discussions</Typography>
 
                 <Stack className="gap-3">

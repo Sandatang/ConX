@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { ForumOutlined } from "@mui/icons-material"
 import { Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
@@ -27,6 +28,7 @@ const Topics = () => {
         <>
             {
                 loading ? (
+                    // Loading skeleton
                     <div role="status" className="max-w-sm animate-pulse">
                         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
                         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
@@ -38,16 +40,25 @@ const Topics = () => {
                     </div>
                 ) : (
                     topic ? (
-                        topic.map((tp) => (
-                            <Stack key={tp.id}>
-                                <Link className="!text-[16px] hover:!text-slate-600 hover:underline underline-offset-2 !justify-start !font-semibold">{tp.title}</Link>
-                                <Typography className="!text-[12px] !text-slate-500">description of the forum here put it here in order for the users to know</Typography>
-                            </Stack >
-                        ))
+
+                        <Stack className=' w-full'>
+                            <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                                {topic.map((tp) => (
+                                    // Populate data of forum
+                                    <Stack key={tp.title} className="!flex-row gap-4 bg-gray-300/90 rounded-md p-4 !items-center">
+                                        <ForumOutlined fontSize="large" />
+                                        <Stack >
+                                            <Link to={`/forum/topics/${tp.title.toLowerCase().replace(/ /g, "-")}`} className="!text-[16px] text-black hover:!text-slate-600 hover:underline underline-offset-2 !justify-start !font-semibold">{tp.title}</Link>
+                                            <Typography className="!text-[12px] !text-slate-700">description of the forum here put it here in order for the users to know</Typography>
+                                        </Stack>
+                                    </Stack>
+                                ))}
+
+                            </div>
+                        </Stack>
                     ) : (
                         <Typography>No data yet</Typography>
-                    )
-                )
+                    ))
             }
 
         </>

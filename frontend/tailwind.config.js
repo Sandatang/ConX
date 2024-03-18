@@ -21,7 +21,7 @@ export default {
       },
     },
     fontFamily: {
-      body: ["ui-serif", "Georgia"],
+      sans: ['"PT Sans"', 'sans-serif'],
     },
   },
   plugins: [],
