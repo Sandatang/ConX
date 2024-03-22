@@ -14,6 +14,8 @@ import Settings from "./pages/Settings"
 import Thread from "./components/Forum/Thread"
 import ForumContentContainer from "./components/Forum/ForumContentContainer"
 import JobLisintgs from "./pages/JobLisintgs"
+import Layout from "./components/Layout"
+import JobDetails from "./components/Job/JobDetails"
 function App() {
 
   const router = createBrowserRouter(
@@ -35,7 +37,10 @@ function App() {
             <Route path="forum/topics/:forumTitle" element={<ForumSpecificTopicContainer />} >
               <Route index element={<Thread />} />
             </Route>
-            <Route path="/jobs" element={<JobLisintgs/>}/>
+            <Route path="/jobs/*" element={<Layout />}>
+              <Route index element={<JobLisintgs/>}/>
+              <Route path=":id/details" element={<JobDetails/>}/>
+            </Route>
             {/* End of BRGY Links */}
 
 

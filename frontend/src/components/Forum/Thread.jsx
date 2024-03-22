@@ -14,8 +14,8 @@ const Thread = () => {
         { name: `Forum` }
     ]
     return (
-        <Stack className="h-full overflow-auto mx-4 !flex-row">
-            <Stack className="h-auto w-[650px] gap-4 pt-2">
+        <Stack className="h-full no-scrollbar overflow-y-auto mx-4 !flex-row">
+            <Stack className="h-auto  w-[650px] gap-4 pt-2">
                 <Stack className=" bg-gray-200/70 rounded-md">
                     <Stack className="p-4">
 
@@ -66,6 +66,190 @@ const Thread = () => {
 
 
                     {/* Postings comment content */}
+                    <Stack className="pb-6">
+                        <Stack className="!flex-row py-4">
+                            <Stack className="!flex-row gap-2 w-full bg-gray-200/70 rounded-md">
+                                <Stack className="w-1/4 gap-4 items-center bg-gray-300/50 p-4">
+                                    <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
+                                    <Typography variant="body1" component="span" className="!capitalize">{localStorage.getItem("username")}</Typography>
+                                </Stack>
+                                <Stack className="ml-4 min-h-46 !w-full py-4 pr-4">
+
+                                    <Typography className="!text-sm">
+                                        Content of the post here of each users
+                                    </Typography>
+                                    <Divider className="!my-4" />
+                                    <Typography className="!text-sm">Image here if the user uploaded image</Typography>
+
+                                    <Stack className="!flex-row mt-4">
+                                        <Stack className=" !flex-row w-[70%] gap-4">
+                                            <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
+                                                <button>
+                                                    <ThumbUp className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Like
+                                                </button>
+                                            </Typography>
+
+                                            <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
+                                                <button>
+                                                    <Reply className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Reply
+                                                </button>
+                                            </Typography>
+                                        </Stack>
+
+                                        <Stack className="justify-end w-1/4">
+                                            <Typography variant="body1" component="span" className="!text-sm self-end group cursor-pointer">
+                                                <button>
+                                                    <Report className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Report
+                                                </button>
+                                            </Typography>
+                                        </Stack>
+
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                        </Stack>
+                    </Stack>
+                    <Stack className="pb-6">
+                        <Stack className="!flex-row py-4">
+                            <Stack className="!flex-row gap-2 w-full bg-gray-200/70 rounded-md">
+                                <Stack className="w-1/4 gap-4 items-center bg-gray-300/50 p-4">
+                                    <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
+                                    <Typography variant="body1" component="span" className="!capitalize">{localStorage.getItem("username")}</Typography>
+                                </Stack>
+                                <Stack className="ml-4 min-h-46 !w-full py-4 pr-4">
+
+                                    <Typography className="!text-sm">
+                                        Content of the post here of each users
+                                    </Typography>
+                                    <Divider className="!my-4" />
+                                    <Typography className="!text-sm">Image here if the user uploaded image</Typography>
+
+                                    <Stack className="!flex-row mt-4">
+                                        <Stack className=" !flex-row w-[70%] gap-4">
+                                            <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
+                                                <button>
+                                                    <ThumbUp className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Like
+                                                </button>
+                                            </Typography>
+
+                                            <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
+                                                <button>
+                                                    <Reply className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Reply
+                                                </button>
+                                            </Typography>
+                                        </Stack>
+
+                                        <Stack className="justify-end w-1/4">
+                                            <Typography variant="body1" component="span" className="!text-sm self-end group cursor-pointer">
+                                                <button>
+                                                    <Report className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Report
+                                                </button>
+                                            </Typography>
+                                        </Stack>
+
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                        </Stack>
+                    </Stack>
+                    <Stack className="pb-6">
+                        <Stack className="!flex-row py-4">
+                            <Stack className="!flex-row gap-2 w-full bg-gray-200/70 rounded-md">
+                                <Stack className="w-1/4 gap-4 items-center bg-gray-300/50 p-4">
+                                    <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
+                                    <Typography variant="body1" component="span" className="!capitalize">{localStorage.getItem("username")}</Typography>
+                                </Stack>
+                                <Stack className="ml-4 min-h-46 !w-full py-4 pr-4">
+
+                                    <Typography className="!text-sm">
+                                        Content of the post here of each users
+                                    </Typography>
+                                    <Divider className="!my-4" />
+                                    <Typography className="!text-sm">Image here if the user uploaded image</Typography>
+
+                                    <Stack className="!flex-row mt-4">
+                                        <Stack className=" !flex-row w-[70%] gap-4">
+                                            <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
+                                                <button>
+                                                    <ThumbUp className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Like
+                                                </button>
+                                            </Typography>
+
+                                            <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
+                                                <button>
+                                                    <Reply className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Reply
+                                                </button>
+                                            </Typography>
+                                        </Stack>
+
+                                        <Stack className="justify-end w-1/4">
+                                            <Typography variant="body1" component="span" className="!text-sm self-end group cursor-pointer">
+                                                <button>
+                                                    <Report className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Report
+                                                </button>
+                                            </Typography>
+                                        </Stack>
+
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                        </Stack>
+                    </Stack>
+                    <Stack className="pb-6">
+                        <Stack className="!flex-row py-4">
+                            <Stack className="!flex-row gap-2 w-full bg-gray-200/70 rounded-md">
+                                <Stack className="w-1/4 gap-4 items-center bg-gray-300/50 p-4">
+                                    <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
+                                    <Typography variant="body1" component="span" className="!capitalize">{localStorage.getItem("username")}</Typography>
+                                </Stack>
+                                <Stack className="ml-4 min-h-46 !w-full py-4 pr-4">
+
+                                    <Typography className="!text-sm">
+                                        Content of the post here of each users
+                                    </Typography>
+                                    <Divider className="!my-4" />
+                                    <Typography className="!text-sm">Image here if the user uploaded image</Typography>
+
+                                    <Stack className="!flex-row mt-4">
+                                        <Stack className=" !flex-row w-[70%] gap-4">
+                                            <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
+                                                <button>
+                                                    <ThumbUp className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Like
+                                                </button>
+                                            </Typography>
+
+                                            <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
+                                                <button>
+                                                    <Reply className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Reply
+                                                </button>
+                                            </Typography>
+                                        </Stack>
+
+                                        <Stack className="justify-end w-1/4">
+                                            <Typography variant="body1" component="span" className="!text-sm self-end group cursor-pointer">
+                                                <button>
+                                                    <Report className="!text-md mr-2 group-hover:text-slate-400" />
+                                                    Report
+                                                </button>
+                                            </Typography>
+                                        </Stack>
+
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                        </Stack>
+                    </Stack>
                     <Stack className="pb-6">
                         <Stack className="!flex-row py-4">
                             <Stack className="!flex-row gap-2 w-full bg-gray-200/70 rounded-md">
