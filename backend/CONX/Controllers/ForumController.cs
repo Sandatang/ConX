@@ -38,6 +38,7 @@ namespace CONX.Controllers
             {
                 CreatorId = addForum.UserId,
                 Title = addForum.Title,
+                Tags = addForum.Keywords,
                 DateCreated = DateTime.Now,
             };
             
@@ -55,7 +56,7 @@ namespace CONX.Controllers
             }
 
             // if no error occured
-            return Ok("Forum created successfully");
+            return Ok(new Response { Status = "Success", Message = "Forum created successfully" });
 
         }
 

@@ -17,11 +17,26 @@ export default {
       },
       colors: {
         mainColor: "#ff9ae6",
+        pinkish: "#EB80D9",
       },
     },
     fontFamily: {
-      body: ["ui-serif", "Georgia"],
+      sans: ['"PT Sans"', "sans-serif"],
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".no-scrollbar::webkit-scrollbar": {
+          display: "none",
+        },
+        ".no-scrollbar": {
+          "ms-overflow-style": "none",
+          "scrollbar-width": "none",
+        },
+      };
+
+      addUtilities(newUtilities)
+    },
+  ],
 };

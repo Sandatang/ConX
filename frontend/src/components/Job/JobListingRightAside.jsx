@@ -1,0 +1,122 @@
+import { AccountCircle, LocationOn } from "@mui/icons-material"
+import { Button, Card, CardContent, Stack, Typography } from "@mui/material"
+import { Link } from "react-router-dom"
+
+const JobListingRightAside = () => {
+    return (
+        <Stack className="px-2 sticky top-0">
+            <Stack>
+                <Typography className="!text-md">More jobs</Typography>
+
+                <Stack className="gap-2">
+                    <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[18rem] !h-32">
+                        <CardContent className="!flex !flex-col !h-full rounded-lg justify-start">
+                            <Stack className="!flex-row items-center gap-2">
+                                <AccountCircle fontSize="large" />
+                                <Stack className="w-full">
+                                    <Typography className="!text-sm !font-bold capitalize w-3/4">Hospital janitor</Typography>
+                                    <Typography className="!text-sm"> <LocationOn className="!text-md" /> Cebu City</Typography>
+                                </Stack>
+                            </Stack>
+
+                            <div className="mt-2 grid grid-cols-2 gap-[5px]">
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                            </div>
+
+
+                            <Stack className="!flex-row items-center justify-between  px-2">
+                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
+                                <Link to={`1/details`}>
+                                    <Button variant="contained" className="!bg-black hover:!bg-black/80 !text-sm" size="small">Details</Button>
+                                </Link>
+                            </Stack>
+                        </CardContent>
+
+
+                    </Card>
+
+                    <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[18rem] !h-32">
+                        <CardContent className="!flex !flex-col !h-full rounded-lg justify-start">
+                            <Stack className="!flex-row items-center gap-2">
+                                <AccountCircle fontSize="large" />
+                                <Stack className="w-full">
+                                    <Typography className="!text-sm !font-bold capitalize w-3/4">Hospital janitor</Typography>
+                                    <Typography className="!text-sm"> <LocationOn className="!text-md" /> Cebu City</Typography>
+                                </Stack>
+                            </Stack>
+
+                            <div className="mt-2 grid grid-cols-2 gap-[5px]">
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                            </div>
+
+
+                            <Stack className="!flex-row items-center justify-between  px-2">
+                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
+                                <Link to={`1/details`}>
+                                    <Button variant="contained" className="!bg-black hover:!bg-black/80 !text-sm" size="small">Details</Button>
+                                </Link>
+                            </Stack>
+                        </CardContent>
+
+
+                    </Card>
+
+                    <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[18rem] !h-32">
+                        <CardContent className="!flex !flex-col !h-full rounded-lg justify-start">
+                            <Stack className="!flex-row items-center gap-2">
+                                <AccountCircle fontSize="large" />
+                                <Stack className="w-full">
+                                    <Typography className="!text-sm !font-bold capitalize w-3/4">Hospital janitor</Typography>
+                                    <Typography className="!text-sm"> <LocationOn className="!text-md" /> Cebu City</Typography>
+                                </Stack>
+                            </Stack>
+
+                            <div className="mt-2 grid grid-cols-2 gap-[5px]">
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                                <Stack className="!text-center">
+                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block  rounded-lg bg-gray-300 group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
+                                </Stack>
+                            </div>
+
+
+                            <Stack className="!flex-row items-center justify-between  px-2">
+                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
+                                <Link to={`1/details`}>
+                                    <Button variant="contained" className="!bg-black hover:!bg-black/80 !text-sm" size="small">Details</Button>
+                                </Link>
+                            </Stack>
+                        </CardContent>
+
+
+                    </Card>
+
+                    <Button className="!text-md">See more.....</Button>
+
+                </Stack>
+            </Stack>
+        </Stack>
+    )
+}
+
+export default JobListingRightAside

@@ -6,5 +6,6 @@
         public string CreatorId{ get; set; }
         public DateTime DateCreated { get; set; }
         public string Title { get; set; }
+        public string Tags { get; set; }
     }
 }

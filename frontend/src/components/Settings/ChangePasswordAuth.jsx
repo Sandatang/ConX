@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Password } from "@mui/icons-material"
 import { Alert, Button, Stack, TextField } from "@mui/material"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import * as UserApi from "../../network/user_api"
 import Modal from "../Modal"
 import ModalHeading from "../ModalHeading"
-import { useForm } from "react-hook-form"
-import * as UserApi from "../../network/user_api"
-import { useNavigate } from "react-router-dom"
-import { useState } from "react"
 import ChangeUnConfirmed from "./ChangeUnConfirmed"
 
 const ChangePasswordAuth = (props) => {
@@ -34,6 +34,7 @@ const ChangePasswordAuth = (props) => {
             console.error(error)
         }
     }
+
 
     return (
         <>

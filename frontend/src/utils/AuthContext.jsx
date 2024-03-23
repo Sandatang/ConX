@@ -35,9 +35,11 @@ export const AuthProvider = ({ children }) => {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("expiration", decodedToken.exp);
                 localStorage.setItem("userId", decodedToken.id)
+                localStorage.setItem("username", decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]);
                 setAuthState((prev) => ({
                     ...prev,
                     userId: decodedToken["id"],
+                    userName: decodedToken["name"],
                     userRole: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"],
                     error: null,
                 }));
@@ -64,6 +66,8 @@ export const AuthProvider = ({ children }) => {
 
                 localStorage.removeItem("token");
                 localStorage.removeItem("expiration");
+                localStorage.removeItem("userId");
+                localStorage.removeItem("username");
 
                 setAuthState({
                     loading: false,

@@ -1,4 +1,4 @@
-import { AccountCircle, Announcement, ContactEmergency, Forum, ManageAccounts, Newspaper, Password, Settings } from "@mui/icons-material";
+import { AccountCircle, Announcement, Book, ContactEmergency, Forum, ManageAccounts, Newspaper, Password, Settings } from "@mui/icons-material";
 
 export const brgyLinks = [
   {
@@ -14,9 +14,16 @@ export const brgyLinks = [
     title: "News Feed",
     icon: <Newspaper fontSize="medium" className="!text-yellow-500" />
   },
+
+  {
+    id: "joblistings",
+    link: "/jobs",
+    title: "Job Listings",
+    icon: <Book fontSize="medium" className="!text-pink-500" />
+  },
   {
     id: "forum",
-    link: "/forum",
+    link: "/forum/topics",
     title: "Forum",
     icon: <Forum fontSize="medium" className="!text-red-500" />
   },
@@ -41,18 +48,35 @@ export const settingLinks = [
     id: "personal",
     link: "/personal-information",
     title: "Personal Information",
-    icon: <AccountCircle fontSize="small" className="!text-slate-600 mr-2  self-end" />
+    icon: <AccountCircle fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
   {
     id: "changepassword",
     link: "/confirmation",
     title: "Change Password",
-    icon: <Password fontSize="small" className="!text-slate-600 mr-2  self-end" />
+    icon: <Password fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
   {
     id: "contacts",
     link: "/contacts",
     title: "Contacts",
-    icon: <ContactEmergency fontSize="small" className="!text-slate-600 mr-2  self-end" />
+    icon: <ContactEmergency fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
 ]
+
+
+export const topics = [
+  {
+    link: "/topics",
+    title: "Threads"
+  },
+  {
+    link: "/following",
+    title: "Following"
+  },
+  {
+    link: "/my-forum",
+    title: "My Forum"
+  },
+]
+

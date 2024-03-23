@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Password } from "@mui/icons-material"
 import { Alert, Button, Stack, TextField } from "@mui/material"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import * as UserApi from "../../network/user_api"
-import { useState } from "react"
 
 const ChangePassword = () => {
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
-    const confirmation = localStorage.getItem("#021");
     const [message, setMessage] = useState(null)
 
     const changePassword = async (data) => {
@@ -32,10 +31,11 @@ const ChangePassword = () => {
         }
     }
 
+
     return (
         <>
-            {!confirmation && (navigate("/settings/password-confirmation"))}
-            {confirmation && (
+            {!localStorage.getItem("#021") && (navigate("/settings/password-confirmation"))}
+            {localStorage.getItem("#021") && (
                 <Stack className=" mt-2 gap-4">
 
                     <form action="" onSubmit={handleSubmit(changePassword)}>

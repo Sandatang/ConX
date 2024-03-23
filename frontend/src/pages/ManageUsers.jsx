@@ -41,6 +41,7 @@ const ManageUsers = () => {
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
+      {/* View users by role */}
       <Stack className='!flex-row justify-between items-center mb-2'>
 
         {/* Button for showing user base on role */}
@@ -49,17 +50,19 @@ const ManageUsers = () => {
             generateWomenUser()
             setActive1(true)
             setActive2(false)
-          }} variant={active1 ? 'contained' : 'text'}>View Women</Button>
+          }} variant={active1 ? 'contained' : 'text'}>Women</Button>
           <Button onClick={() => {
             generatePersonnelUser()
             setActive2(true)
             setActive1(false)
-          }} variant={active2 ? 'contained' : 'text'}>Add Personnel</Button>
+          }} variant={active2 ? 'contained' : 'text'}>Personnel</Button>
         </Stack>
         {/* End button for showing user base on role */}
 
         <Button variant='contained' onClick={() => setAdd(!add)}>Add Personnel</Button>  {/* For adding personnel */}
       </Stack>
+      {/* End View users by role */}
+
 
       {/* Search and Sort  */}
       <Stack className="!flex-row justify-between mb-4">

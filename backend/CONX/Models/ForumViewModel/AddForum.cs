@@ -9,5 +9,8 @@ namespace CONX.Models.ForumViewModel
 
         [Required(ErrorMessage = " Title is required")]
         public string Title { get; set; }
+
+        [Required(ErrorMessage = "Include atleast 1 keyword")]
+        public string Keywords {  get; set; }
     }
 }
