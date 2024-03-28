@@ -13,6 +13,7 @@ namespace CONX.Models
         public string PostBody { get; set; }
         public bool isClosed { get; set; }
         public DateTime DateCreated { get; set; }
+        public DateTime? DateClosed { get; set; }
 
     }
 }

@@ -75,6 +75,38 @@ namespace CONX.Controllers
             return Ok(forums);
         }
 
+        [HttpPost]
+        [Route("view")]
+        public async Task<IActionResult> ViewForum(string forumId)
+        {
+            var forum = await _context.Forums.FindAsync(forumId);
+
+            if (forum == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                    new Response { Status = "Error", Message = " No forums created ", Field = "failed" });
+            }
+
+            return Ok(forum);
+        }
+
+        [HttpGet]
+        [Route("popular")]
+        public async Task<IActionResult> ViewPopularForum()
+        {
+            var forums = await _context.Forums.OrderByDescending(f => f.FollowCount)
+                                              .Take(5)
+                                              .ToListAsync();
+
+            if (forums == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                    new Response { Status = "Error", Message = " No forums created ", Field = "failed" });
+            }
+
+            return Ok(forums);
+        }
+
         [HttpPut]
         [Route("update")]
         public async Task<IActionResult> UpdateThread([FromBody] UpdateForum updateForum)
