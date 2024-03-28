@@ -39,6 +39,7 @@ namespace CONX.Controllers
                 CreatorId = addForum.UserId,
                 Title = addForum.Title,
                 Tags = addForum.Keywords,
+                Description = addForum.Description,
                 DateCreated = DateTime.Now,
             };
             
@@ -105,6 +106,25 @@ namespace CONX.Controllers
             }
 
             return Ok(forums);
+        }
+
+        [HttpPost]
+        [Route("follow/{forumId}")]
+        public async Task<IActionResult> FollowAddForum(string forumId)
+        {
+            var forum = await _context.Forums.FindAsync(forumId);
+            
+
+            if (forum == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                    new Response { Status = "Error", Message = " No forums created ", Field = "failed" });
+            }
+            forum.FollowCount += 1;
+            _context.Update(forum);
+            _context.SaveChanges();
+
+            return Ok(forum);
         }
 
         [HttpPut]
