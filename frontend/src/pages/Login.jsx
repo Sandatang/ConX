@@ -17,7 +17,7 @@ const Login = () => {
     try {
       const result = await loginUser(data)
       if (result === true) {
-        navigate("/settings");
+        navigate("/bulletin");
       }
     } catch (error) {
       console.error(error)
