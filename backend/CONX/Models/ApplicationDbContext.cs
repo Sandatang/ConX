@@ -13,6 +13,7 @@ namespace CONX.Models
         public DbSet<Jobs> Jobs { get; set; }
         public DbSet<JuncForumThread> ForumThreads { get; set; }
         public DbSet<JuncThreadComment> ThreadComments { get; set; }
+        public DbSet<JuncForumFollows> ForumFollows { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
