@@ -1,18 +1,18 @@
-import { AccountCircle, Announcement, Book, ContactEmergency, Forum, ManageAccounts, Newspaper, Password, Settings } from "@mui/icons-material";
+import { AccountCircle, Announcement, Book, Forum, ManageAccounts, Password, Settings, VideoCameraFront } from "@mui/icons-material";
 
 export const brgyLinks = [
   {
     id: "bulletin",
-    link: "/bulletin-board",
+    link: "/bulletin",
     title: "Bulletin Board",
     icon: <Announcement fontSize="medium" className="!text-blue-500" />
   },
 
   {
     id: "newsfeed",
-    link: "/newsfeed",
-    title: "News Feed",
-    icon: <Newspaper fontSize="medium" className="!text-yellow-500" />
+    link: "/workshop",
+    title: "Workshop",
+    icon: <VideoCameraFront fontSize="medium" className="!text-yellow-500" />
   },
 
   {
@@ -56,12 +56,12 @@ export const settingLinks = [
     title: "Change Password",
     icon: <Password fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
-  {
-    id: "contacts",
-    link: "/contacts",
-    title: "Contacts",
-    icon: <ContactEmergency fontSize="small" className="!text-slate-800 mr-2  self-end" />
-  },
+  // {
+  //   id: "contacts",
+  //   link: "/contacts",
+  //   title: "Contacts",
+  //   icon: <ContactEmergency fontSize="small" className="!text-slate-800 mr-2  self-end" />
+  // },
 ]
 
 

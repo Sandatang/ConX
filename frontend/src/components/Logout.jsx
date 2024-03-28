@@ -1,7 +1,8 @@
-import { AccountCircle, KeyboardArrowDown, KeyboardArrowUp, LogoutOutlined, Notifications, NotificationsSharp } from "@mui/icons-material";
+import { KeyboardArrowDown, KeyboardArrowUp, LogoutOutlined, Notifications, NotificationsSharp } from "@mui/icons-material";
 import { Badge, IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import dog from "../assets/dog.jpg";
 import { useAuth } from "../utils/AuthContext";
 
 
@@ -25,16 +26,18 @@ const Logout = () => {
         <Stack className="!flex-row items-center">
             <section>
                 <div onClick={handleClick} className="cursor-pointer">
-                    <Stack className="gap-2 !flex-row relative">
+                    <Stack className="gap-2 !flex-row items-center relative">
 
                         <Badge color="error">
                             <NotificationsSharp />
                         </Badge>
                         <Typography fontSize="small" className="!mr-2 !text-slate-900 capitalize !font-semibold">{localStorage.getItem("username")}</Typography>
                         <IconButton>
-                            <AccountCircle fontSize="large" className=" !absolute !text-slate-600" />
+                            <div className="border-2 border-pinkish !absolute h-8 w-8 rounded-full p-1">
+                                <img src={dog} alt="user img" className="bg-cover"/>
+                            </div>
                         </IconButton>
-                        {anchorEl ? <KeyboardArrowUp fontSize="small"/> : <KeyboardArrowDown fontSize="small"/>}
+                        {anchorEl ? <KeyboardArrowUp fontSize="small" /> : <KeyboardArrowDown fontSize="small" />}
                     </Stack>
                 </div>
 

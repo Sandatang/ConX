@@ -22,7 +22,12 @@ export const AuthProvider = ({ children }) => {
             setAuthState((prev) => ({ ...prev, error: storedError }));
             localStorage.removeItem('authError');
         }
-
+        setInterval(() => {
+            const passwordVerify = localStorage.getItem("#021")
+            if (passwordVerify){
+            localStorage.removeItem('#021');
+            }
+        }, 2000)
     }, []);
 
     const loginUser = async (userInfo) => {
@@ -92,19 +97,13 @@ export const AuthProvider = ({ children }) => {
     const isTokenValid = () => {
         const tokenExpiration = localStorage.getItem("expiration");
 
-        if (tokenExpiration) {
-            const expirationDate = new Date(tokenExpiration * 100);
-            const tokenIsValid = expirationDate > new Date();
+        // if (tokenExpiration) {
+        const tokenIsValid = new Date(tokenExpiration)
 
-            if (tokenIsValid) {
-                localStorage.removeItem("token");
-                localStorage.removeItem("expiration");
+        return tokenIsValid <= new Date()
+        // }
 
-                return tokenIsValid;
-            }
-        }
-
-        return false;
+        // return false;
     }
 
     const isLoggedIn = () => {

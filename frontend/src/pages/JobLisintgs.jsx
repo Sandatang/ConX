@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 const JobLisintgs = () => {
     return (
-        <Stack className="overflow-auto px-8 py-4">
+        <Stack className="overflow-y-auto no-scrollbar px-8 py-4">
             <Stack className="!flex-row gap-3 items-center mb-2">
                 <Typography className="!text-2xl !font-semibold tracking-wider ! capitalize" >Jobs available</Typography>
                 <Typography className="!text-md bg-gray-100/70 px-6 py-2 rounded-full shadow-sm !font-medium">121</Typography>
