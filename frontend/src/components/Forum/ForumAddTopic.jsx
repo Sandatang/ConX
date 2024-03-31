@@ -11,7 +11,7 @@ const ForumAddTopic = (props) => {
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { isSubmitting } } = useForm();
     const [message, setMessage] = useState(null)
-    
+
     const forumCreation = async (data) => {
         try {
             const formData = {
@@ -19,7 +19,7 @@ const ForumAddTopic = (props) => {
                 userId: localStorage.getItem("userId")
             }
             const response = await ForumApi.createForum(formData)
-            if(response.status === "Success"){
+            if (response.status === "Success") {
                 setMessage(response.message)
                 setTimeout(() => {
                     navigate(0)
@@ -60,6 +60,19 @@ const ForumAddTopic = (props) => {
                                 InputLabelProps={{ style: { fontSize: "0.775rem" } }}
                                 {...register("keywords", { required: true })}
 
+                            />
+                        </Stack>
+                        <Stack className="gap-2">
+                            <Typography> Description </Typography>
+                            <TextField
+                                multiline
+                                rows={4}
+                                name="description"
+                                label="Description"
+                                size="small"
+                                className="!w-full"
+                                InputLabelProps={{ style: { fontSize: "0.775rem" } }}
+                                {...register("description", { required: true })}
                             />
                         </Stack>
                         <Button type="submit" disabled={isSubmitting} variant="contained" className="!bg-pinkish w-full !mt-2"> Add </Button>

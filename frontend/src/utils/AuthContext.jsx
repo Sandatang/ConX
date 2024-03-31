@@ -24,8 +24,8 @@ export const AuthProvider = ({ children }) => {
         }
         setInterval(() => {
             const passwordVerify = localStorage.getItem("#021")
-            if (passwordVerify){
-            localStorage.removeItem('#021');
+            if (passwordVerify) {
+                localStorage.removeItem('#021');
             }
         }, 2000)
     }, []);
@@ -41,11 +41,12 @@ export const AuthProvider = ({ children }) => {
                 localStorage.setItem("expiration", decodedToken.exp);
                 localStorage.setItem("userId", decodedToken.id)
                 localStorage.setItem("username", decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]);
+                localStorage.setItem("role", decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
                 setAuthState((prev) => ({
                     ...prev,
                     userId: decodedToken["id"],
                     userName: decodedToken["name"],
-                    userRole: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"],
+                    userRole: decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
                     error: null,
                 }));
                 return true;

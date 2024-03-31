@@ -4,8 +4,11 @@ import JobListingRightAside from "./JobListingRightAside"
 
 const JobDetails = () => {
     return (
-        <Stack className="py-8 px-10 no-scrollbar overflow-y-auto  !flex-row gap-2">
-            <Stack>
+        // <Stack className="py-8 px-10 no-scrollbar overflow-y-auto  !flex-row gap-2">
+        //     <Stack>
+        <Stack className=" h-full overflow-auto mx-4 no-scrollbar overflow-y-auto !flex-row">
+            {/* Empowering text and Picture Container*/}
+            <Stack className="h-auto w-[650px] pt-2">
                 <Stack className="pb-4">
                     <Stack>
                         <Typography>Job Title</Typography>
@@ -109,8 +112,9 @@ const JobDetails = () => {
                     </Stack>
                 </Stack>
             </Stack>
-
-            <JobListingRightAside/>
+            <Stack className="h-screen">
+                <JobListingRightAside />
+            </Stack>
         </Stack>
     )
 }

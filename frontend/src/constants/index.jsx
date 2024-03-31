@@ -43,6 +43,49 @@ export const brgyLinks = [
   },
 ];
 
+export const womenLinks = [
+  {
+    id: "bulletin",
+    link: "/bulletin",
+    title: "Bulletin Board",
+    icon: <Announcement fontSize="medium" className="!text-blue-500" />
+  },
+
+  {
+    id: "newsfeed",
+    link: "/workshop",
+    title: "Workshop",
+    icon: <VideoCameraFront fontSize="medium" className="!text-yellow-500" />
+  },
+
+  {
+    id: "joblistings",
+    link: "/jobs",
+    title: "Job Listings",
+    icon: <Book fontSize="medium" className="!text-pink-500" />
+  },
+  {
+    id: "forum",
+    link: "/forum/topics",
+    title: "Forum",
+    icon: <Forum fontSize="medium" className="!text-red-500" />
+  },
+
+
+  // {
+  //   id: "manage-users",
+  //   link: "/manage-users",
+  //   title: "Manage Users",
+  //   icon: <ManageAccounts fontSize="medium" className="!text-violet-500" />
+  // },
+  {
+    id: "setting",
+    link: "/settings",
+    title: "Settings",
+    icon: <Settings fontSize="medium" className="!text-orange-500" />
+  },
+];
+
 export const settingLinks = [
   {
     id: "personal",

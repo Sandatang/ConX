@@ -1,16 +1,20 @@
 import { AccountCircle, LocationOn } from "@mui/icons-material"
 import { Button, Card, CardContent, Stack, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
+import EmergencyContacts from "../EmergencyContacts"
 
 const JobListingRightAside = () => {
     return (
-        <Stack className="px-2 sticky top-0">
-            <Stack>
-                <Typography className="!text-md">More jobs</Typography>
+        <Stack className="border-l-2 w-[300px]  border-2 px-4 mx-4 sticky top-0">
+
+            {/* <Stack className="px-2 sticky top-0"> */}
+            <Stack className="h-1/2 border-b-2 overflo">
+
+                <Typography className="!text-md capitalize !font-bold">More jobs</Typography>
 
                 <Stack className="gap-2">
-                    <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[18rem] !h-32">
-                        <CardContent className="!flex !flex-col !h-full rounded-lg justify-start">
+                    <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[17rem] !h-28">
+                        <CardContent className="!flex !flex-col !h-full rounded-lg justify-start !m-0 !p-1 ">
                             <Stack className="!flex-row items-center gap-2">
                                 <AccountCircle fontSize="large" />
                                 <Stack className="w-full">
@@ -43,8 +47,8 @@ const JobListingRightAside = () => {
 
                     </Card>
 
-                    <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[18rem] !h-32">
-                        <CardContent className="!flex !flex-col !h-full rounded-lg justify-start">
+                    <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[17rem] !h-28">
+                        <CardContent className="!flex !flex-col !h-full rounded-lg justify-start !m-0 !p-1 ">
                             <Stack className="!flex-row items-center gap-2">
                                 <AccountCircle fontSize="large" />
                                 <Stack className="w-full">
@@ -77,7 +81,7 @@ const JobListingRightAside = () => {
 
                     </Card>
 
-                    <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[18rem] !h-32">
+                    {/* <Card className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[18rem] !h-32">
                         <CardContent className="!flex !flex-col !h-full rounded-lg justify-start">
                             <Stack className="!flex-row items-center gap-2">
                                 <AccountCircle fontSize="large" />
@@ -109,11 +113,15 @@ const JobListingRightAside = () => {
                         </CardContent>
 
 
-                    </Card>
+                    </Card> */}
 
                     <Button className="!text-md">See more.....</Button>
 
                 </Stack>
+            </Stack>
+
+            <Stack>
+                <EmergencyContacts />
             </Stack>
         </Stack>
     )

@@ -7,14 +7,14 @@
 /* h1,h2,p{
   font-size: clamp(0.5rem, 1rem, 1.5rem) !important;
 } */
-@layer utilities {
+/* @layer utilities { */
   /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
+  /* .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-}
+    /* scrollbar-width: none; Firefox */
+  /* } */
+/* } */

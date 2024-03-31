@@ -38,7 +38,7 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="forum/topics/:forumTitle" element={<ForumSpecificTopicContainer />} >
+            <Route path="forum/topics/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
               <Route index element={<Thread />} />
             </Route>
 
@@ -47,6 +47,25 @@ function App() {
               <Route path=":id/details" element={<JobDetails />} />
             </Route>
             {/* End of BRGY Links */}
+
+            {/* Women Links */}
+            <Route path="/bulletin" element={<BulletinBoard />} />
+
+            <Route path="/forum/*" element={<Forum />} >
+              <Route path="topics/*" element={<ForumContentContainer />} >
+                <Route index element={<Topics />} />
+              </Route>
+            </Route>
+
+            <Route path="forum/topics/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
+              <Route index element={<Thread />} />
+            </Route>
+
+            <Route path="/jobs/*" element={<Layout />}>
+              <Route index element={<JobLisintgs />} />
+              <Route path=":id/details" element={<JobDetails />} />
+            </Route>
+            {/* End of Women Links */}
 
 
             <Route path="/settings/*" element={<Settings />} >

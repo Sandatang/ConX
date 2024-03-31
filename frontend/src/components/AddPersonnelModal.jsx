@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Alert, Button, TextField } from "@mui/material";
+import { Alert, Button, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
@@ -10,14 +10,30 @@ import ModalHeading from "./ModalHeading";
 import dayjs from "dayjs";
 
 export default function AddPeronnelModal(props) {
-    const { register, setValue, handleSubmit, formState: { isSubmitting }, } = useForm();
+    const { register, setValue, reset, handleSubmit, formState: { isSubmitting }, } = useForm();
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null)
 
     async function onAddPersonnel(credentials) {
         try {
-            
+
             const response = await UserApi.registerPersonnel(credentials);
 
+            console.log(response)
+            if (response.field) {
+                setError(response.message)
+            }
+
+            if (response.status === 400) {
+                setError(response.errors.Email ? response.errors.Email.toString() : response.errors.ConfirmPassword.toString())
+            }
+
+            if (response.status === "Success") {
+                setError(null)
+                setSuccess(response.message)
+                setValue('birthdate', null);
+                reset()
+            }
             console.log(response)
 
 
@@ -58,9 +74,9 @@ export default function AddPeronnelModal(props) {
             heading={<ModalHeading title={`${props.update ? "Update user" : "Add personnel"}`} desc="" />}
             width=" w-[35%]"
         >
-            {
-                error && <Alert severity="error">{error}!</Alert>
-            }
+
+            {error && <Typography variant="caption" color="error">{error}</Typography>}
+            {success && <Alert severity='success'>{success}</Alert>}
             <div className="w-full ">
                 <div className="p-2">
                     <form action="" onSubmit={handleSubmit(props.update ? onUpdateDetails : onAddPersonnel)} >

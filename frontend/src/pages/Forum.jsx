@@ -1,15 +1,17 @@
-import { AccountCircle, ArrowCircleRight } from "@mui/icons-material";
 import { Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import woman from "../assets/women.png";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
 import ForumContentContainer from "../components/Forum/ForumContentContainer";
+import TopForum from "../components/Forum/TopForum";
 import { topics } from "../constants";
+import EmergencyContacts from "../components/EmergencyContacts";
 
 
 const Forum = () => {
     const [addTopic, setAddTopic] = useState(false);
+
 
     return (
         <Stack className=" h-full overflow-auto mx-4 !flex-row">
@@ -58,7 +60,7 @@ const Forum = () => {
                 {/* End of Forum navigators */}
 
                 {/* Navigations content  */}
-                <ForumContentContainer/>
+                <ForumContentContainer />
                 {/* End Navigations content  */}
 
 
@@ -67,47 +69,11 @@ const Forum = () => {
 
             {/* Threads right aside */}
             <Stack className="border-l-2 w-[300px] px-4 mx-4 sticky top-0">
-                <Typography className="!text-[18px] pb-2 !font-semibold">Discussions</Typography>
-
-                <Stack className="gap-3">
-                    {/* Each discussions */}
-                    <Stack className="!flex-row">
-                        <AccountCircle className="!text-[2.5em] !text-slate-500" />
-                        <Stack className="ml-2 justify-center">
-                            <Typography className="!text-sm !font-semibold tracking-wider">Title of discussions here</Typography>
-                            <Typography className="!text-[0.467rem]">Name of creator of the discussion</Typography>
-                        </Stack>
-                        <Button>
-                            <ArrowCircleRight className="!text-pinkish" />
-                        </Button>
-                    </Stack>
-                    {/* End Each discussions */}
-
-                    {/* Each discussions */}
-                    <Stack className="!flex-row">
-                        <AccountCircle className="!text-[2.5em] !text-slate-500" />
-                        <Stack className="ml-2 justify-center">
-                            <Typography className="!text-sm !font-semibold tracking-wider">Title of discussions here</Typography>
-                            <Typography className="!text-[0.467rem]">Name of creator of the discussion</Typography>
-                        </Stack>
-                        <Button>
-                            <ArrowCircleRight className="!text-pinkish" />
-                        </Button>
-                    </Stack>
-                    {/* End Each discussions */}
-
-                    {/* Each discussions */}
-                    <Stack className="!flex-row">
-                        <AccountCircle className="!text-[2.5em] !text-slate-500" />
-                        <Stack className="ml-2 justify-center">
-                            <Typography className="!text-sm !font-semibold tracking-wider">Title of discussions here</Typography>
-                            <Typography className="!text-[0.467rem]">Name of creator of the discussion</Typography>
-                        </Stack>
-                        <Button>
-                            <ArrowCircleRight className="!text-pinkish" />
-                        </Button>
-                    </Stack>
-                    {/* End Each discussions */}
+                <Stack className="h-1/2 border-b-2">
+                    <TopForum />
+                </Stack>
+                <Stack>
+                    <EmergencyContacts/>
                 </Stack>
 
             </Stack>
