@@ -137,6 +137,26 @@ namespace CONX.Controllers
             return Ok(forum);
         }
 
+        [HttpPost]
+        [Route("view/following/{userId}")]
+        public async Task<IActionResult> ViewFollowing(string userId)
+        {
+            var followedForums = await _context.ForumFollows
+                                        .Include(x => x.Forum)
+                                        .Where(x => x.UserId == userId)
+                                        .ToListAsync();
+
+
+            if (followedForums == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                    new Response { Status = "Error", Message = " No forums created ", Field = "failed" });
+            }
+
+
+            return Ok(followedForums);
+        }
+
         [HttpPut]
         [Route("update")]
         public async Task<IActionResult> UpdateThread([FromBody] UpdateForum updateForum)
