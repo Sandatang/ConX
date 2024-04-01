@@ -45,3 +45,8 @@ export async function followForum(data) {
   });
   return response.json();
 }
+
+export async function followedForum(data){
+  const response = await fetchData(`/api/forum/view/following/${data}`, { method: "POST" })
+  return response.json()
+}

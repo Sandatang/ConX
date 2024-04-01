@@ -114,8 +114,8 @@ export const topics = [
     title: "Threads"
   },
   {
-    link: "/following",
-    title: "Following"
+    link: "/followed",
+    title: "Followed"
   },
   {
     link: "/my-forum",
