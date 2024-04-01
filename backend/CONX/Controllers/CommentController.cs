@@ -126,7 +126,7 @@ namespace CONX.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("view/{threadId}")]
         public async Task<IActionResult> ViewComments(string threadId)
         {
