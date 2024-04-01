@@ -1,6 +1,5 @@
 ﻿using CONX.Models;
 using CONX.Models.ForumViewModel;
-using CONX.Models.ThreadViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +26,7 @@ namespace CONX.Controllers
             var user = await _userManager.FindByIdAsync(addForum.UserId);
 
             // Check if user is null 
-            if( user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = " User not exist ", Field = "failed" });
@@ -42,7 +41,7 @@ namespace CONX.Controllers
                 Description = addForum.Description,
                 DateCreated = DateTime.Now,
             };
-            
+
             // Que data to be inserted in DB
             _context.Forums.Add(forum);
 
@@ -50,9 +49,9 @@ namespace CONX.Controllers
             var result = await _context.SaveChangesAsync();
 
             // If something went wrong 
-            if(result <= 0)
+            if (result <= 0)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, 
+                return StatusCode(StatusCodes.Status500InternalServerError,
                     new Response { Status = "Error", Message = " Something went wrong. Try again later ", Field = "failed" });
             }
 
@@ -65,9 +64,9 @@ namespace CONX.Controllers
         [Route("view")]
         public async Task<IActionResult> ViewForum()
         {
-            var forums = await _context.Forums.ToListAsync();
+            var forums = await _context.Forums.Include(f => f.Creator).ToListAsync();
 
-            if(forums == null)
+            if (forums == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent,
                     new Response { Status = "Error", Message = " No forums created ", Field = "failed" });
@@ -76,11 +75,15 @@ namespace CONX.Controllers
             return Ok(forums);
         }
 
-        [HttpPost]
-        [Route("view")]
-        public async Task<IActionResult> ViewForum(string forumId)
+        [HttpGet]
+        [Route("view/{id}")]
+        public async Task<IActionResult> ViewForum(string id)
         {
-            var forum = await _context.Forums.FindAsync(forumId);
+            int forumId = Int32.Parse(id);
+            var forum = await _context.Forums
+                            .Include(f => f.Creator)
+                            .Where(f => f.Id == forumId)
+                            .FirstOrDefaultAsync();
 
             if (forum == null)
             {
@@ -96,6 +99,7 @@ namespace CONX.Controllers
         public async Task<IActionResult> ViewPopularForum()
         {
             var forums = await _context.Forums.OrderByDescending(f => f.FollowCount)
+                                              .Include(f => f.Creator)
                                               .Take(5)
                                               .ToListAsync();
 
@@ -113,7 +117,7 @@ namespace CONX.Controllers
         public async Task<IActionResult> FollowAddForum(string forumId)
         {
             var forum = await _context.Forums.FindAsync(forumId);
-            
+
 
             if (forum == null)
             {
@@ -157,6 +161,31 @@ namespace CONX.Controllers
             }
 
             return Ok("Update success");
+        }
+
+        [HttpDelete]
+        [Route("delete/{id}")]
+        public async Task<IActionResult> DeleteForum(string id)
+        {
+            var convertId = Convert.ToInt32(id);
+            var forum = await _context.Forums.FindAsync(convertId);
+
+            if (forum == null)
+            {
+                return NotFound(new Response { Status = "Error", Message = " Forum not exist ", Field = "failed" });
+
+            }
+
+            _context.Forums.Remove(forum);
+            var result = await _context.SaveChangesAsync();
+            if (result <= 0)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
+            }
+            return Ok(new Response { Status = "Success", Message = "User deactivated " });
+
         }
     }
 }
