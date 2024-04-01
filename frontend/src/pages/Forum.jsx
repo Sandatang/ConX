@@ -1,6 +1,6 @@
 import { Button, LinearProgress, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import woman from "../assets/women.png";
 import EmergencyContacts from "../components/EmergencyContacts";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
@@ -11,21 +11,23 @@ import { topics } from "../constants";
 const Forum = () => {
     const [addTopic, setAddTopic] = useState(false);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     useEffect(() => {
         try {
-            navigate("/forum/topics")
+            // navigate("/forum/topics")
         } catch (error) {
             console.error(error)
         } finally {
-            setLoading(false)
+            setTimeout(() => {
+                setLoading(false)
+            }, [1000])
         }
     }, [])
 
     return (
         !loading ?
 
-            <Stack className=" h-full overflow-auto mx-4 !flex-row" >
+            <Stack className=" h-full no-scrollbar overflow-y-auto mx-4 !flex-row" >
                 {/* Empowering text and Picture Container*/}
                 < Stack className="h-auto w-[650px] pt-2" >
                     <Stack className=" bg-pinkish !flex-row rounded-xl mb-2 ">
@@ -80,11 +82,11 @@ const Forum = () => {
                 {/* End Empowering text and Picture */}
 
                 {/* Threads right aside */}
-                <Stack className="border-l-2 w-[300px] px-4 mx-4 sticky top-0">
-                    <Stack className="h-1/2 border-b-2">
+                <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-18 right-0 ">
+                    <Stack className="h-1/2 overflow-y-auto  border-b-2">
                         <TopForum />
                     </Stack>
-                    <Stack>
+                    <Stack className="h-1/2 overflow-y-auto">
                         <EmergencyContacts />
                     </Stack>
 

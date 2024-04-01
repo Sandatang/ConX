@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"
 
 const ForumAddTopic = (props) => {
     const navigate = useNavigate()
-    const { register, handleSubmit, formState: { isSubmitting } } = useForm();
+    const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm();
     const [message, setMessage] = useState(null)
 
     const forumCreation = async (data) => {
@@ -21,6 +21,7 @@ const ForumAddTopic = (props) => {
             const response = await ForumApi.createForum(formData)
             if (response.status === "Success") {
                 setMessage(response.message)
+                reset()
                 setTimeout(() => {
                     navigate(0)
                 }, [2000])

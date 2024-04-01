@@ -1,21 +1,26 @@
 /* eslint-disable react/prop-types */
-import { Bookmark, ForumOutlined } from "@mui/icons-material"
+import { Bookmark, ForumOutlined, RemoveCircleOutline } from "@mui/icons-material"
 import { IconButton, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import * as ForumApi from "../../network/forum_api"
-import DeleteConfirmation from "./DeleteConfirmation"
 
 const Topics = () => {
 
     const [topic, setTopic] = useState(null)
+    const [followedForum, setFollowedForum] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [isFollow, setIsFollow] = useState(false)
 
     useEffect(() => {
         const viewAllForum = async () => {
             try {
                 const response = await ForumApi.getAllForum()
+                const userForum = await ForumApi.followedForum(localStorage.getItem('userId'))
+
                 setTopic(response)
+                setFollowedForum(userForum)
+                console.log(userForum)
 
             } catch (error) {
                 console.error(error)
@@ -66,9 +71,19 @@ const Topics = () => {
                                         </Stack>
                                         <Stack className="!flex-row gap-1 absolute top-0 right-0 z-10 ">
 
-                                            <DeleteConfirmation forumToRemove={tp.id} removeForum={true} />
-                                            <IconButton onClick={() => followForum(tp.id, localStorage.getItem('userId'))} >
-                                                <Bookmark className="!text-pinkish !text-lg" />
+                                            {/* <DeleteConfirmation forumToRemove={tp.id} removeForum={true} /> */}
+                                            <IconButton onClick={() => {
+                                                followForum(tp.id, localStorage.getItem('userId'))
+                                                setIsFollow(true)
+                                            }}
+                                            >
+                                                {
+                                                    followedForum.some(ff => ff.forumId === tp.id) ?
+                                                        <RemoveCircleOutline className="!text-pinkish !text-lg" />
+                                                        : isFollow ? <RemoveCircleOutline className="!text-pinkish !text-lg" /> : <Bookmark className="!text-pinkish !text-lg" />
+
+                                                }
+
                                             </IconButton>
                                         </Stack>
                                     </Stack>
