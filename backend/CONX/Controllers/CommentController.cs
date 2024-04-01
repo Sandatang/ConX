@@ -133,6 +133,7 @@ namespace CONX.Controllers
             // Parse string to Int
             var convertedID = Int32.Parse(threadId);
             var comments = await _context.ThreadComments
+                                            .Include(x => x.Comment)
                                             .Where(x => x.ThreadId == convertedID)
                                             .Select(x => new
                                             {

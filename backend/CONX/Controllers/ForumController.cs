@@ -179,7 +179,7 @@ namespace CONX.Controllers
 
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> UpdateThread([FromBody] UpdateForum updateForum)
+        public async Task<IActionResult> UpdateForum([FromBody] UpdateForum updateForum)
         {
             if (!ModelState.IsValid)
             {    // Model validation failed
