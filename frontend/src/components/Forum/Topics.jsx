@@ -26,9 +26,13 @@ const Topics = () => {
         viewAllForum()
     }, [])
 
-    function followForum(forumId, userId) {
-        console.log(forumId)
-        console.log(userId)
+    const followForum = async (forumId, userId) => {
+        const formData = {
+            "forumId": forumId,
+            "userId": userId
+        }
+        const response = await ForumApi.followForum(formData)
+        console.log(response)
     }
 
     return (

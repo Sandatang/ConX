@@ -75,14 +75,14 @@ namespace CONX.Controllers
             return Ok(forums);
         }
 
-        [HttpPost]
-        [Route("view")]
+        [HttpGet]
+        [Route("specific/{forumId}")]
         public async Task<IActionResult> ViewForum(string forumId)
         {
-            int forumId = Int32.Parse(id);
+            int id = Int32.Parse(forumId);
             var forum = await _context.Forums
                             .Include(f => f.Creator)
-                            .Where(f => f.Id == forumId)
+                            .Where(f => f.Id == id)
                             .FirstOrDefaultAsync();
 
             if (forum == null)
@@ -99,6 +99,7 @@ namespace CONX.Controllers
         public async Task<IActionResult> ViewPopularForum()
         {
             var forums = await _context.Forums.OrderByDescending(f => f.FollowCount)
+                                              .Include(f => f.Creator)
                                               .Take(5)
                                               .ToListAsync();
 
@@ -113,9 +114,9 @@ namespace CONX.Controllers
 
         [HttpPost]
         [Route("follow")]
-        public async Task<IActionResult> FollowForum([FromBody]FollowForum model)
+        public async Task<IActionResult> FollowForum([FromBody] FollowForum model)
         {
-            var forum = await _context.Forums.FindAsync(forumId);
+            var forum = await _context.Forums.FindAsync(model.ForumId);
             
 
             if (forum == null)

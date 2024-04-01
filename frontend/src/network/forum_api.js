@@ -29,6 +29,19 @@ export async function getTopForum() {
 }
 
 export async function deleteForum(data) {
-  const response = await fetchData(`/api/forum/delete/${data}`, { method: "DELETE" });
-  return response.json()
+  const response = await fetchData(`/api/forum/delete/${data}`, {
+    method: "DELETE",
+  });
+  return response.json();
+}
+
+export async function followForum(data) {
+  const response = await fetchData(`/api/forum/follow`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
 }
