@@ -4,6 +4,7 @@ import { IconButton, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import * as ForumApi from "../../network/forum_api"
+import DeleteConfirmation from "./DeleteConfirmation"
 
 const Topics = () => {
 
@@ -29,6 +30,7 @@ const Topics = () => {
         console.log(forumId)
         console.log(userId)
     }
+
     return (
         <>
             {
@@ -58,17 +60,18 @@ const Topics = () => {
                                             <Link to={`/forum/topics/${tp.title.toLowerCase().replace(/ /g, "-")}/${tp.id}`} className="!text-[16px] text-black hover:!text-slate-600 hover:underline underline-offset-2 !justify-start !font-semibold">{tp.title}</Link>
                                             <Typography className="!text-[12px] !text-slate-700 line-clamp-2">{tp.description}</Typography>
                                         </Stack>
-                                        <IconButton onClick={() => followForum(tp.id, localStorage.getItem('userId'))} className="!absolute top-0 right-0">
-                                            <div className="flex flex-col justify-center items-center">
-                                                <Bookmark className="!text-pinkish" />
-                                                <span className="capitalize text-sm !text-black">follow</span>
-                                            </div>
-                                        </IconButton>
+                                        <Stack className="!flex-row gap-1 absolute top-0 right-0 z-10 ">
+
+                                            <DeleteConfirmation forumToRemove={tp.id} removeForum={true} />
+                                            <IconButton onClick={() => followForum(tp.id, localStorage.getItem('userId'))} >
+                                                <Bookmark className="!text-pinkish !text-lg" />
+                                            </IconButton>
+                                        </Stack>
                                     </Stack>
                                 ))}
 
-                            </div>
-                        </Stack>
+                            </div >
+                        </Stack >
                     ) : (
                         <Typography>No data yet</Typography>
                     ))

@@ -12,8 +12,10 @@ export async function createForum(data) {
 }
 
 export async function getOneForum(data) {
-  const response = await fetchData(`/api/forum/view/${data}`, { method: "GET" });
-  return response.json()
+  const response = await fetchData(`/api/forum/view/${data}`, {
+    method: "GET",
+  });
+  return response.json();
 }
 
 export async function getAllForum() {
@@ -24,4 +26,9 @@ export async function getAllForum() {
 export async function getTopForum() {
   const response = await fetchData("/api/forum/popular", { method: "GET" });
   return response.json();
+}
+
+export async function deleteForum(data) {
+  const response = await fetchData(`/api/forum/delete/${data}`, { method: "DELETE" });
+  return response.json()
 }

@@ -23,7 +23,7 @@ export const brgyLinks = [
   },
   {
     id: "forum",
-    link: "/forum/topics",
+    link: "/forum",
     title: "Forum",
     icon: <Forum fontSize="medium" className="!text-red-500" />
   },
@@ -66,7 +66,7 @@ export const womenLinks = [
   },
   {
     id: "forum",
-    link: "/forum/topics",
+    link: "/forum",
     title: "Forum",
     icon: <Forum fontSize="medium" className="!text-red-500" />
   },

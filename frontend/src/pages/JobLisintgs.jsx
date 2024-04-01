@@ -1,12 +1,32 @@
+import { Add } from "@mui/icons-material"
 import { Avatar, Button, Card, CardActions, CardContent, Stack, Typography } from "@mui/material"
+import { useState } from "react"
 import { Link } from "react-router-dom"
+import AddJob from "../components/Job/AddJob"
 
 const JobLisintgs = () => {
+    const userRole = localStorage.getItem("role")
+    const [add, setAdd] = useState(false)
     return (
         <Stack className="overflow-y-auto no-scrollbar px-8 py-4">
-            <Stack className="!flex-row gap-3 items-center mb-2">
-                <Typography className="!text-2xl !font-semibold tracking-wider ! capitalize" >Jobs available</Typography>
-                <Typography className="!text-md bg-gray-100/70 px-6 py-2 rounded-full shadow-sm !font-medium">121</Typography>
+            <Stack className="!flex-row gap-3 w-full items-center mb-2">
+                <Stack className="!flex-row w-3/4 ">
+                    <Typography className="!text-2xl !font-semibold tracking-wider ! capitalize" >Jobs available</Typography>
+                    <Typography className="!text-md bg-gray-100/70 px-6 py-2 rounded-full shadow-sm !font-medium">121</Typography>
+                </Stack>
+                {
+                    userRole === "Personnel" &&
+                    <>
+                        <Stack className="w-1/4 mr-4">
+                            <Button onClick={() => setAdd(true)} className="self-end" variant="contained">
+                                <Add />
+                                Job
+                            </Button>
+                        </Stack>
+
+                        {add && <AddJob onClose={() => setAdd(false)} />}
+                    </>
+                }
             </Stack>
 
             <Stack className="w-full">

@@ -17,6 +17,7 @@ import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
 import BulletinBoard from "./pages/BulletinBoard"
+import MyForum from "./components/Forum/MyForum"
 function App() {
 
   const router = createBrowserRouter(
@@ -28,14 +29,18 @@ function App() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
           <Route element={<MainContent />}>
+
             {/* BRGY Links */}
             <Route path="/bulletin" element={<BulletinBoard />} />
             <Route path="/manage-users" element={<ManageUsers />} />
 
             <Route path="/forum/*" element={<Forum />} >
-              <Route path="topics/*" element={<ForumContentContainer />} >
-                <Route index element={<Topics />} />
+                <Route path="topics" element={<Topics />} />
+                <Route path="my-forum" element={<MyForum />} />
+              {/* <Route path="topics/*" element={<ForumContentContainer />} >
               </Route>
+              <Route path="my-forum/*" element={<ForumContentContainer />} >
+              </Route> */}
             </Route>
 
             <Route path="forum/topics/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
