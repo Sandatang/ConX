@@ -77,7 +77,7 @@ namespace CONX.Controllers
         }
 
         [HttpPost]
-        [Route("view")]
+        [Route("view/{forumId}")]
         public async Task<IActionResult> ViewForum(string forumId)
         {
             var forum = await _context.Forums.FindAsync(forumId);
@@ -95,7 +95,8 @@ namespace CONX.Controllers
         [Route("popular")]
         public async Task<IActionResult> ViewPopularForum()
         {
-            var forums = await _context.Forums.OrderByDescending(f => f.FollowCount)
+            var forums = await _context.Forums.Include(f => f.Creator)
+                                              .OrderByDescending(f => f.FollowCount)
                                               .Take(5)
                                               .ToListAsync();
 
@@ -109,10 +110,10 @@ namespace CONX.Controllers
         }
 
         [HttpPost]
-        [Route("follow/{forumId}")]
-        public async Task<IActionResult> FollowAddForum(string forumId)
+        [Route("follow")]
+        public async Task<IActionResult> FollowForum([FromBody]FollowForum model)
         {
-            var forum = await _context.Forums.FindAsync(forumId);
+            var forum = await _context.Forums.FindAsync(model.ForumId);
             
 
             if (forum == null)
@@ -120,7 +121,16 @@ namespace CONX.Controllers
                 return StatusCode(StatusCodes.Status204NoContent,
                     new Response { Status = "Error", Message = " No forums created ", Field = "failed" });
             }
+
+            _context.ForumFollows.Add(new JuncForumFollows
+            {
+                ForumId = model.ForumId,
+                UserId = model.UserId,
+            });
+
             forum.FollowCount += 1;
+
+
             _context.Update(forum);
             _context.SaveChanges();
 
@@ -132,8 +142,7 @@ namespace CONX.Controllers
         public async Task<IActionResult> UpdateThread([FromBody] UpdateForum updateForum)
         {
             if (!ModelState.IsValid)
-            {
-                // Model validation failed
+            {    // Model validation failed
                 var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
                 return StatusCode(StatusCodes.Status400BadRequest,
                     new Response { Status = "Error", Message = "Validation failed", Field = "failed" });

@@ -10,7 +10,7 @@ namespace CONX.Models
         public User Creator { get; set; }
         public DateTime DateCreated { get; set; }
         public string Title { get; set; }
-        public string Tags { get; set; }
+        public string Tags { get; set; } //separated by comma
         public string Description { get; set; }
         public int FollowCount { get; set; }
     }
