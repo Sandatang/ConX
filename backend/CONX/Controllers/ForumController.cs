@@ -77,7 +77,7 @@ namespace CONX.Controllers
         }
 
         [HttpPost]
-        [Route("view")]
+        [Route("view/{forumId}")]
         public async Task<IActionResult> ViewForum(string forumId)
         {
             var forum = await _context.Forums.FindAsync(forumId);
@@ -142,8 +142,7 @@ namespace CONX.Controllers
         public async Task<IActionResult> UpdateThread([FromBody] UpdateForum updateForum)
         {
             if (!ModelState.IsValid)
-            {
-                // Model validation failed
+            {    // Model validation failed
                 var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
                 return StatusCode(StatusCodes.Status400BadRequest,
                     new Response { Status = "Error", Message = "Validation failed", Field = "failed" });

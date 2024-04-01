@@ -90,7 +90,7 @@ namespace CONX.Controllers
 
         [HttpGet]
         [Route("view/{threadId}")]
-        public async Task<IActionResult> ViewForum(string threadId)
+        public async Task<IActionResult> ViewThread(string threadId)
         {
             var convertedId = Int32.Parse(threadId);
             var postings = await _context.ForumThreads
