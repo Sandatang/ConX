@@ -9,6 +9,8 @@ namespace CONX.Models.JobViewModel
 
         [Required(ErrorMessage = "Job Title is required")]
         public string JobTitle { get; set; }
+        public string JobWage { get; set; }
+        public string Location { get; set; }
 
         public string JobDescription { get; set; }
 
