@@ -141,6 +141,37 @@ namespace CONX.Controllers
         }
 
         [HttpPost]
+        [Route("unfollow")]
+        public async Task<IActionResult> UnfollowForum([FromBody] FollowForum model)
+        {
+            var forum = await _context.Forums.FindAsync(model.ForumId);
+
+            if (forum == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                    new Response { Status = "Error", Message = "Forum not found", Field = "forumId" });
+            }
+
+            var userFollow = await _context.ForumFollows
+                                            .FirstOrDefaultAsync(ff => ff.ForumId == model.ForumId && ff.UserId == model.UserId);
+
+            if (userFollow == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                    new Response { Status = "Error", Message = "User is not following this forum", Field = "userId" });
+            }
+
+            _context.ForumFollows.Remove(userFollow);
+            forum.FollowCount -= 1;
+
+            _context.Update(forum);
+            await _context.SaveChangesAsync();
+
+            return Ok(new Response { Status = "Success", Message = "User unfollowed the forum successfully" });
+        }
+
+
+        [HttpPost]
         [Route("view/following/{userId}")]
         public async Task<IActionResult> ViewFollowing(string userId)
         {
@@ -164,9 +195,8 @@ namespace CONX.Controllers
         [Route("view/myforums/{userId}")]
         public async Task<IActionResult> ViewMyForums(string userId)
         {
-            var myForums = await _context.ForumFollows
-                                        .Include(x => x.Forum)
-                                        .Where(x => x.UserId == userId)
+            var myForums = await _context.Forums
+                                        .Where(x => x.CreatorId == userId)
                                         .ToListAsync();
 
 
