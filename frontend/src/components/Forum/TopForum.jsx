@@ -1,12 +1,14 @@
 import { AccountCircle, ArrowCircleRight } from "@mui/icons-material"
 import { Button, Stack, Typography } from "@mui/material"
-import * as ForumApi from "../../network/forum_api"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import * as ForumApi from "../../network/forum_api"
 
 
 const TopForum = () => {
     const [topForum, setTopForum] = useState(null)
     const [loading, setLoading] = useState(true)
+    const navigate = useNavigate()
 
     useEffect(() => {
         async function viewTopForum() {
@@ -58,7 +60,13 @@ const TopForum = () => {
                                             <Typography className="!text-[0.467rem] capitalize">{tf.creator.firstname} {tf.creator.lastname}</Typography>
                                         </Stack>
                                     </Stack>
-                                    <Button  >
+
+                                    <Button
+                                        onClick={() => {
+                                            navigate(`/forum/topic/${tf.title.toLowerCase().replace(/ /g, "-")}/${tf.id}`)
+                                            window.location.reload()
+                                        }}
+                                    >
                                         <ArrowCircleRight className="!text-pinkish" />
                                     </Button>
                                 </Stack>

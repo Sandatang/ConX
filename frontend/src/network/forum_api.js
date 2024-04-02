@@ -46,6 +46,17 @@ export async function followForum(data) {
   return response.json();
 }
 
+export async function unfollowForum(data) {
+  const response = await fetchData(`/api/forum/unfollow`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
 export async function followedForum(data) {
   const response = await fetchData(`/api/forum/view/following/${data}`, {
     method: "POST",
@@ -59,5 +70,3 @@ export async function getForumCreated(data) {
   });
   return response.json();
 }
-
-

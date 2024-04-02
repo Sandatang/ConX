@@ -34,7 +34,7 @@ const AddComment = (props) => {
                     </Stack>
                 ))
             }
-            <Stack className=" py-4 !px-0 sticky bg-white bottom-0 gap-2">
+            <Stack className=" py-4 px-2 rounded-md sticky bg-gray-300 bottom-0 gap-2">
                 <form action="" onSubmit={handleSubmit(createComment)}>
 
                     <Stack className="">

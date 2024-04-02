@@ -10,7 +10,6 @@ const Topics = () => {
     const [topic, setTopic] = useState(null)
     const [followedForum, setFollowedForum] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [isFollow, setIsFollow] = useState(false)
 
     useEffect(() => {
         const viewAllForum = async () => {
@@ -38,6 +37,13 @@ const Topics = () => {
             "userId": userId
         }
         await ForumApi.followForum(formData)
+    }
+    const unFollowForum = async (forumId, userId) => {
+        const formData = {
+            "forumId": forumId,
+            "userId": userId
+        }
+        await ForumApi.unfollowForum(formData)
     }
 
     return (
@@ -72,15 +78,14 @@ const Topics = () => {
                                         <Stack className="!flex-row gap-1 absolute top-0 right-0 z-10 ">
 
                                             {/* <DeleteConfirmation forumToRemove={tp.id} removeForum={true} /> */}
-                                            <IconButton onClick={() => {
-                                                followForum(tp.id, localStorage.getItem('userId'))
-                                                setIsFollow(true)
-                                            }}
-                                            >
+                                            <IconButton >
                                                 {
-                                                    followedForum.some(ff => ff.forumId === tp.id) ?
-                                                        <RemoveCircleOutline className="!text-pinkish !text-lg" />
-                                                        : isFollow ? <RemoveCircleOutline className="!text-pinkish !text-lg" /> : <Bookmark className="!text-pinkish !text-lg" />
+                                                    followedForum.some(ff => ff.forumId === tp.id)
+                                                        ?
+
+                                                        <RemoveCircleOutline onClick={() => unFollowForum(tp.id, localStorage.getItem('userId'))} className="!text-pinkish !text-lg" />
+                                                        :
+                                                        <Bookmark onClick={() => followForum(tp.id, localStorage.getItem('userId'))} className="!text-pinkish !text-lg" />
 
                                                 }
 

@@ -5,13 +5,13 @@ import Modal from "../components/Modal"
 import ModalHeading from "../components/ModalHeading"
 import AddComment from "../components/Comment/AddComment"
 
-const ThreadCommentModa = ({ open, thread, close, title }) => {
+const ThreadCommentModa = ({ open, thread, close }) => {
     return (
         open && (
 
             <Modal
                 onDismiss={close}
-                heading={<ModalHeading title={title} desc="" />}
+                heading={<ModalHeading title={`${thread.thread.title} Post`} desc="" classname="!text-center " />}
                 width=" w-1/2"
                 height="h-[550px]"
             >
