@@ -1,6 +1,5 @@
 ﻿using CONX.Models;
 using CONX.Models.ForumPostingsViewModel;
-using CONX.Models.ForumViewModel;
 using CONX.Models.ThreadViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -84,7 +83,7 @@ namespace CONX.Controllers
             }
 
             // If there's no error occured
-            return Ok("Postings successfully created");
+            return Ok(new Response { Status = "Success", Message = " Postings added succesfully", });
 
         }
 
@@ -140,7 +139,7 @@ namespace CONX.Controllers
             // Save the data
             var result = await _context.SaveChangesAsync();
 
-            if(result <= 0)
+            if (result <= 0)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                    new Response { Status = "Error", Message = "Something went wrong", Field = "failed" });
@@ -179,5 +178,45 @@ namespace CONX.Controllers
 
             return Ok("Thread is closed.");
         }
+
+        [HttpGet]
+        [Route("getAll/{forumId}")]
+        public async Task<IActionResult> ViewThreads(string forumId)
+        {
+            var convertedId = Int32.Parse(forumId);
+            var threads = await _context.ForumThreads
+                                                    .Where(x => x.ForumId == convertedId)
+                                                    .Select(x => new
+                                                    {
+                                                        Thread = new
+                                                        {
+                                                            ThreadId = x.ThreadId,
+                                                            UserId = x.Thread.UserId,
+                                                            User = x.Thread.User.Firstname + " " + x.Thread.User.Lastname,
+                                                            Title = x.Thread.PostTitle,
+                                                            Content = x.Thread.PostBody,
+                                                            Created = x.Thread.DateCreated,
+                                                        },
+                                                        Comment = _context.ThreadComments
+                                                                                        .Where(tc => tc.ThreadId == x.ThreadId)
+                                                                                        .Select(tc => new
+                                                                                        {
+                                                                                            CommentId = tc.CommentId,
+                                                                                            UserId = tc.Comment.UserId,
+                                                                                            User = tc.Comment.User.Firstname + " " + tc.Comment.User.Lastname,
+                                                                                            Content = tc.Comment.Content,
+                                                                                            Created = tc.Comment.Created,
+                                                                                        }).ToList()
+                                                    }).ToListAsync();
+
+            if (threads.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = "No threads found for the specified forum", Field = "forumId" });
+            }
+
+            return Ok(threads);
+        }
+
     }
 }
