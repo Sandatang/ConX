@@ -191,7 +191,7 @@ namespace CONX.Controllers
                  new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
             }
 
-            return Ok("Job updated");
+            return Ok("Job deactivated");
         }
 
         [HttpDelete]
