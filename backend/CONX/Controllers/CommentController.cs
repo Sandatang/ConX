@@ -83,7 +83,18 @@ namespace CONX.Controllers
                       new Response { Status = "Error", Message = " Something went wrong, Try again later", Field = "failed" });
                 }
 
-                return Ok();
+                var newComment = await _context.Comments
+                                                        .Where(c => c.CommentId == comment.CommentId)
+                                                        .Select(c => new
+                                                        {
+                                                            CommentId = c.CommentId,
+                                                            UserId = c.UserId,
+                                                            User = c.User.Firstname + " " + c.User.Lastname,
+                                                            Content = c.Content,
+                                                            Created = c.Created,
+                                                        }).ToListAsync();
+
+                return Ok(newComment);
             }
 
             return StatusCode(StatusCodes.Status404NotFound,

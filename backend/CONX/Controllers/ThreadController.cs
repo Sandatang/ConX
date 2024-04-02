@@ -145,7 +145,7 @@ namespace CONX.Controllers
                    new Response { Status = "Error", Message = "Something went wrong", Field = "failed" });
             }
 
-            return Ok("Update success");
+            return Ok(new Response { Status = "Success", Message = "Updated successfully" });
         }
 
         [HttpPut]
