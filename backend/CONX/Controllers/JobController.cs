@@ -122,7 +122,7 @@ namespace CONX.Controllers
                         DateCreated = x.Created,
                         isClose = x.isActive,
                     })
-                    .ToListAsync();
+                    .FirstOrDefaultAsync();
 
             if (job == null)
             {
