@@ -111,7 +111,7 @@ export const settingLinks = [
 export const topics = [
   {
     link: "/topics",
-    title: "Threads"
+    title: "Topics"
   },
   {
     link: "/followed",

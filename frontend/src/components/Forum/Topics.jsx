@@ -20,12 +20,13 @@ const Topics = () => {
 
                 setTopic(response)
                 setFollowedForum(userForum)
-                console.log(userForum)
 
             } catch (error) {
                 console.error(error)
             } finally {
-                setLoading(false)
+                setTimeout(() => {
+                    setLoading(false)
+                }, 1000)
             }
         }
         viewAllForum()
@@ -36,8 +37,7 @@ const Topics = () => {
             "forumId": forumId,
             "userId": userId
         }
-        const response = await ForumApi.followForum(formData)
-        console.log(response)
+        await ForumApi.followForum(formData)
     }
 
     return (
@@ -66,7 +66,7 @@ const Topics = () => {
                                     <Stack key={tp.title} className="!flex-row relative gap-4 bg-gray-200/90 rounded-md p-4 !items-center">
                                         <ForumOutlined fontSize="large" />
                                         <Stack >
-                                            <Link to={`/forum/topics/${tp.title.toLowerCase().replace(/ /g, "-")}/${tp.id}`} className="!text-[16px] text-black hover:!text-slate-600 hover:underline underline-offset-2 !justify-start !font-semibold">{tp.title}</Link>
+                                            <Link to={`/forum/topic/${tp.title.toLowerCase().replace(/ /g, "-")}/${tp.id}`} className="!text-[16px] text-black hover:!text-slate-600 hover:underline underline-offset-2 !justify-start !font-semibold">{tp.title}</Link>
                                             <Typography className="!text-[12px] !text-slate-700 line-clamp-2">{tp.description}</Typography>
                                         </Stack>
                                         <Stack className="!flex-row gap-1 absolute top-0 right-0 z-10 ">

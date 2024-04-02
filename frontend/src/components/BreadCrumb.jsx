@@ -9,7 +9,7 @@ const BreadCrumb = (props) => {
                 {
                     props.data.map((dt) => (
                         <Link
-                            key={dt.url }
+                            key={dt.name }
                             underline="hover"
                             sx={{ display: 'flex', alignItems: 'center' }}
                             color="inherit"

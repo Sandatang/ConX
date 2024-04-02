@@ -3,9 +3,11 @@ import { Delete } from "@mui/icons-material";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
 import { useState } from "react";
 import * as ForumApi from "../../network/forum_api";
+import { useForm } from "react-hook-form";
 
 const DeleteConfirmation = (props) => {
     const [open, setOpen] = useState(false);
+    const { handleSubmit } = useForm()
 
     const removeForum = async () => {
         try {
@@ -45,7 +47,7 @@ const DeleteConfirmation = (props) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <form action="" onSubmit={removeForum}>
+                    <form action="" onSubmit={handleSubmit(removeForum)}>
                         <Button type="submit">Yes</Button>
                     </form>
                     <Button onClick={handleClose} autoFocus variant="contained">

@@ -27,9 +27,9 @@ const Forum = () => {
     return (
         !loading ?
 
-            <Stack className=" h-full no-scrollbar overflow-y-auto mx-4 !flex-row" >
+            <Stack className=" h-full no-scrollbar overflow-y-auto !flex-row" >
                 {/* Empowering text and Picture Container*/}
-                < Stack className="h-auto w-[650px] pt-2" >
+                < Stack className="h-auto mx-4 w-full pt-2" >
                     <Stack className=" bg-pinkish !flex-row rounded-xl mb-2 ">
                         <Stack className="w-[55%] mx-4 gap-4 p-4">
                             <Stack className="!text-white h-3/4 ">
@@ -38,7 +38,7 @@ const Forum = () => {
                             </Stack>
                             <Stack className="!flex-row gap-4">
                                 <Button onClick={() => setAddTopic(true)} variant="contained" size="small" className="!bg-white !text-[12px] !text-pinkish !capitalize">Start new discussion</Button>
-                                <Button size="small" className="!bg-white !text-[12px] !text-pinkis !capitalize" >Learn more</Button>
+                                {/* <Button size="small" className="!bg-white !text-[12px] !text-pinkis !capitalize" >Learn more</Button> */}
                             </Stack>
                         </Stack>
                         <Stack className="w-[45%]">
@@ -73,7 +73,6 @@ const Forum = () => {
                     {/* End of Forum navigators */}
 
                     {/* Navigations content  */}
-                    {/* <ForumContentContainer /> */}
                     <Outlet />
                     {/* End Navigations content  */}
 
@@ -82,14 +81,16 @@ const Forum = () => {
                 {/* End Empowering text and Picture */}
 
                 {/* Threads right aside */}
-                <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-18 right-0 ">
-                    <Stack className="h-1/2 overflow-y-auto  border-b-2">
-                        <TopForum />
-                    </Stack>
-                    <Stack className="h-1/2 overflow-y-auto">
-                        <EmergencyContacts />
-                    </Stack>
+                <Stack className=" h-screen w-[400px] p-8 bg-white">
+                    <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-[5rem] right-0 ">
+                        <Stack className="h-1/2 overflow-y-auto  border-b-2">
+                            <TopForum />
+                        </Stack>
+                        <Stack className="h-1/2 overflow-y-auto">
+                            <EmergencyContacts />
+                        </Stack>
 
+                    </Stack>
                 </Stack>
                 {/* End Threads right aside */}
 

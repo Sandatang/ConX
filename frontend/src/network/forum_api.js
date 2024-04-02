@@ -12,7 +12,7 @@ export async function createForum(data) {
 }
 
 export async function getOneForum(data) {
-  const response = await fetchData(`/api/forum/view/${data}`, {
+  const response = await fetchData(`/api/forum/specific/${data}`, {
     method: "GET",
   });
   return response.json();
@@ -46,7 +46,16 @@ export async function followForum(data) {
   return response.json();
 }
 
-export async function followedForum(data){
-  const response = await fetchData(`/api/forum/view/following/${data}`, { method: "POST" })
-  return response.json()
+export async function followedForum(data) {
+  const response = await fetchData(`/api/forum/view/following/${data}`, {
+    method: "POST",
+  });
+  return response.json();
+}
+
+export async function getForumCreated(data) {
+  const response = await fetchData(`/api/forum/view/myForums/${data}`, {
+    method: "POST",
+  });
+  return response.json();
 }
