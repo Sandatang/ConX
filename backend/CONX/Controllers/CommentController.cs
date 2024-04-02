@@ -127,13 +127,14 @@ namespace CONX.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("view/{threadId}")]
         public async Task<IActionResult> ViewComments(string threadId)
         {
             // Parse string to Int
             var convertedID = Int32.Parse(threadId);
             var comments = await _context.ThreadComments
+                                            .Include(x => x.Comment)
                                             .Where(x => x.ThreadId == convertedID)
                                             .Select(x => new
                                             {

@@ -160,9 +160,29 @@ namespace CONX.Controllers
             return Ok(followedForums);
         }
 
+        [HttpPost]
+        [Route("view/myforums/{userId}")]
+        public async Task<IActionResult> ViewMyForums(string userId)
+        {
+            var myForums = await _context.ForumFollows
+                                        .Include(x => x.Forum)
+                                        .Where(x => x.UserId == userId)
+                                        .ToListAsync();
+
+
+            if (myForums == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                    new Response { Status = "Error", Message = " No forums created ", Field = "failed" });
+            }
+
+
+            return Ok(myForums);
+        }
+
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> UpdateThread([FromBody] UpdateForum updateForum)
+        public async Task<IActionResult> UpdateForum([FromBody] UpdateForum updateForum)
         {
             if (!ModelState.IsValid)
             {    // Model validation failed
