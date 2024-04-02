@@ -3,6 +3,7 @@ using CONX.Models.JobViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace CONX.Controllers
 {
@@ -51,6 +52,7 @@ namespace CONX.Controllers
                 ContactNumber = addJobs.ContactNumber,
                 ContactPerson = addJobs.ContactPerson,
                 Created = DateTime.Now,
+                isActive = addJobs.IsActive,
 
             };
 
@@ -157,6 +159,33 @@ namespace CONX.Controllers
             var result = await _context.SaveChangesAsync();
 
             if(result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
+            }
+
+            return Ok("Job updated");
+        }
+        [HttpPut]
+        [Route("deactivate/{jobId}")]
+        public async Task<IActionResult> DeactivateJob(string jobId)
+        {
+            int convertedId = Int32.Parse(jobId);
+            var job = await _context.Jobs.FindAsync(convertedId);
+
+            if (job == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                 new Response { Status = "Error", Message = " Job not exist", Field = "failed" });
+            }
+
+            job.isActive = false;
+
+            // Save the data
+            _context.Jobs.Update(job);
+            var result = await _context.SaveChangesAsync();
+
+            if (result <= 0)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                  new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });

@@ -19,5 +19,7 @@ namespace CONX.Models.JobViewModel
 
         public string ContactNumber { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
     }
 }
