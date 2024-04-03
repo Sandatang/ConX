@@ -1,15 +1,30 @@
-import { AccountCircle, LocationOn } from "@mui/icons-material"
+import { AccountCircle, ArrowBack, LocationOn } from "@mui/icons-material"
 import { List, ListItem, ListItemText, Stack, Typography } from "@mui/material"
 import JobListingRightAside from "./JobListingRightAside"
+import EmergencyContacts from "../EmergencyContacts"
+import BreadCrumb from "../BreadCrumb"
 
 const JobDetails = () => {
+    const back =
+        <>
+        <ArrowBack /> Back
+        </>
+    const breadCrumbUrl = [
+        { url: '../', name: back },
+        // { name: forumTitle.split("-").join(" ") }
+    ]
     return (
         // <Stack className="py-8 px-10 no-scrollbar overflow-y-auto  !flex-row gap-2">
         //     <Stack>
-        <Stack className=" h-full overflow-auto mx-4 no-scrollbar overflow-y-auto !flex-row">
+        <Stack className=" h-full overflow-auto mx-4 pb-10 no-scrollbar overflow-y-auto !flex-row">
             {/* Empowering text and Picture Container*/}
-            <Stack className="h-auto w-[650px] pt-2">
+            <Stack className="h-auto w-full pt-2">
                 <Stack className="pb-4">
+                    <Stack className="bg-pinkish px-4 py-2 mb-4 rounded-sm">
+                        {/* <Typography className="!tracking-wider"> */}
+                        <BreadCrumb data={breadCrumbUrl} classes="!text-[12px] tracking-wider !text-white font-bold " />
+                        {/* </Typography> */}
+                    </Stack>
                     <Stack>
                         <Typography>Job Title</Typography>
                         <Stack className="!flex-row gap-2">
@@ -112,8 +127,19 @@ const JobDetails = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            <Stack className="h-screen">
+            {/* <Stack className="h-screen">
                 <JobListingRightAside />
+            </Stack> */}
+            <Stack className=" h-screen w-[400px] p-8 bg-white">
+                <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-[5rem] right-0 ">
+                    <Stack className="h-1/2 overflow-y-auto  border-b-2">
+                        <JobListingRightAside />
+                    </Stack>
+                    <Stack className="h-1/2 overflow-y-auto">
+                        <EmergencyContacts />
+                    </Stack>
+
+                </Stack>
             </Stack>
         </Stack>
     )
