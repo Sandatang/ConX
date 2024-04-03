@@ -67,7 +67,7 @@ namespace CONX.Controllers
                  new Response { Status = "Error", Message = " Something went wrong, Try again later", Field = "failed" });
             }
 
-            return Ok("Job added successfully");
+            return Ok(new Response { Status = "Success", Message = " Job added successfully"});
 
         }
 
@@ -89,7 +89,7 @@ namespace CONX.Controllers
                         ContactPerson = x.ContactPerson,
                         ContactNumber = x.ContactNumber,
                         DateCreated = x.Created,
-                        isClose = x.isActive,
+                        isActive = x.isActive,
                     })
                     .ToListAsync();
 
@@ -164,7 +164,7 @@ namespace CONX.Controllers
                  new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
             }
 
-            return Ok("Job updated");
+            return Ok(new Response { Status = "Success", Message = " Job updated successfully" });
         }
         [HttpPut]
         [Route("deactivate/{jobId}")]
@@ -191,7 +191,7 @@ namespace CONX.Controllers
                  new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
             }
 
-            return Ok("Job deactivated");
+            return Ok(new Response { Status = "Success", Message = " Job is closed" });
         }
 
         [HttpDelete]
