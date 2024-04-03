@@ -23,6 +23,14 @@ const FollowedForum = () => {
         }
         forumFollowed()
     }, [])
+
+    const unFollowForum = async (forumId, userId) => {
+        const formData = {
+            "forumId": forumId,
+            "userId": userId
+        }
+        await ForumApi.unfollowForum(formData)
+    }
     return (
         <>
 
@@ -57,7 +65,7 @@ const FollowedForum = () => {
 
                                             {/* <DeleteConfirmation forumToRemove={tp.id} removeForum={true} /> */}
                                             <IconButton>
-                                                <RemoveCircleOutline className="!text-pinkish !text-lg" />
+                                                <RemoveCircleOutline onClick={() => unFollowForum(tp.id, localStorage.getItem('userId'))} className="!text-pinkish !text-lg" />
                                             </IconButton>
                                         </Stack>
                                     </Stack>

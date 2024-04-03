@@ -2,7 +2,7 @@
 
 const ModalHeading = (props) => {
     return (
-        <div className={`shadow-md ${props.shadow}`}>
+        <div className={`shadow-md ${props.shadow} sticky top-0 bg-white z-50 `}>
             {props.title !== "" &&
                 <div className={`${props.classname}  bg-mainBlueColor w-full py-6 border-slate-600 font-semibold text-black`}>
                     <h1 className={` text-[20px] tracking-wider  ml-8 uppercase ${props.class}`}>{props.title}</h1>

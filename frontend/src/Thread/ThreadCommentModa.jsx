@@ -14,6 +14,7 @@ const ThreadCommentModa = ({ open, thread, close }) => {
                 heading={<ModalHeading title={`${thread.thread.title} Post`} desc="" classname="!text-center " />}
                 width=" w-1/2"
                 height="h-[550px]"
+                abs="right-[20rem]"
             >
 
                 <div className="w-full ">
