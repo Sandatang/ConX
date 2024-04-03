@@ -3,6 +3,7 @@ using CONX.Models.JobViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace CONX.Controllers
 {
@@ -46,9 +47,12 @@ namespace CONX.Controllers
                 UserId = addJobs.UserId,
                 JobTitle = addJobs.JobTitle,
                 JobDescription = addJobs.JobDescription,
+                Wage = addJobs.JobWage,
+                Location = addJobs.Location,
                 ContactNumber = addJobs.ContactNumber,
                 ContactPerson = addJobs.ContactPerson,
                 Created = DateTime.Now,
+                isActive = addJobs.IsActive,
 
             };
 
@@ -80,6 +84,8 @@ namespace CONX.Controllers
                         User = $"{x.User.Firstname} {x.User.Firstname}",
                         JobTitle = x.JobTitle,
                         JobDescription = x.JobDescription,
+                        Wage = x.Wage,
+                        Location = x.Location,
                         ContactPerson = x.ContactPerson,
                         ContactNumber = x.ContactNumber,
                         DateCreated = x.Created,
@@ -88,6 +94,39 @@ namespace CONX.Controllers
                     .ToListAsync();
 
             if(job == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                 new Response { Status = "Error", Message = " No Jobs yet", Field = "failed" });
+            }
+
+            return Ok(job);
+        }
+
+        [HttpPost]
+        [Route("view/{jobId}")]
+        public async Task<IActionResult> ViewJob(string jobId)
+        {
+            int convertedId = Int32.Parse(jobId);
+            var job = await _context.Jobs
+                    .Include(x => x.User)
+                    .Where(x => x.Id == convertedId)
+                    .Select(x => new
+                    {
+                        Id = x.Id,
+                        UserId = x.UserId,
+                        User = $"{x.User.Firstname} {x.User.Firstname}",
+                        JobTitle = x.JobTitle,
+                        JobDescription = x.JobDescription,
+                        Wage = x.Wage,
+                        Location = x.Location,
+                        ContactPerson = x.ContactPerson,
+                        ContactNumber = x.ContactNumber,
+                        DateCreated = x.Created,
+                        isClose = x.isActive,
+                    })
+                    .FirstOrDefaultAsync();
+
+            if (job == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent,
                  new Response { Status = "Error", Message = " No Jobs yet", Field = "failed" });
@@ -110,10 +149,13 @@ namespace CONX.Controllers
 
             job.JobTitle = updateJob.JobTitle;
             job.JobDescription = updateJob.JobDescription;
+            job.Wage = updateJob.JobWage; 
+            job.Location = updateJob.Location;
             job.ContactPerson = updateJob.ContactPerson;
             job.ContactNumber = updateJob.ContactNumber;
 
             // Save the data
+            _context.Jobs.Update(job);
             var result = await _context.SaveChangesAsync();
 
             if(result <= 0)
@@ -123,6 +165,33 @@ namespace CONX.Controllers
             }
 
             return Ok("Job updated");
+        }
+        [HttpPut]
+        [Route("deactivate/{jobId}")]
+        public async Task<IActionResult> DeactivateJob(string jobId)
+        {
+            int convertedId = Int32.Parse(jobId);
+            var job = await _context.Jobs.FindAsync(convertedId);
+
+            if (job == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                 new Response { Status = "Error", Message = " Job not exist", Field = "failed" });
+            }
+
+            job.isActive = false;
+
+            // Save the data
+            _context.Jobs.Update(job);
+            var result = await _context.SaveChangesAsync();
+
+            if (result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
+            }
+
+            return Ok("Job deactivated");
         }
 
         [HttpDelete]
