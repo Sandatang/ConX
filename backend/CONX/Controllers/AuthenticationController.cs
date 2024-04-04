@@ -384,6 +384,14 @@ namespace CONX.Controllers
             // Check user if exist
             var user = await _userManager.FindByNameAsync(loginUser.Username);
 
+            var extendedUserProperties = (User)user;
+
+            if(extendedUserProperties.DeActivate == true)
+            {
+
+                return Ok(new Response { Status = "Error", Message = "User account is deactivated " });
+            }
+
             if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
             {
                 var authClaims = new List<Claim>
