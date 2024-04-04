@@ -32,46 +32,55 @@ function App() {
           <Route element={<MainContent />}>
 
             {/* BRGY Links */}
-            <Route path="/bulletin" element={<BulletinBoard />} />
-            <Route path="/manage-users" element={<ManageUsers />} />
+            {
+              localStorage.getItem('role') === 'Personnel' &&
+              <>
+                <Route path="/bulletin" element={<BulletinBoard />} />
+                <Route path="/manage-users" element={<ManageUsers />} />
 
-            <Route path="/forum/*" element={<Forum />} >
-                <Route path="topics" element={<Topics />} />
-                <Route path="followed" element={<FollowedForum />} />
-                <Route path="my-forum" element={<MyForum />} />
-              {/* <Route path="topics/*" element={<ForumContentContainer />} >
-              </Route>
-              <Route path="my-forum/*" element={<ForumContentContainer />} >
-              </Route> */}
-            </Route>
+                <Route path="/forum/*" element={<Forum />} >
+                  <Route path="topics" element={<Topics />} />
+                  <Route path="followed" element={<FollowedForum />} />
+                  <Route path="my-forum" element={<MyForum />} />
+                </Route>
 
-            <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
-              <Route index element={<Thread />} />
-            </Route>
+                <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Thread />} />
+                </Route>
 
-            <Route path="/jobs/*" element={<Layout />}>
-              <Route index element={<JobLisintgs />} />
-              <Route path=":id/details" element={<JobDetails />} />
-            </Route>
+                <Route path="/jobs/*" element={<Layout />}>
+                  <Route index element={<JobLisintgs />} />
+                  <Route path=":id/details" element={<JobDetails />} />
+                </Route>
+              </>
+            }
+
             {/* End of BRGY Links */}
 
+
             {/* Women Links */}
-            <Route path="/bulletin" element={<BulletinBoard />} />
 
-            <Route path="/forum/*" element={<Forum />} >
-              <Route path="topics/*" element={<ForumContentContainer />} >
-                <Route index element={<Topics />} />
-              </Route>
-            </Route>
+            {
+              localStorage.getItem('role') === 'Women' &&
+              <>
+                <Route path="/bulletin" element={<BulletinBoard />} />
 
-            <Route path="forum/topics/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
-              <Route index element={<Thread />} />
-            </Route>
+                <Route path="/forum/*" element={<Forum />} >
+                  <Route path="topics/*" element={<ForumContentContainer />} >
+                    <Route index element={<Topics />} />
+                  </Route>
+                </Route>
 
-            <Route path="/jobs/*" element={<Layout />}>
-              <Route index element={<JobLisintgs />} />
-              <Route path=":id/details" element={<JobDetails />} />
-            </Route>
+                <Route path="forum/topics/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Thread />} />
+                </Route>
+
+                <Route path="/jobs/*" element={<Layout />}>
+                  <Route index element={<JobLisintgs />} />
+                  <Route path=":id/details" element={<JobDetails />} />
+                </Route>
+              </>
+            }
             {/* End of Women Links */}
 
 

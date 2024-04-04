@@ -51,7 +51,7 @@ const UpdateModalUser = (props) => {
                   label="Firstname "
                   size="small"
                   className="!w-full"
-                  InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                  // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                   defaultValue={props.user.firstname}
                   {...register("firstname")}
                 />
@@ -61,7 +61,7 @@ const UpdateModalUser = (props) => {
                   label="Middlename"
                   size="small"
                   className="!w-full"
-                  InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                  // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                   defaultValue={props.user.middlename}
                   {...register("middlename")}
 
@@ -72,7 +72,7 @@ const UpdateModalUser = (props) => {
                   label="Lastname "
                   size="small"
                   className="!w-full"
-                  InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                  // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                   defaultValue={props.user.lastname}
                   {...register("lastname")}
 
@@ -96,7 +96,7 @@ const UpdateModalUser = (props) => {
                   label="Email"
                   size="small"
                   className="!w-full"
-                  InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                  // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                   defaultValue={props.user.email}
                   {...register("email")}
 

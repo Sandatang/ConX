@@ -2,11 +2,11 @@
 import { Bookmark, ForumOutlined, RemoveCircleOutline } from "@mui/icons-material"
 import { IconButton, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import * as ForumApi from "../../network/forum_api"
 
 const Topics = () => {
-
+    const navigate = useNavigate()
     const [topic, setTopic] = useState(null)
     const [followedForum, setFollowedForum] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -31,12 +31,15 @@ const Topics = () => {
         viewAllForum()
     }, [])
 
+
+
     const followForum = async (forumId, userId) => {
         const formData = {
             "forumId": forumId,
             "userId": userId
         }
         await ForumApi.followForum(formData)
+        navigate(0)
     }
     const unFollowForum = async (forumId, userId) => {
         const formData = {
@@ -44,7 +47,9 @@ const Topics = () => {
             "userId": userId
         }
         await ForumApi.unfollowForum(formData)
+        navigate(0)
     }
+
 
     return (
         <>

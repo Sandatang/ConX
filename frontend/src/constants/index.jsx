@@ -1,4 +1,4 @@
-import { AccountCircle, Announcement, Book, Forum, ManageAccounts, Password, Settings, VideoCameraFront } from "@mui/icons-material";
+import { AccountCircle, Analytics, Announcement, Book, Forum, ManageAccounts, Password, Settings, VideoCameraFront } from "@mui/icons-material";
 
 export const brgyLinks = [
   {
@@ -35,11 +35,18 @@ export const brgyLinks = [
     title: "Manage Users",
     icon: <ManageAccounts fontSize="medium" className="!text-violet-500" />
   },
+
   {
     id: "setting",
     link: "/settings",
     title: "Settings",
     icon: <Settings fontSize="medium" className="!text-orange-500" />
+  },
+  {
+    id: "analytics",
+    link: "/analytics",
+    title: "Analytics",
+    icon: <Analytics fontSize="medium" className="!text-orange-500" />
   },
 ];
 

@@ -35,7 +35,7 @@ const CreatePostings = () => {
                         <Typography variant="body1" component="span" className="!capitalize">{localStorage.getItem("username")}</Typography>
                     </Stack>
                     <Stack className="ml-4 !w-full py-4 pr-4 gap-2">
-                        <form action="" onSubmit={handleSubmit(createPostings)}>
+                        <form action="" onSubmit={handleSubmit(createPostings)} className="flex flex-col gap-2">
 
                             <TextField
                                 fullWidth

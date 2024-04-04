@@ -57,13 +57,13 @@ const ModalDeActivate = (props) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle className="!text-lg" id="alert-dialog-title">
-                    Do you want to {props.job ? 'close this job' : 'deactivate this user'}?
+                    Do you want to {props.job ? 'close this job' : `${props.status ? 'activate this user account' : 'deactivate this user account'}`}?
 
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
 
-                        {props.job ? 'Closing this job means that this is no longer looking' : 'Deactivating this user account will restrict their access and disable any associated services this action is reversible.'}
+                        {props.job ? 'Closing this job means that this is no longer looking' : `${props.status ? 'Activating this user account will return their any associated services to normal' : 'Deactivating this user account will restrict  their access and disable  this action is reversible'}  .`}
 
                     </DialogContentText>
                 </DialogContent>

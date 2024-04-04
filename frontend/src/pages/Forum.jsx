@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Search } from "@mui/icons-material";
 import { Button, LinearProgress, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import woman from "../assets/women.png";
 import EmergencyContacts from "../components/EmergencyContacts";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
@@ -11,10 +13,15 @@ import { topics } from "../constants";
 const Forum = () => {
     const [addTopic, setAddTopic] = useState(false);
     const [loading, setLoading] = useState(true);
-    // const navigate = useNavigate()
+    const [initialized, setInitialized] = useState(false)
+    const navigate = useNavigate()
+
     useEffect(() => {
         try {
-            // navigate("/forum/topics")
+            if (!initialized) {
+                navigate("/forum/topics")
+                setInitialized(true)
+            }
         } catch (error) {
             console.error(error)
         } finally {
@@ -23,6 +30,9 @@ const Forum = () => {
             }, [1000])
         }
     }, [])
+
+
+
 
     return (
         !loading ?
@@ -47,8 +57,8 @@ const Forum = () => {
 
                     </Stack>
                     {/* Forum navigations */}
-                    <Stack className="!flex-row my-4" >
-                        <>
+                    <Stack >
+                        <Stack className="!flex-row justify-start gap-4 my-4" >
                             {topics.map((topic) => (
                                 <Button
                                     key={topic.link}
@@ -68,7 +78,22 @@ const Forum = () => {
                                     <span className=" !text-[11px] !font-semibold !capitalize">{topic.title}</span>
                                 </Button>
                             ))}
-                        </>
+                        </Stack>
+
+                        <form className="flex flex-row mb-4" >
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                className="p-2 border-2 rounded-md w-full mr-4"
+                                // {...register('searched')}
+                            />
+                            <Stack className="!relative">
+                                <Button variant='outlined' size="small" type='submit' >
+                                    <Search />
+                                    <Typography>Search...</Typography>
+                                </Button>
+                            </Stack>
+                        </form>
                     </Stack >
                     {/* End of Forum navigators */}
 
