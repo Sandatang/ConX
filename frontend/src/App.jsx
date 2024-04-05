@@ -87,7 +87,7 @@ function App() {
 
 
             <Route path="/settings/*" element={<Settings />} >
-              <Route path="personal-information" element={<PersonalInformation />} />
+              <Route path="profile" element={<PersonalInformation />} />
               <Route path="confirmation/*" element={<ChangeUnConfirmed />} >
                 <Route path="change-password" element={<ChangePassword />} />
               </Route>

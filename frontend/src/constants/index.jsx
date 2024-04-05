@@ -37,16 +37,16 @@ export const brgyLinks = [
   },
 
   {
-    id: "setting",
-    link: "/settings",
-    title: "Settings",
-    icon: <Settings fontSize="medium" className="!text-orange-500" />
-  },
-  {
     id: "analytics",
     link: "/analytics",
     title: "Analytics",
     icon: <Analytics fontSize="medium" className="!text-orange-500" />
+  },
+  {
+    id: "setting",
+    link: "/settings",
+    title: "Settings",
+    icon: <Settings fontSize="medium" className="!text-orange-500" />
   },
 ];
 
@@ -96,8 +96,8 @@ export const womenLinks = [
 export const settingLinks = [
   {
     id: "personal",
-    link: "/personal-information",
-    title: "Personal Information",
+    link: "/profile",
+    title: "My Profile",
     icon: <AccountCircle fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
   {
