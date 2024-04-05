@@ -2,15 +2,14 @@
 using CONX.Models.Authentication.Login;
 using CONX.Models.Authentication.Signup;
 using CONX.Models.AuthenticationViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Xml.Linq;
 
 namespace CONX.Controllers
 {
@@ -109,6 +108,7 @@ namespace CONX.Controllers
             var user = new User();
 
             // Add women user to DB
+            user.EmployeeNumber = addPersonnel.EmployeeNumber;
             user.Email = addPersonnel.Email;
             user.UserName = addPersonnel.Username;
             user.Firstname = addPersonnel.Firstname;
@@ -179,6 +179,7 @@ namespace CONX.Controllers
             var users = iUsers.Select(user => new User
             {
                 Id = user.Id,
+                EmployeeNumber = ((User)user).EmployeeNumber,
                 Firstname = ((User)user).Firstname, // Cast to your custom User class
                 Middlename = ((User)user).Middlename,
                 Birthdate = ((User)user).Birthdate,
@@ -191,6 +192,26 @@ namespace CONX.Controllers
 
             // Return if user is not null
             return Ok(users);
+        }
+
+        [HttpGet]
+        [Route("getTotalUser")]
+        public async Task<IActionResult> GetTotalUser()
+        {
+            var totalUser = await _userManager.Users.ToListAsync();
+            var totalPersonnel = await _userManager.GetUsersInRoleAsync("personnel");
+            var totalWomen = await _userManager.GetUsersInRoleAsync("women");
+
+            var data = new
+            {
+                users = totalUser.Count(),
+                personnel = totalPersonnel.Count(),
+                totalWomen = totalWomen.Count()
+            };
+
+
+            return Ok(data);
+
         }
 
         [HttpGet]
@@ -224,7 +245,7 @@ namespace CONX.Controllers
         [Route("password-confirmation")]
         public async Task<IActionResult> PasswordConfirmation([FromBody] PasswordConfirmation passwordConfirmation)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -253,7 +274,7 @@ namespace CONX.Controllers
 
             var user = await _userManager.FindByIdAsync(changePassword.UserId);
 
-            if(user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                      new Response { Status = " Error ", Message = " User not found", Field = "failed" });
@@ -274,7 +295,7 @@ namespace CONX.Controllers
                      new Response { Status = " Error ", Message = " Something went wrong", Field = "failed" });
             }
 
-            return Ok(new Response { Status = "Success", Message="Password change successfully"});
+            return Ok(new Response { Status = "Success", Message = "Password change successfully" });
         }
 
         // User Update
@@ -288,21 +309,21 @@ namespace CONX.Controllers
             }
 
             var user = await _userManager.FindByIdAsync(updateUser.UserId);
-            if(user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                         new Response { Status = "Error", Message = " User not found", Field = "failed" });
             }
             // Update the users data
             var userToUpdate = (User)user;
-            if(updateUser.UserName != null)
+            if (updateUser.UserName != null)
             {
                 userToUpdate.UserName = updateUser.UserName;
             }
             userToUpdate.Firstname = updateUser.Firstname;
             userToUpdate.Middlename = updateUser.Middlename;
-            userToUpdate.Lastname= updateUser.Lastname;
-            userToUpdate.Email= updateUser.Email;
+            userToUpdate.Lastname = updateUser.Lastname;
+            userToUpdate.Email = updateUser.Email;
             userToUpdate.Birthdate = updateUser.Birthdate;
 
             var result = await _userManager.UpdateAsync(userToUpdate);
@@ -313,7 +334,7 @@ namespace CONX.Controllers
             }
 
 
-            return Ok(new Response { Status = " Success", Message = "Update Successfully"});
+            return Ok(new Response { Status = " Success", Message = "Update Successfully" });
         }
 
         // Delete user single deletion only
@@ -324,7 +345,7 @@ namespace CONX.Controllers
             var user = await _userManager.FindByIdAsync(id);
 
             // Check if user exist
-            if(user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = "User not found", Field = "failed" });
@@ -350,7 +371,7 @@ namespace CONX.Controllers
         {
             var user = await _userManager.FindByIdAsync(deActivateUser.UserId);
 
-            if(user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = " User not found", Field = "failed" });
@@ -386,7 +407,7 @@ namespace CONX.Controllers
 
             var extendedUserProperties = (User)user;
 
-            if(extendedUserProperties.DeActivate == true)
+            if (user != null && extendedUserProperties.DeActivate == true)
             {
 
                 return Ok(new Response { Status = "Error", Message = "User account is deactivated " });
