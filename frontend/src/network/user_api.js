@@ -61,6 +61,11 @@ export async function viewAllPersonnel() {
   return response.json();
 }
 
+export async function getTotalOfUser() {
+  const response = await fetchData("/api/auth/getTotalUser", { method: "GET" });
+  return response.json();
+}
+
 export async function registerPersonnel(data) {
   const response = await fetchData("/api/auth/register/personnel", {
     method: "POST",

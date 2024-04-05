@@ -19,6 +19,7 @@ import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
 import MyForum from "./components/Forum/MyForum"
+import Analytics from "./pages/Analytics"
 function App() {
 
   const router = createBrowserRouter(
@@ -37,6 +38,7 @@ function App() {
               <>
                 <Route path="/bulletin" element={<BulletinBoard />} />
                 <Route path="/manage-users" element={<ManageUsers />} />
+                <Route path="/analytics" element={<Analytics />} />
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
