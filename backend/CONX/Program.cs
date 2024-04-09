@@ -1,4 +1,7 @@
 using CONX.Models;
+using CONX.Models.Authentication.Signup;
+using ConXUser.Management.Service.Model;
+using ConXUser.Management.Service.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +18,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.EnableSensitiveDataLogging();
 });
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 // For Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -28,15 +42,12 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowOrigin", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
+//Email Verification
+var emailConfig = builder.Configuration
+                                    .GetSection("EmailConfiguration")
+                                    .Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+builder.Services.AddScoped<IEmailServices, EmailService>();
 
 
 // Add services to the container.
@@ -53,6 +64,8 @@ using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
 
     var roles = new[] { "Admin", "Personnel", "Women" };
 
@@ -63,6 +76,28 @@ using (var scope = app.Services.CreateScope())
             await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
+
+    var defaultUser = await userManager.FindByNameAsync("admin123");
+    if (defaultUser == null)
+    {
+        defaultUser = new User();
+        {
+
+            // Add admin user to DB
+            defaultUser.Email = "admin@gmail.com";
+            defaultUser.UserName = "admin123";
+
+        };
+
+        await userManager.CreateAsync(defaultUser, "Admin@1234");
+        await userManager.AddToRoleAsync(defaultUser, "Admin");
+        //await userManager.CreateAsync(defaultUser, "Admin@1234"); // Set your desired default password
+
+        // Assigning roles to the default user
+        //await userManager.AddToRoleAsync(defaultUser, "Admin");
+    }
+
+
 }
 
 // Configure the HTTP request pipeline.

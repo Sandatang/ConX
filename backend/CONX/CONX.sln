@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CONX", "CONX.csproj", "{8DC5002C-773A-4FAE-9AE6-5CE7714F84F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CONX", "CONX.csproj", "{8DC5002C-773A-4FAE-9AE6-5CE7714F84F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConXUser.Management.Service", "..\User.Management.Services\ConXUser.Management.Service.csproj", "{2481D534-851A-4941-82F1-481C5D4DE586}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8DC5002C-773A-4FAE-9AE6-5CE7714F84F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC5002C-773A-4FAE-9AE6-5CE7714F84F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DC5002C-773A-4FAE-9AE6-5CE7714F84F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2481D534-851A-4941-82F1-481C5D4DE586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2481D534-851A-4941-82F1-481C5D4DE586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2481D534-851A-4941-82F1-481C5D4DE586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2481D534-851A-4941-82F1-481C5D4DE586}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

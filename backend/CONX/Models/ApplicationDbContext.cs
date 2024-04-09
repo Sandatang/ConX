@@ -11,6 +11,7 @@ namespace CONX.Models
         public DbSet<Thread> Threads { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Jobs> Jobs { get; set; }
+        public DbSet<Connectivity> Connectivitys { get; set; }
         public DbSet<JuncForumThread> ForumThreads { get; set; }
         public DbSet<JuncThreadComment> ThreadComments { get; set; }
         public DbSet<JuncForumFollows> ForumFollows { get; set; }

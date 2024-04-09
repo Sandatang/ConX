@@ -2,6 +2,8 @@
 using CONX.Models.Authentication.Login;
 using CONX.Models.Authentication.Signup;
 using CONX.Models.AuthenticationViewModels;
+using ConXUser.Management.Service.Model;
+using ConXUser.Management.Service.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,13 +22,16 @@ namespace CONX.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly IEmailServices _emailService;
 
-        public AuthenticationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthenticationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailServices emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _emailService = emailService;
         }
+
         // Add a user women
         [HttpPost]
         [Route("register/women")]
@@ -74,8 +79,15 @@ namespace CONX.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, "women");
+
+            // Token for email verification
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+            var message = new Message(new string[] { user.Email! }, "Confirmation Email Link", confirmationLink!);
+            _emailService.SendEmail(message);
+
             return StatusCode(StatusCodes.Status200OK,
-                   new Response { Status = "Success", Message = " User created successfully" });
+                   new Response { Status = "Success", Message = $" User created successfully & Email is sent {user.Email} for verification"});
 
 
         }
@@ -125,10 +137,36 @@ namespace CONX.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, "personnel");
+
+
             return StatusCode(StatusCodes.Status200OK,
                    new Response { Status = "Success", Message = " User created successfully" });
 
 
+        }
+
+        [HttpGet]
+        [Route("emailConfirmation")]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            { 
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+
+                if (result.Succeeded)
+                {
+                    //return StatusCode(StatusCodes.Status200OK,
+                    //    new Response { Status = "Success", Message = " Email Verified Successfully " });
+                    return Redirect("http://localhost:5173/email/confirmation?Success=true");
+                }
+            }
+
+            //return StatusCode(StatusCodes.Status500InternalServerError,
+            //            new Response { Status = "Error", Message = " This User Does not Exist", Field="failed" });
+
+            return Redirect("http://localhost:5173/email/error?Error=true");
         }
 
         // View all women
@@ -413,8 +451,21 @@ namespace CONX.Controllers
                 return Ok(new Response { Status = "Error", Message = "User account is deactivated " });
             }
 
+
             if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
             {
+                if (!user.EmailConfirmed)
+                {
+                    // Token for email verification
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+                    var message = new Message(new string[] { user.Email! }, "Confirmation Email Link", confirmationLink!);
+                    _emailService.SendEmail(message);
+
+                    return StatusCode(StatusCodes.Status200OK,
+                           new Response { Status = "Success", Message = $" User Email is not verified, Email is sent to {user.Email} for verification" });
+                }
+
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),

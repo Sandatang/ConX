@@ -245,15 +245,35 @@ namespace CONX.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteForum(string id)
         {
+
+
             var convertId = Convert.ToInt32(id);
             var forum = await _context.Forums.FindAsync(convertId);
+
+            var forumFollows = await _context.ForumFollows.Where(ff => ff.ForumId ==  forum.Id).ToListAsync();
+
+            if (!forumFollows.Any())
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " Cannot find this comment. ", Field = "failed" });
+            }
+
+            // Que query for deleting the data
+            _context.ForumFollows.RemoveRange(forumFollows);
+            var followResult = await _context.SaveChangesAsync();
+
+            if (followResult <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = " Something went wrong. ", Field = "failed" });
+            }
+
 
             if (forum == null)
             {
                 return NotFound(new Response { Status = "Error", Message = " Forum not exist ", Field = "failed" });
 
             }
-
             _context.Forums.Remove(forum);
             var result = await _context.SaveChangesAsync();
             if (result <= 0)
