@@ -108,6 +108,7 @@ namespace CONX.Controllers
                                         threadContent = x.Thread.PostBody,
                                         isClosed = x.Thread.isClosed,
                                         dateCreated = x.Thread.DateCreated,
+                                        imgUrl = x.Thread.ImgUrl,
 
                                     }).ToListAsync();
 
@@ -141,6 +142,8 @@ namespace CONX.Controllers
             // Update the thread data
             thread.PostTitle = updateThread.Title;
             thread.PostBody = updateThread.Content;
+            thread.ImgUrl = updateThread.ImageUrl;
+            
             // Save the data
             var result = await _context.SaveChangesAsync();
 
@@ -201,6 +204,7 @@ namespace CONX.Controllers
                                                             Title = x.Thread.PostTitle,
                                                             Content = x.Thread.PostBody,
                                                             Created = x.Thread.DateCreated,
+                                                            ImgUrl = x.Thread.ImgUrl
                                                         },
                                                         Comment = _context.ThreadComments
                                                                                         .Where(tc => tc.ThreadId == x.ThreadId)

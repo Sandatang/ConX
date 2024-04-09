@@ -49,6 +49,7 @@ namespace CONX.Controllers
                 JobDescription = addJobs.JobDescription,
                 Wage = addJobs.JobWage,
                 Location = addJobs.Location,
+                ExperienceReq = addJobs.ExperienceReq,
                 ContactNumber = addJobs.ContactNumber,
                 ContactPerson = addJobs.ContactPerson,
                 Created = DateTime.Now,
@@ -86,6 +87,7 @@ namespace CONX.Controllers
                         JobDescription = x.JobDescription,
                         Wage = x.Wage,
                         Location = x.Location,
+                        ExperienceReq = x.ExperienceReq,
                         ContactPerson = x.ContactPerson,
                         ContactNumber = x.ContactNumber,
                         DateCreated = x.Created,
@@ -119,6 +121,7 @@ namespace CONX.Controllers
                         JobDescription = x.JobDescription,
                         Wage = x.Wage,
                         Location = x.Location,
+                        ExperienceReq = x.ExperienceReq,
                         ContactPerson = x.ContactPerson,
                         ContactNumber = x.ContactNumber,
                         DateCreated = x.Created,
@@ -153,6 +156,7 @@ namespace CONX.Controllers
             job.Location = updateJob.Location;
             job.ContactPerson = updateJob.ContactPerson;
             job.ContactNumber = updateJob.ContactNumber;
+            job.ExperienceReq = updateJob.ExperienceReq;
 
             // Save the data
             _context.Jobs.Update(job);
