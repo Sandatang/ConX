@@ -51,6 +51,11 @@ namespace CONX.Controllers
                 DateCreated = DateTime.Now,
             };
 
+            if(forumPostings.ImageUrl != null)
+            {
+                postings.ImgUrl = forumPostings.ImageUrl;
+            }
+
             // Que data to be inserted in Db
             _context.Threads.Add(postings);
 

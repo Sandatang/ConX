@@ -18,5 +18,7 @@ namespace CONX.Models.ForumPostingsViewModel
 
         public DateTime Created { get; set; }
 
+        public string? ImageUrl { get; set; }
+
     }
 }
