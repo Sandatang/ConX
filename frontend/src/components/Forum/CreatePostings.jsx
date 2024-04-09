@@ -1,11 +1,12 @@
 import { Add, Remove } from "@mui/icons-material"
 import { Avatar, Button, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
-import * as ThreadApi from "../../network/thread_api"
 import { useForm } from "react-hook-form"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import * as ThreadApi from "../../network/thread_api"
 
 const CreatePostings = () => {
+    const navigate = useNavigate()
     const [addComment, setAddComment] = useState(false)
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
     const {id} = useParams()
@@ -18,6 +19,7 @@ const CreatePostings = () => {
         }
         const response = await ThreadApi.addThread(formData)
         console.log(response)
+        navigate(0)
     }
 
     return (

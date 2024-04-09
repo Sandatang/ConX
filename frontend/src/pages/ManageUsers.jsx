@@ -186,7 +186,7 @@ const ManageUsers = () => {
                     </span>
                     <span className="ml-4 flex flex-col">
                       <span className="text-sm font-medium text-gray-900 capitalize"> {user.lastname}, {user.firstname} {user.middlename}</span>
-                      <span className="text-sm text-gray-500 text-center">{user.employeeNumber}</span>
+                      <span className="text-sm text-gray-500 text-start">{user.employeeNumber}</span>
                     </span>
                   </span>
                 </td>

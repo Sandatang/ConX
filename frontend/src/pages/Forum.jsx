@@ -1,17 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Search } from "@mui/icons-material";
+import { Add, Search } from "@mui/icons-material";
 import { Button, LinearProgress, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import OfficialsHotline from "../Contacts/OfficialsHotline";
 import woman from "../assets/women.png";
-import EmergencyContacts from "../components/EmergencyContacts";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
 import TopForum from "../components/Forum/TopForum";
 import { topics } from "../constants";
+import AddHotline from "../Contacts/AddHotline";
 
 
 const Forum = () => {
     const [addTopic, setAddTopic] = useState(false);
+    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [initialized, setInitialized] = useState(false)
     const navigate = useNavigate()
@@ -85,7 +87,7 @@ const Forum = () => {
                                 type="text"
                                 placeholder="Search..."
                                 className="p-2 border-2 rounded-md w-full mr-4"
-                                // {...register('searched')}
+                            // {...register('searched')}
                             />
                             <Stack className="!relative">
                                 <Button variant='outlined' size="small" type='submit' >
@@ -112,7 +114,14 @@ const Forum = () => {
                             <TopForum />
                         </Stack>
                         <Stack className="h-1/2 overflow-y-auto">
-                            <EmergencyContacts />
+                            <Stack className="!flex-row items-center">
+                                <Typography className="!text-[18px] pb-2 !font-semibold">Official Hotlines</Typography>
+                                {
+                                    localStorage.getItem('role') === 'Personnel' &&
+                                    <Button onClick={() => setOpen(true)}><Add /> hotline</Button>
+                                }
+                            </Stack>
+                            <OfficialsHotline />
                         </Stack>
 
                     </Stack>
@@ -120,6 +129,7 @@ const Forum = () => {
                 {/* End Threads right aside */}
 
                 {addTopic && <ForumAddTopic onClose={() => setAddTopic(false)} />}
+                {open && <AddHotline onClose={() => setOpen(false)} />}
             </Stack >
             :
             <LinearProgress />

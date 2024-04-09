@@ -1,19 +1,24 @@
 /* eslint-disable react/prop-types */
 import { Delete } from "@mui/icons-material";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
 import { useState } from "react";
 import * as ForumApi from "../../network/forum_api";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const DeleteConfirmation = (props) => {
+    const navigate = useNavigate()
     const [open, setOpen] = useState(false);
+    const [error, setError] = useState(null)
     const { handleSubmit } = useForm()
 
     const removeForum = async () => {
         try {
             const response = await ForumApi.deleteForum(props.forumToRemove)
-
-            console.log(response)
+            if (response.status === "Error") {
+                setError(response.message)
+            }
+            navigate(0)
         } catch (error) {
             console.error(error)
         }
@@ -40,6 +45,7 @@ const DeleteConfirmation = (props) => {
                 <DialogTitle className="!text-lg" id="alert-dialog-title">
                     Deletion
 
+                    {error && <Alert severity="error">{error}</Alert>}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">

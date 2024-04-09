@@ -182,18 +182,6 @@ const Thread = () => {
             </Stack>
 
             {/* Forum right aside */}
-            {/* <Stack className="border-l-2 h-screen w-[400px] p-8 bg-white">
-
-                <Stack className="w-[300px] px-4 mx-4 sticky top-0">
-                    <Stack className="h-1/2 overflow-y-auto  border-b-2">
-                        <TopForum />
-                    </Stack>
-                    <Stack className="h-1/2 overflow-y-auto">
-                        <EmergencyContacts />
-                    </Stack>
-
-                </Stack>
-            </Stack> */}
             <Stack className=" h-full w-[400px] p-8 bg-white">
                 <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-[5rem] right-0 ">
                     <Stack className="h-1/2 overflow-y-auto  border-b-2">

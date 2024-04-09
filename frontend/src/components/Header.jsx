@@ -16,7 +16,7 @@ export const Header = () => {
 
     return (
         //  max-w-screen-2xl
-        <nav className="w-full sticky top-0 shadow-xl pb-2 z-50 border-b-2 antialiased text-slate-900 dark:text-slate-800 bg-white">
+        <nav className="w-full sticky top-0 shadow-xl pb-2 z-10 border-b-2 antialiased text-slate-900 dark:text-slate-800 bg-white">
             <div className="mx-auto px-2 sm:px-6 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className=" absolute md:hidden inset-y-0 left-0 flex items-center ">

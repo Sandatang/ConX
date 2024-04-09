@@ -73,18 +73,24 @@ const PersonalInformation = () => {
                                 <Stack className="w-[33%] gap-1">
                                     <Typography className="capitalize !text-md !text-slate-500">middlename</Typography>
                                     <Typography className="capitalize !text-md  pb-1 w-full !text-slate-800">
-                                        {userInfo.firstname}
+                                        {userInfo.middlename}
                                     </Typography>
                                 </Stack>
                                 <Stack className="w-[33%] gap-1">
                                     <Typography className="capitalize !text-md !text-slate-500">Lastname</Typography>
                                     <Typography className="capitalize !text-md  pb-1 w-full !text-slate-800">
-                                        {userInfo.firstname}
+                                        {userInfo.lastname}
                                     </Typography>
                                 </Stack>
                             </Stack>
 
                             <Stack className="!flex-row gap-2 justify-between">
+                                <Stack className="w-[33%] gap-1">
+                                    <Typography className="capitalize !text-md !text-slate-500">Username</Typography>
+                                    <Typography className="!text-md pb-1 w-full !text-slate-800">
+                                        {userInfo.username}
+                                    </Typography>
+                                </Stack>
                                 <Stack className="w-[33%] gap-1">
                                     <Typography className="capitalize !text-md !text-slate-500">Email Address</Typography>
                                     <Typography className="!text-md pb-1 w-full !text-slate-800">

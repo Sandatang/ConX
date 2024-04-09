@@ -23,7 +23,7 @@ const AddJob = (props) => {
             const formData = {
                 ...data,
                 ...property,
-                'isActive': false
+                'isActive': true
             }
             if (props.update) {
                 response = await JobApi.updateJob(formData)
@@ -63,8 +63,8 @@ const AddJob = (props) => {
     }
     return (
         <Modal
-            onDismiss={props.onClose}
-            heading={<ModalHeading title={props.update ? 'Update Job' : 'Create Job'} desc="" classname="!text-center " />}
+
+            heading={<ModalHeading title={props.update ? 'Update Job' : 'Create Job'} desc="" classname="!text-center " onDismiss={props.onClose} />}
             width=" w-[40%]"
             height="h-[550px]"
             abs="right-[25rem]"

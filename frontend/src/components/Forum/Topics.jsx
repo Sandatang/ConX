@@ -83,18 +83,20 @@ const Topics = () => {
                                         <Stack className="!flex-row gap-1 absolute top-0 right-0 z-10 ">
 
                                             {/* <DeleteConfirmation forumToRemove={tp.id} removeForum={true} /> */}
-                                            <IconButton >
-                                                {
-                                                    followedForum.some(ff => ff.forumId === tp.id)
-                                                        ?
+                                            {
+                                                followedForum.some(ff => ff.forumId === tp.id)
+                                                    ?
+                                                    <IconButton onClick={() => unFollowForum(tp.id, localStorage.getItem('userId'))}>
 
-                                                        <RemoveCircleOutline onClick={() => unFollowForum(tp.id, localStorage.getItem('userId'))} className="!text-pinkish !text-lg" />
-                                                        :
-                                                        <Bookmark onClick={() => followForum(tp.id, localStorage.getItem('userId'))} className="!text-pinkish !text-lg" />
+                                                        <RemoveCircleOutline className="!text-pinkish !text-lg" />
+                                                    </IconButton>
+                                                    :
+                                                    <IconButton onClick={() => followForum(tp.id, localStorage.getItem('userId'))}>
+                                                        <Bookmark className="!text-pinkish !text-lg" />
+                                                    </IconButton>
 
-                                                }
+                                            }
 
-                                            </IconButton>
                                         </Stack>
                                     </Stack>
                                 ))}

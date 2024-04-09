@@ -14,7 +14,7 @@ const MainContent = () => {
                 {/* Side Navigation */}
 
                 <Stack className=" !h-screen w-[350px] justify-start bg-white p-4 ">
-                    <Stack className="!flex-row fixed top-18 left-0 z-50 !h-screen flex-none w-[250px] justify-start  p-4 ">
+                    <Stack className="!flex-row fixed top-18 left-0 z-10 !h-screen flex-none w-[250px] justify-start  p-4 ">
                         <Stack spacing={2}
 
                             className='w-full '>

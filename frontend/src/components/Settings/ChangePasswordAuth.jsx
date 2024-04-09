@@ -39,8 +39,7 @@ const ChangePasswordAuth = (props) => {
     return (
         <>
             <Modal
-                onDismiss={props.isSet}
-                heading={<ModalHeading title={`Enter Password`} desc={`for security purpose`} />}
+                heading={<ModalHeading title={`Enter Password`} desc={`for security purpose`} onDismiss={props.isSet}/>}
                 width=" w-[35%]"
             >
 

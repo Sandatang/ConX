@@ -8,8 +8,10 @@ import * as UserApi from "../network/user_api";
 import Modal from "./Modal";
 import ModalHeading from "./ModalHeading";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 export default function AddPeronnelModal(props) {
+    const navigate = useNavigate()
     const { register, setValue, reset, handleSubmit, formState: { isSubmitting }, } = useForm();
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null)
@@ -55,6 +57,14 @@ export default function AddPeronnelModal(props) {
             }
             const response = await UserApi.updateUser(formData);
 
+            if (response.status === " Success") {
+                setError(null)
+                setSuccess(response.message)
+                setValue('birthdate', null);
+                reset()
+                navigate(0)
+            }
+
             console.log(response)
 
 
@@ -70,8 +80,10 @@ export default function AddPeronnelModal(props) {
 
     return (
         <Modal
-            onDismiss={props.onClose}
-            heading={<ModalHeading title={`${props.update ? "Update user" : "Add personnel"}`} desc="" />}
+            heading={<ModalHeading title={`${props.update ? "Update user" : "Add personnel"}`} desc="" onDismiss={() => {
+                props.onClose
+                navigate(0)
+            }} />}
             width=" w-[35%]"
         >
 

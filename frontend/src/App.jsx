@@ -1,7 +1,7 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
 import FollowedForum from "./components/Forum/FollowedForum"
-import ForumContentContainer from "./components/Forum/ForumContentContainer"
 import ForumSpecificTopicContainer from "./components/Forum/ForumSpecificTopicContainer"
+import MyForum from "./components/Forum/MyForum"
 import Thread from "./components/Forum/Thread"
 import Topics from "./components/Forum/Topics"
 import IsLogged from "./components/IsLogged"
@@ -10,6 +10,7 @@ import Layout from "./components/Layout"
 import ChangePassword from "./components/Settings/ChangePassword"
 import ChangeUnConfirmed from "./components/Settings/ChangeUnConfirmed"
 import PersonalInformation from "./components/Settings/PersonalInformation"
+import Analytics from "./pages/Analytics"
 import BulletinBoard from "./pages/BulletinBoard"
 import Forum from "./pages/Forum"
 import JobLisintgs from "./pages/JobLisintgs"
@@ -18,8 +19,7 @@ import ManageUsers from "./pages/ManageUsers"
 import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
-import MyForum from "./components/Forum/MyForum"
-import Analytics from "./pages/Analytics"
+import EmailConfirmationMessage from "./components/EmailConfirmationMessage"
 function App() {
 
   const router = createBrowserRouter(
@@ -27,6 +27,8 @@ function App() {
       <Route>
         <Route path="/login" element={<IsLogged />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/email/confirmation" element={<EmailConfirmationMessage />} />
+        <Route path="/email/error" element={<EmailConfirmationMessage />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
@@ -58,6 +60,33 @@ function App() {
             }
 
             {/* End of BRGY Links */}
+            {/* BRGY Links */}
+            {
+              localStorage.getItem('role') === 'Admin' &&
+              <>
+                <Route path="/bulletin" element={<BulletinBoard />} />
+                <Route path="/manage-users" element={<ManageUsers />} />
+                <Route path="/analytics" element={<Analytics />} />
+
+                <Route path="/forum/*" element={<Forum />} >
+                  <Route path="topics" element={<Topics />} />
+                  <Route path="followed" element={<FollowedForum />} />
+                  <Route path="my-forum" element={<MyForum />} />
+                </Route>
+
+                <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Thread />} />
+                </Route>
+
+
+                <Route path="/jobs/*" element={<Layout />}>
+                  <Route index element={<JobLisintgs />} />
+                  <Route path=":id/details" element={<JobDetails />} />
+                </Route>
+              </>
+            }
+
+            {/* End of BRGY Links */}
 
 
             {/* Women Links */}
@@ -68,12 +97,12 @@ function App() {
                 <Route path="/bulletin" element={<BulletinBoard />} />
 
                 <Route path="/forum/*" element={<Forum />} >
-                  <Route path="topics/*" element={<ForumContentContainer />} >
-                    <Route index element={<Topics />} />
-                  </Route>
+                  <Route path="topics" element={<Topics />} />
+                  <Route path="followed" element={<FollowedForum />} />
+                  <Route path="my-forum" element={<MyForum />} />
                 </Route>
 
-                <Route path="forum/topics/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
+                <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
                   <Route index element={<Thread />} />
                 </Route>
 
