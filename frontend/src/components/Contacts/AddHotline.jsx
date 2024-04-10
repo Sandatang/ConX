@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Alert, Button, TextField, Typography } from '@mui/material'
-import Modal from '../components/Modal'
-import ModalHeading from '../components/ModalHeading'
-import * as HotlineApi from "../network/hotline_api"
+import Modal from '../Modal'
+import ModalHeading from '../ModalHeading'
+import * as HotlineApi from "../../network/hotline_api"
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'

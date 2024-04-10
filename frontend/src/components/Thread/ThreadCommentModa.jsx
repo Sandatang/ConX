@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Avatar, Divider, Stack, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import AddComment from "../components/Comment/AddComment"
-import Modal from "../components/Modal"
-import ModalHeading from "../components/ModalHeading"
+import AddComment from "../Comment/AddComment"
+import Modal from "../Modal"
+import ModalHeading from "../ModalHeading"
 
 const ThreadCommentModa = ({ open, thread, close }) => {
     console.log(thread)

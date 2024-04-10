@@ -2,14 +2,16 @@ import { Add, Comment, Report, ThumbUp } from "@mui/icons-material"
 import { Alert, Avatar, Badge, Button, Divider, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import OfficialsHotline from "../../Contacts/OfficialsHotline"
-import ThreadCommentModa from "../../Thread/ThreadCommentModa"
+// import OfficialsHotline from "../../Contacts/OfficialsHotline"
+// import ThreadCommentModa from "../../Thread/ThreadCommentModa"
 import * as ForumApi from "../../network/forum_api"
 import * as ThreadApi from "../../network/thread_api"
 import BreadCrumb from "../BreadCrumb"
 import CreatePostings from "./CreatePostings"
 import ModalEditPostings from "./ModalEditPostings"
 import TopForum from "./TopForum"
+import ThreadCommentModa from "../Thread/ThreadCommentModa"
+import OfficialsHotline from "../Contacts/OfficialsHotline"
 
 
 

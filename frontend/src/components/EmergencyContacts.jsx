@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material"
-import OfficialsHotline from "../Contacts/OfficialsHotline"
+import OfficialsHotline from "./Contacts/OfficialsHotline"
 
 const EmergencyContacts = () => {
     return (

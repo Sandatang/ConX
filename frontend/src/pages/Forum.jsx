@@ -3,12 +3,12 @@ import { Add, Search } from "@mui/icons-material";
 import { Button, LinearProgress, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import OfficialsHotline from "../Contacts/OfficialsHotline";
 import woman from "../assets/women.png";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
 import TopForum from "../components/Forum/TopForum";
 import { topics } from "../constants";
-import AddHotline from "../Contacts/AddHotline";
+import OfficialsHotline from "../components/Contacts/OfficialsHotline";
+import AddHotline from "../components/Contacts/AddHotline";
 
 
 const Forum = () => {

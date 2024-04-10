@@ -96,6 +96,11 @@ export async function updateUser(data) {
   return response.json();
 }
 
+export async function deleteUser(id){
+  const response = await fetchData(`/api/auth/delete/user/${id}`, { method: "DELETE"})
+  return response.json()
+}
+
 export async function passwordConfirmation(data) {
   const response = await fetchData(`/api/auth/password-confirmation`, {
     method: "POST",

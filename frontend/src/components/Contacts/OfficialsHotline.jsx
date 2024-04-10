@@ -1,7 +1,7 @@
 import { CopyAll, Edit } from "@mui/icons-material"
 import { IconButton, Stack } from "@mui/material"
 import { useEffect, useState } from "react"
-import * as HotlineApi from "../network/hotline_api"
+import * as HotlineApi from "../../network/hotline_api"
 import AddHotline from "./AddHotline"
 
 
