@@ -27,8 +27,8 @@ const TopForum = () => {
     }, [])
     return (
         <>
-            <Typography className="!text-[18px] pb-2 !font-semibold">Top Forums</Typography>
 
+            <Typography className="!text-[18px] pb-2 px-4 !font-semibold">Top Forums</Typography>
             <Stack className="gap-3">
                 {
                     loading ? (

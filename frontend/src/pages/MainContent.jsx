@@ -24,7 +24,7 @@ const MainContent = () => {
                     </Stack>
                 </Stack>
                 {/* Contents */}
-                <Stack className='w-full h-screen overflow-hidden no-scrollbar bg-white border-x-2'>
+                <Stack className='w-full h-screen pt-5 overflow-hidden no-scrollbar bg-white border-x-2'>
                     <Outlet />
                 </Stack >
 

@@ -1,15 +1,15 @@
-import { Comment, Report, ThumbUp } from "@mui/icons-material"
+import { Add, Comment, Report, ThumbUp } from "@mui/icons-material"
 import { Alert, Avatar, Button, Divider, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import OfficialsHotline from "../../Contacts/OfficialsHotline"
+import ThreadCommentModa from "../../Thread/ThreadCommentModa"
 import * as ForumApi from "../../network/forum_api"
 import * as ThreadApi from "../../network/thread_api"
 import BreadCrumb from "../BreadCrumb"
-import EmergencyContacts from "../EmergencyContacts"
 import CreatePostings from "./CreatePostings"
-import TopForum from "./TopForum"
-import ThreadCommentModa from "../../Thread/ThreadCommentModa"
 import ModalEditPostings from "./ModalEditPostings"
+import TopForum from "./TopForum"
 
 
 
@@ -108,8 +108,8 @@ const Thread = () => {
                                             <div key={thread.thread.threadId}>
                                                 <Stack className="pb-6">
                                                     <Stack className="!flex-row py-4">
-                                                        <Stack className="!flex-row gap-2 w-full bg-gray-200/70 rounded-md">
-                                                            <Stack className="w-1/4 gap-4 items-center bg-gray-300/50 p-4">
+                                                        <Stack className="!flex-row gap-2 w-full bg-slate-200 rounded-md">
+                                                            <Stack className="w-1/4 gap-4 items-center bg-slate-300/50 p-4">
                                                                 <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
                                                                 <Typography variant="body1" component="span" className="!capitalize !text-sm">{thread.thread.user}</Typography>
                                                             </Stack>
@@ -183,13 +183,22 @@ const Thread = () => {
 
             {/* Forum right aside */}
             <Stack className=" h-full w-[400px] p-8 bg-white">
-                <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-[5rem] right-0 ">
+                <Stack className="border-l-2 h-[500px] w-[300px]  fixed top-[5rem] right-0 ">
                     <Stack className="h-1/2 overflow-y-auto  border-b-2">
                         <TopForum />
                     </Stack>
                     <Stack className="h-1/2 overflow-y-auto">
-                        <EmergencyContacts />
-                    </Stack>
+                            <Stack className="px-4">
+                                <Stack className="!flex-row items-center">
+                                    <Typography className="!text-[18px] pb-2 !font-semibold">Official Hotlines</Typography>
+                                    {
+                                        localStorage.getItem('role') === 'Personnel' &&
+                                        <Button onClick={() => setOpen(true)}><Add /> hotline</Button>
+                                    }
+                                </Stack>
+                                <OfficialsHotline />
+                            </Stack>
+                        </Stack>
 
                 </Stack>
             </Stack>

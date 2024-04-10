@@ -15,7 +15,7 @@ const MyForum = () => {
             try {
                 const response = await ForumApi.getForumCreated(localStorage.getItem('userId'))
                 setForum(response)
-                console.log(response)
+
             } catch (error) {
                 console.error(error)
             } finally {

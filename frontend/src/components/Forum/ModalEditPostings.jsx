@@ -36,8 +36,8 @@ const ModalEditPostings = (props) => {
 
     return (
         <Modal
-            
-            heading={<ModalHeading title={`Update Postings`} desc="" onDismiss={props.onClose}/>}
+
+            heading={<ModalHeading title={`Update Postings`} desc="" onDismiss={props.onClose} />}
             width=" w-[40%]"
         >
             {message && <Alert severity='success'>{message}</Alert>}

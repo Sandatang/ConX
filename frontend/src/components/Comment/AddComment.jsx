@@ -7,6 +7,7 @@ import { useState } from "react"
 const AddComment = (props) => {
     const { register,reset, handleSubmit, formState: { isSubmitting } } = useForm()
     const [comments, setComments] = useState(props.thread.comment)
+    const [toComment, setToComment] = useState(false)
 
     const createComment = async (data) => {
         const formData = {
@@ -26,7 +27,7 @@ const AddComment = (props) => {
 
                     <Stack key={t.commentId} className="!flex-row">
                         <Avatar className="!mr-2 !border-md" />
-                        <Stack className="border-2 w-full p-2 rounded-md bg-gray-300/50">
+                        <Stack className="border-2 w-full p-2 rounded-md bg-slate-300/50">
                             <span className="font-bold capitalize">{t.user}</span>
 
                             <Typography className="lowercase">{t.content}</Typography>
@@ -34,7 +35,7 @@ const AddComment = (props) => {
                     </Stack>
                 ))
             }
-            <Stack className=" py-4 px-2 rounded-md sticky bg-gray-300 bottom-0 gap-2">
+            <Stack className={` py-4 px-2 rounded-md sticky bg-transparent bottom-0 gap-2`} onClick={() => setToComment(true)}>
                 <form action="" onSubmit={handleSubmit(createComment)}>
 
                     <Stack className="">
@@ -45,7 +46,7 @@ const AddComment = (props) => {
                                 fullWidth
                                 name="content"
                                 variant="outlined"
-                                rows={4}
+                                rows={toComment ? 2 : 1}
                                 placeholder="Write your thoughts here..."
                                 className="bg-gray-300/50 !rounded-sm !text-sm "
                                 {...register("content", { required: true })}

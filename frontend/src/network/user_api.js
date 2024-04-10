@@ -3,6 +3,7 @@ export async function fetchData(path, header) {
   return response;
 }
 
+
 export async function registerWomen(data) {
   const response = await fetchData("/api/auth/register/women", {
     method: "POST",
