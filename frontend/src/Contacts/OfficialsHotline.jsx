@@ -14,7 +14,6 @@ const OfficialsHotline = () => {
   useEffect(() => {
     const getAllHotline = async () => {
       const response = await HotlineApi.viewHotlines()
-      console.log(response)
       setHotlines(response)
     }
 

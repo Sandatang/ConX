@@ -1,5 +1,5 @@
 import { Add, Comment, Report, ThumbUp } from "@mui/icons-material"
-import { Alert, Avatar, Button, Divider, Stack, Typography } from "@mui/material"
+import { Alert, Avatar, Badge, Button, Divider, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import OfficialsHotline from "../../Contacts/OfficialsHotline"
@@ -16,6 +16,7 @@ import TopForum from "./TopForum"
 const Thread = () => {
     const { forumTitle, id } = useParams()
     const [forum, setForum] = useState(null)
+    const [threadToOpen, setThreadToOpen] = useState(null)
     const [threads, setThreads] = useState(null)
     const [error, setError] = useState(false)
     const [updatePostings, setUpdatePostings] = useState(false)
@@ -33,11 +34,11 @@ const Thread = () => {
                 const thread = await ThreadApi.getAllThread(id)
 
                 setForum(response)
+                setThreads(thread)
                 if (thread.status === "Error") {
                     setError(true)
                     return
                 }
-                setThreads(thread)
             } catch (error) {
                 console.error(error)
             } finally {
@@ -47,7 +48,8 @@ const Thread = () => {
             }
         }
         getForum()
-    }, [id])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     return (
         <Stack className="h-full no-scrollbar overflow-y-auto !flex-row">
             <Stack className="h-auto  w-full gap-4 mx-4 pt-2">
@@ -95,9 +97,9 @@ const Thread = () => {
                                 {/* End of BreadCrumb */}
 
 
-                                {/* Add Comment */}
+                                {/* Add Postings */}
                                 <CreatePostings add={true} />
-                                {/* End of Add Comment */}
+                                {/* End of Add Postings */}
 
 
 
@@ -130,7 +132,10 @@ const Thread = () => {
                                                                 {updatePostings && <ModalEditPostings thread={thread.thread} onClose={() => setUpdatePostings(false)} />}
 
                                                                 <Divider className="!my-4" />
-                                                                <Typography className="!text-sm">Image here if the user uploaded image</Typography>
+                                                                <Typography className="!text-sm">
+
+                                                                    <img src={`https://localhost:44398/api/image/name/${thread.thread.imgUrl}`} alt="Thread Image" />
+                                                                </Typography>
 
                                                                 <Stack className="!flex-row mt-4">
                                                                     <Stack className=" !flex-row w-[70%] gap-4">
@@ -142,10 +147,15 @@ const Thread = () => {
                                                                             </Typography>
                                                                         </Button>
 
-                                                                        <Button onClick={() => setOpen(true)} variant="text" className="!text-black">
+                                                                        <Button onClick={() => {
+                                                                            setOpen(true)
+                                                                            setThreadToOpen(thread)
+                                                                        }} variant="text" className="!text-black">
                                                                             <Typography variant="body1" component="span" className="!text-sm group cursor-pointer">
-                                                                                <Comment className="!text-md mr-2 group-hover:text-slate-400" />
-                                                                                Comment
+                                                                                <Badge sx={{ "& .MuiBadge-badge": { fontSize: 6, height: 10, minWidth: 10 } }} badgeContent={thread.comment.length} color="primary">
+                                                                                    <Comment className="!text-md mr-2 group-hover:text-slate-400" />
+                                                                                    Comment
+                                                                                </Badge>
                                                                             </Typography>
                                                                         </Button>
                                                                     </Stack>
@@ -164,7 +174,7 @@ const Thread = () => {
                                                         </Stack>
                                                     </Stack>
                                                 </Stack>
-                                                <ThreadCommentModa open={open} close={() => setOpen(false)} thread={thread} />
+                                                <ThreadCommentModa open={open} close={() => setOpen(false)} thread={threadToOpen} />
                                             </div>
 
                                         )) : (
@@ -188,17 +198,17 @@ const Thread = () => {
                         <TopForum />
                     </Stack>
                     <Stack className="h-1/2 overflow-y-auto">
-                            <Stack className="px-4">
-                                <Stack className="!flex-row items-center">
-                                    <Typography className="!text-[18px] pb-2 !font-semibold">Official Hotlines</Typography>
-                                    {
-                                        localStorage.getItem('role') === 'Personnel' &&
-                                        <Button onClick={() => setOpen(true)}><Add /> hotline</Button>
-                                    }
-                                </Stack>
-                                <OfficialsHotline />
+                        <Stack className="px-4">
+                            <Stack className="!flex-row items-center">
+                                <Typography className="!text-[18px] pb-2 !font-semibold">Official Hotlines</Typography>
+                                {
+                                    localStorage.getItem('role') === 'Personnel' &&
+                                    <Button onClick={() => setOpen(true)}><Add /> hotline</Button>
+                                }
                             </Stack>
+                            <OfficialsHotline />
                         </Stack>
+                    </Stack>
 
                 </Stack>
             </Stack>

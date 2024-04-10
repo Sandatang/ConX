@@ -18,6 +18,7 @@ const AddComment = (props) => {
         const response = await CommentApi.addComment(formData)
         console.log(response)
         setComments([...comments, response[0]])
+        console.log(props)
         reset()
     }
     return (
@@ -35,7 +36,7 @@ const AddComment = (props) => {
                     </Stack>
                 ))
             }
-            <Stack className={` py-4 px-2 rounded-md sticky bg-transparent bottom-0 gap-2`} onClick={() => setToComment(true)}>
+            <Stack className={` py-4 px-2 rounded-md sticky ${toComment ? 'bg-white' : 'bg-transparent'} bottom-0 gap-2`} onClick={() => setToComment(true)}>
                 <form action="" onSubmit={handleSubmit(createComment)}>
 
                     <Stack className="">

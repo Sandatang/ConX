@@ -3,10 +3,7 @@ import { fetchData } from "./user_api";
 export async function addThread(data) {
   const response = await fetchData("/api/forum/thread/add", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    body: data
   });
   return response.json();
 }

@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import { Comment, Report, ThumbUp } from "@mui/icons-material"
-import { Avatar, Button, Divider, Stack, Typography } from "@mui/material"
+import { Avatar, Divider, Stack, Typography } from "@mui/material"
+import { useNavigate } from "react-router-dom"
+import AddComment from "../components/Comment/AddComment"
 import Modal from "../components/Modal"
 import ModalHeading from "../components/ModalHeading"
-import AddComment from "../components/Comment/AddComment"
-import { useNavigate } from "react-router-dom"
 
 const ThreadCommentModa = ({ open, thread, close }) => {
+    console.log(thread)
     const navigate = useNavigate()
     return (
         open && (
@@ -39,11 +39,12 @@ const ThreadCommentModa = ({ open, thread, close }) => {
                                     <Typography className="!text-sm pl-6">
                                         {thread.thread.content}
                                     </Typography>
-                                    <Divider className="!my-4" />
-                                    <Typography className="!text-sm">Image here if the user uploaded image</Typography>
+                                    {/* <Typography className="!text-sm">
+                                        <img src={`https://localhost:44398/api/image/name/${thread.thread.imgUrl}`} alt="Thread Image" />
+                                    </Typography> */}
 
-                                    <Stack className="!flex-row mt-4">
-                                        <Stack className=" !flex-row w-[70%] gap-4">
+                                    {/* <Stack className="!flex-row mt-4"> */}
+                                    {/* <Stack className=" !flex-row w-[70%] gap-4">
 
                                             <Button variant="text" className="!text-black">
                                                 <Typography variant="body1" component="span" className="!text-sm  group cursor-pointer">
@@ -58,22 +59,29 @@ const ThreadCommentModa = ({ open, thread, close }) => {
                                                     Comment
                                                 </Typography>
                                             </Button>
-                                        </Stack>
+                                        </Stack> */}
 
-                                        <Stack className="justify-end w-1/4">
+                                    {/* <Stack className="justify-end w-1/4">
                                             <Typography variant="body1" component="span" className="!text-sm self-end group cursor-pointer">
                                                 <button>
                                                     <Report className="!text-md mr-2 group-hover:text-slate-400" />
                                                     Report
                                                 </button>
-                                            </Typography>
-                                        </Stack>
+                                            </Typography> */}
+                                    {/* </Stack> */}
 
-                                    </Stack>
+                                    {/* </Stack> */}
 
                                     {/* Comments */}
                                 </Stack>
                             </Stack>
+
+                        </Stack>
+                        <Divider/>
+                        <Stack className="px-8 mt-4">
+                            <Typography className="!text-sm">
+                                <img src={`https://localhost:44398/api/image/name/${thread.thread.imgUrl}`} alt="Thread Image" />
+                            </Typography>
                         </Stack>
                         <Stack className="gap-4">
                             <Divider className="!border-b-2 !border-gray-300/90" />
