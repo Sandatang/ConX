@@ -13,17 +13,33 @@ namespace CONX.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
+        private readonly string _uploadPath;
 
         public ThreadController(UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _context = context;
+
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var goUp = Directory.GetParent(currentDirectory);
+            var goUp2 = Directory.GetParent(goUp.ToString());
+            var basePath = goUp2.ToString();
+
+            // Combine it with the 'Uploads' directory
+            _uploadPath = Path.Combine(basePath.ToString(), "Uploads");
+
+            // Check if the directory exists; create it if not
+            if (!Directory.Exists(_uploadPath))
+            {
+                Directory.CreateDirectory(_uploadPath);
+            }
         }
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddPosting([FromBody] AddThread forumPostings)
+        public async Task<IActionResult> AddPosting([FromForm] AddThread forumPostings)
         {
+            
 
             // Check if user is null 
             var user = await _userManager.FindByIdAsync(forumPostings.UserId);
@@ -51,9 +67,26 @@ namespace CONX.Controllers
                 DateCreated = DateTime.Now,
             };
 
-            if(forumPostings.ImageUrl != null)
+            if(forumPostings.Image != null)
             {
-                postings.ImgUrl = forumPostings.ImageUrl;
+                //process File and copy to path
+                if (forumPostings.Image == null && forumPostings.Image.Length <= 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound,
+                     new Response { Status = "Error", Message = "Uploaded image is corrupted", Field = "failed" });
+
+                }
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(forumPostings.Image.FileName);
+                var filePath = Path.Combine(_uploadPath, fileName); // Specify your file upload path
+                postings.ImgUrl = filePath;
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await forumPostings.Image.CopyToAsync(fileStream);
+                }
+
+
+                
             }
 
             // Que data to be inserted in Db
@@ -123,7 +156,7 @@ namespace CONX.Controllers
 
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> UpdateThread([FromBody] UpdateThread updateThread)
+        public async Task<IActionResult> UpdateThread([FromForm] UpdateThread updateThread)
         {
             if (!ModelState.IsValid)
             {
@@ -142,7 +175,26 @@ namespace CONX.Controllers
             // Update the thread data
             thread.PostTitle = updateThread.Title;
             thread.PostBody = updateThread.Content;
-            thread.ImgUrl = updateThread.ImageUrl;
+
+            if (updateThread.Image != null)
+            {
+                //process File and copy to path
+                if (updateThread.Image == null && updateThread.Image.Length <= 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound,
+                     new Response { Status = "Error", Message = "Uploaded image is corrupted", Field = "failed" });
+
+                }
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(updateThread.Image.FileName);
+                var filePath = Path.Combine(_uploadPath, fileName); // Specify your file upload path
+                thread.ImgUrl = filePath;
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await updateThread.Image.CopyToAsync(fileStream);
+                }
+
+            }
             
             // Save the data
             var result = await _context.SaveChangesAsync();
