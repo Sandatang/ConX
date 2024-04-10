@@ -15,6 +15,7 @@ namespace CONX.Models
         public DbSet<JuncForumThread> ForumThreads { get; set; }
         public DbSet<JuncThreadComment> ThreadComments { get; set; }
         public DbSet<JuncForumFollows> ForumFollows { get; set; }
+        public DbSet<AccountDeactivationLog> DeactivationLogs { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
