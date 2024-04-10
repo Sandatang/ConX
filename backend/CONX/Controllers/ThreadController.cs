@@ -78,7 +78,7 @@ namespace CONX.Controllers
                 }
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(forumPostings.Image.FileName);
                 var filePath = Path.Combine(_uploadPath, fileName); // Specify your file upload path
-                postings.ImgUrl = filePath;
+                postings.ImgUrl = fileName;
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -187,7 +187,7 @@ namespace CONX.Controllers
                 }
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(updateThread.Image.FileName);
                 var filePath = Path.Combine(_uploadPath, fileName); // Specify your file upload path
-                thread.ImgUrl = filePath;
+                thread.ImgUrl = fileName;
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
