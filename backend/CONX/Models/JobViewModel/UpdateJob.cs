@@ -8,6 +8,7 @@ namespace CONX.Models.JobViewModel
         public string JobTitle { get; set; }
         public string JobWage { get; set; }
         public string Location { get; set; }
+        public string ExperienceReq { get; set; }
 
         public string JobDescription { get; set; }
 

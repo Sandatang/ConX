@@ -13,6 +13,7 @@ namespace CONX.Models.JobViewModel
         public string Location { get; set; }
 
         public string JobDescription { get; set; }
+        public string ExperienceReq { get; set; }   
 
         [Required(ErrorMessage = "Contact Person / Company is required")]
         public string ContactPerson { get; set; }
