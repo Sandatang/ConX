@@ -23,13 +23,15 @@ namespace CONX.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailServices _emailService;
+        private readonly ApplicationDbContext _context;
 
-        public AuthenticationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailServices emailService)
+        public AuthenticationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailServices emailService, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _emailService = emailService;
+            _context = context;
         }
 
         // Add a user women
@@ -389,6 +391,7 @@ namespace CONX.Controllers
                     new Response { Status = "Error", Message = "User not found", Field = "failed" });
             }
 
+
             var result = await _userManager.DeleteAsync(user);
 
             // Check if deletion not succeded
@@ -398,8 +401,9 @@ namespace CONX.Controllers
                     new Response { Status = "Error", Message = " Something went wrong try again later.", Field = "failed" });
             }
 
+
             // If success
-            return Ok($"User {id} deleted successfully");
+            return Ok(new Response { Status = "Error", Message = $"User {id} deleted successfully" });
         }
 
         // De activate user
