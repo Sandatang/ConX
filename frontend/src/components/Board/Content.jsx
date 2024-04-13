@@ -4,8 +4,8 @@ import sample from "../../assets/sample3.png"
 
 const Content = () => {
     return (
-        <>
-            <Stack>
+        <Stack className=" gap-10">
+            <Stack className="border-[1px] px-4 py-6 rounded-md bg-white shadow-xl">
                 <Stack className="!flex-row items-center">
                     <AccountCircle className="!text-[3rem]" />
                     <Stack>
@@ -27,7 +27,7 @@ const Content = () => {
                     </Button>
                 </Stack>
             </Stack>
-            <Stack>
+            <Stack className="border-[1px] px-4 py-6 rounded-md bg-white shadow-md">
                 <Stack className="!flex-row items-center">
                     <AccountCircle className="!text-[3rem]" />
                     <Stack>
@@ -49,7 +49,7 @@ const Content = () => {
                     </Button>
                 </Stack>
             </Stack>
-            <Stack>
+            <Stack className="border-[1px] px-4 py-6 rounded-md bg-white shadow-md">
                 <Stack className="!flex-row items-center">
                     <AccountCircle className="!text-[3rem]" />
                     <Stack>
@@ -71,7 +71,7 @@ const Content = () => {
                     </Button>
                 </Stack>
             </Stack>
-            <Stack>
+            <Stack className="border-[1px] px-4 py-6 rounded-md bg-white shadow-md">
                 <Stack className="!flex-row items-center">
                     <AccountCircle className="!text-[3rem]" />
                     <Stack>
@@ -93,7 +93,7 @@ const Content = () => {
                     </Button>
                 </Stack>
             </Stack>
-            <Stack>
+            <Stack className="border-[1px] px-4 py-6 rounded-md bg-white shadow-md">
                 <Stack className="!flex-row items-center">
                     <AccountCircle className="!text-[3rem]" />
                     <Stack>
@@ -115,7 +115,7 @@ const Content = () => {
                     </Button>
                 </Stack>
             </Stack>
-        </>
+        </Stack>
     )
 }
 

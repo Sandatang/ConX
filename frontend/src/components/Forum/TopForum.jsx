@@ -1,5 +1,5 @@
 import { AccountCircle, ArrowCircleRight } from "@mui/icons-material"
-import { Button, Stack, Typography } from "@mui/material"
+import { Button, Stack, Typography, Alert } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as ForumApi from "../../network/forum_api"
@@ -50,7 +50,7 @@ const TopForum = () => {
                             </Stack>
                         ))
                     ) : (
-                        topForum && (
+                        topForum ? (
                             topForum.map((tf) => (
                                 <Stack key={tf.id} className="!flex-row">
                                     <Stack className="ml-2 !flex-row w-3/4 gap-1 items-center">
@@ -71,6 +71,8 @@ const TopForum = () => {
                                     </Button>
                                 </Stack>
                             ))
+                        ) : (
+                            <Alert severity="info">No data yet</Alert>
                         )
                     )
                 }

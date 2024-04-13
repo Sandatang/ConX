@@ -26,15 +26,15 @@ const CreatePostings = () => {
 
     return (
         <>
-            <Button variant="outlined" className=" self-end !mt-4 !text-sm " onClick={() => setAddComment(!addComment)}>
+            <Button variant="outlined" className=" self-end !mt-4 !text-sm shadow-md " onClick={() => setAddComment(!addComment)}>
 
                 {addComment ? <Remove className="!text-md" /> : <Add className="!text-md" />}
                 {addComment ? "Cancel" : "Create Post"}
             </Button>
             <Stack className={`!flex-row py-4 transition-opacity duration-500 ease-in-out ${addComment ? 'opacity-100' : 'opacity-0'} ${addComment ? 'h-auto' : 'h-0'}`
             }>
-                <Stack className="!flex-row gap-2 w-full bg-gray-200/70 rounded-md">
-                    <Stack className="w-1/4 gap-4 items-center bg-gray-300/50 p-4">
+                <Stack className="!flex-row gap-2 w-full border-[1px] shadow-md rounded-md">
+                    <Stack className="w-1/4 gap-4 items-center bg-slate-200/50 p-4">
                         <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
                         <Typography variant="body1" component="span" className="!capitalize">{localStorage.getItem("username")}</Typography>
                     </Stack>

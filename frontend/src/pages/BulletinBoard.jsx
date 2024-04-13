@@ -1,4 +1,4 @@
-import { Add } from "@mui/icons-material";
+import { Add, PostAdd } from "@mui/icons-material";
 import { Button, IconButton, Stack, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import Content from "../components/Board/Content";
@@ -40,11 +40,10 @@ const BulletinBoard = () => {
         {!toPost && (
           <div className="w-full flex justify-end cursor-pointer group" onClick={handlePostClick}>
             <IconButton
-              className={`!fixed top-24 group-hover:!rounded-md !bg-blue-500 ${toPost && isScrolled ? "" : "hidden !text-md"
-                }`}
+              className={`!fixed top-24 group-hover:!rounded-md opacity-40 group-hover:opacity-100 !bg-blue-500 ${toPost && isScrolled ? "" : "hidden !text-md"}`}
             >
               <span className="text-white font-bold uppercase ">
-                <Add className="group-hover:!text-md" /> <span className="hidden group-hover:inline-block">Postings</span>
+                <PostAdd className="group-hover:!text-lg" /> <span className="hidden group-hover:inline-block">Postings</span>
               </span>
             </IconButton>
           </div>

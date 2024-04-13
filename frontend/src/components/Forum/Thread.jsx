@@ -109,11 +109,11 @@ const Thread = () => {
                                 {
                                     !error && threads ?
                                         threads.map((thread) => (
-                                            <div key={thread.thread.threadId}>
-                                                <Stack className="pb-6">
-                                                    <Stack className="!flex-row py-4">
-                                                        <Stack className="!flex-row gap-2 w-full bg-slate-200 rounded-md">
-                                                            <Stack className="w-1/4 gap-4 items-center bg-slate-300/50 p-4">
+                                            <div key={thread.thread.threadId} className="mb-8">
+                                                <Stack className="border-[1px] shadow-lg rounded-md">
+                                                    <Stack className="!flex-row">
+                                                        <Stack className="!flex-row gap-2 w-full rounded-md">
+                                                            <Stack className="w-1/4 gap-4 items-center bg-slate-200/50 p-4">
                                                                 <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
                                                                 <Typography variant="body1" component="span" className="!capitalize !text-sm">{thread.thread.user}</Typography>
                                                             </Stack>
