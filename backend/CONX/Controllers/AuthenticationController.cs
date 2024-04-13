@@ -375,32 +375,6 @@ namespace CONX.Controllers
             return Ok(new Response { Status = " Success", Message = "Update Successfully" });
         }
 
-        // Delete user single deletion only
-        [HttpDelete]
-        [Route("delete/user/{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            // Check if user exist
-            if (user == null)
-            {
-                return StatusCode(StatusCodes.Status404NotFound,
-                    new Response { Status = "Error", Message = "User not found", Field = "failed" });
-            }
-
-            var result = await _userManager.DeleteAsync(user);
-
-            // Check if deletion not succeded
-            if (!result.Succeeded)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "Error", Message = " Something went wrong try again later.", Field = "failed" });
-            }
-
-            // If success
-            return Ok($"User {id} deleted successfully");
-        }
 
         // De activate user
         [HttpPut]
@@ -423,6 +397,38 @@ namespace CONX.Controllers
 
             // Save the data
             var result = await _userManager.UpdateAsync(customUser);
+
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = " Something went wrong", Field = "failed" });
+            }
+
+            // Change deactivate col to 
+            return Ok(new Response { Status = "Success", Message = "User deactivated " });
+        }
+
+        // Delete
+        [HttpDelete]
+        [Route("user/delete/{userId}")]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+
+            // Cast the IdentityUser
+            var customUser = (User)user;
+
+            // Update the DeActivate property
+            customUser.Id = "-1ForDelete";
+
+            // Save the data
+            var result = await _userManager.DeleteAsync(customUser);
 
             if (!result.Succeeded)
             {
