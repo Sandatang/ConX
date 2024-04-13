@@ -1,7 +1,7 @@
 import { CopyAll, Edit } from "@mui/icons-material"
-import { IconButton, Stack } from "@mui/material"
+import { IconButton, Stack, Alert } from "@mui/material"
 import { useEffect, useState } from "react"
-import * as HotlineApi from "../network/hotline_api"
+import * as HotlineApi from "../../network/hotline_api"
 import AddHotline from "./AddHotline"
 
 
@@ -14,7 +14,6 @@ const OfficialsHotline = () => {
   useEffect(() => {
     const getAllHotline = async () => {
       const response = await HotlineApi.viewHotlines()
-      console.log(response)
       setHotlines(response)
     }
 
@@ -25,7 +24,7 @@ const OfficialsHotline = () => {
     <Stack className="!text-md !p-0 !m-0">
       {
 
-        hotlines && hotlines.map(hs => (
+        hotlines ? hotlines.map(hs => (
           <div key={hs.hotlineId}>
 
             <Stack className="!flex-row items-center justify-between">
@@ -48,7 +47,9 @@ const OfficialsHotline = () => {
             </Stack>
 
           </div>
-        ))
+        )) : (
+          <Alert severity="info">No data yet</Alert>
+        )
       }
 
       {openUpdate && <AddHotline update={true} onClose={() => setOpenUpdate(false)} hotline={hotlineToUpdate} />}

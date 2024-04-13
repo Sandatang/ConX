@@ -79,14 +79,14 @@ using (var scope = app.Services.CreateScope())
 
     var defaultUser = await userManager.FindByNameAsync("admin123");
     if (defaultUser == null)
-    {
+    {   
         defaultUser = new User();
         {
 
             // Add admin user to DB
             defaultUser.Email = "admin@gmail.com";
             defaultUser.UserName = "admin123";
-
+            defaultUser.EmailConfirmed = true;
         };
 
         await userManager.CreateAsync(defaultUser, "Admin@1234");

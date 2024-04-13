@@ -7,6 +7,7 @@ import { useState } from "react"
 const AddComment = (props) => {
     const { register,reset, handleSubmit, formState: { isSubmitting } } = useForm()
     const [comments, setComments] = useState(props.thread.comment)
+    const [toComment, setToComment] = useState(false)
 
     const createComment = async (data) => {
         const formData = {
@@ -17,6 +18,7 @@ const AddComment = (props) => {
         const response = await CommentApi.addComment(formData)
         console.log(response)
         setComments([...comments, response[0]])
+        console.log(props)
         reset()
     }
     return (
@@ -24,9 +26,9 @@ const AddComment = (props) => {
             {
                 comments.map((t) => (
 
-                    <Stack key={t.commentId} className="!flex-row">
+                    <Stack key={t.commentId} className="!flex-row border-[1px] p-2 rounded-md bg-slate-200/50">
                         <Avatar className="!mr-2 !border-md" />
-                        <Stack className="border-2 w-full p-2 rounded-md bg-gray-300/50">
+                        <Stack className=" w-full p-2 rounded-md border-[1px] ">
                             <span className="font-bold capitalize">{t.user}</span>
 
                             <Typography className="lowercase">{t.content}</Typography>
@@ -34,7 +36,7 @@ const AddComment = (props) => {
                     </Stack>
                 ))
             }
-            <Stack className=" py-4 px-2 rounded-md sticky bg-gray-300 bottom-0 gap-2">
+            <Stack className={` border-[1px] rounded-md py-4 px-2 sticky ${toComment ? 'bg-slate-200/50' : 'bg-transparent'} bottom-0 gap-2`} onClick={() => setToComment(true)}>
                 <form action="" onSubmit={handleSubmit(createComment)}>
 
                     <Stack className="">
@@ -45,9 +47,9 @@ const AddComment = (props) => {
                                 fullWidth
                                 name="content"
                                 variant="outlined"
-                                rows={4}
+                                rows={toComment ? 2 : 1}
                                 placeholder="Write your thoughts here..."
-                                className="bg-gray-300/50 !rounded-sm !text-sm "
+                                className="bg-white !rounded-sm !text-sm "
                                 {...register("content", { required: true })}
                             />
                         </Stack>

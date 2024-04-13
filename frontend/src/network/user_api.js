@@ -3,6 +3,7 @@ export async function fetchData(path, header) {
   return response;
 }
 
+
 export async function registerWomen(data) {
   const response = await fetchData("/api/auth/register/women", {
     method: "POST",
@@ -93,6 +94,11 @@ export async function updateUser(data) {
     body: JSON.stringify(data),
   });
   return response.json();
+}
+
+export async function deleteUser(id){
+  const response = await fetchData(`/api/auth/delete/user/${id}`, { method: "DELETE"})
+  return response.json()
 }
 
 export async function passwordConfirmation(data) {

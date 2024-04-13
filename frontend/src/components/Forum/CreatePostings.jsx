@@ -1,4 +1,4 @@
-import { Add, Remove } from "@mui/icons-material"
+import { Add, Image, Remove } from "@mui/icons-material"
 import { Avatar, Button, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -9,14 +9,16 @@ const CreatePostings = () => {
     const navigate = useNavigate()
     const [addComment, setAddComment] = useState(false)
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
-    const {id} = useParams()
+    const { id } = useParams()
+
 
     const createPostings = async (data) => {
-        const formData = {
-            ...data,
-            "userId": localStorage.getItem('userId'),
-            "forumId": id
-        }
+        const formData = new FormData();
+        formData.append("title", data.title);
+        formData.append("content", data.content);
+        formData.append("forumId", id);
+        formData.append("Image", data.file[0]);
+        formData.append("userId", localStorage.getItem('userId'));
         const response = await ThreadApi.addThread(formData)
         console.log(response)
         navigate(0)
@@ -24,15 +26,15 @@ const CreatePostings = () => {
 
     return (
         <>
-            <Button variant="outlined" className=" self-end !mt-4 !text-sm " onClick={() => setAddComment(!addComment)}>
+            <Button variant="outlined" className=" self-end !mt-4 !text-sm shadow-md " onClick={() => setAddComment(!addComment)}>
 
                 {addComment ? <Remove className="!text-md" /> : <Add className="!text-md" />}
                 {addComment ? "Cancel" : "Create Post"}
             </Button>
             <Stack className={`!flex-row py-4 transition-opacity duration-500 ease-in-out ${addComment ? 'opacity-100' : 'opacity-0'} ${addComment ? 'h-auto' : 'h-0'}`
             }>
-                <Stack className="!flex-row gap-2 w-full bg-gray-200/70 rounded-md">
-                    <Stack className="w-1/4 gap-4 items-center bg-gray-300/50 p-4">
+                <Stack className="!flex-row gap-2 w-full border-[1px] shadow-md rounded-md">
+                    <Stack className="w-1/4 gap-4 items-center bg-slate-200/50 p-4">
                         <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
                         <Typography variant="body1" component="span" className="!capitalize">{localStorage.getItem("username")}</Typography>
                     </Stack>
@@ -61,8 +63,14 @@ const CreatePostings = () => {
                                 {...register('content', { required: true })}
 
                             />
-                            <div className="flex w-full justify-end">
-                                <Button type="submit" disabled={isSubmitting} className="!self-end !mt-2" variant="contained">Post</Button>
+
+                            <div className="flex flex-row gap-2 w-full justify-between !mt-2">
+                                {/* <input type="file" {...register('file')} /> */}
+                                <Button component="label" variant="ghost" startIcon={<Image className="!text-green-500"/>}  >
+                                    <input type="file" {...register('file')} />
+                                </Button>
+
+                                <Button type="submit" disabled={isSubmitting} className="!self-end" variant="contained">Post</Button>
                             </div>
                         </form>
                     </Stack>

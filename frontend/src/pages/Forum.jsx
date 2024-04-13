@@ -3,13 +3,12 @@ import { Add, Search } from "@mui/icons-material";
 import { Button, LinearProgress, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import OfficialsHotline from "../Contacts/OfficialsHotline";
 import woman from "../assets/women.png";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
-import TopForum from "../components/Forum/TopForum";
 import { topics } from "../constants";
-import AddHotline from "../Contacts/AddHotline";
-
+import TopForum from "../components/Forum/TopForum"
+import OfficialsHotline from "../components/Contacts/OfficialsHotline"
+import AddHotline from "../components/Contacts/AddHotline";
 
 const Forum = () => {
     const [addTopic, setAddTopic] = useState(false);
@@ -41,20 +40,24 @@ const Forum = () => {
 
             <Stack className=" h-full no-scrollbar overflow-y-auto !flex-row" >
                 {/* Empowering text and Picture Container*/}
-                < Stack className="h-auto mx-4 w-full pt-2" >
+                < Stack className="h-auto w-full px-20 pt-2" >
                     <Stack className=" bg-pinkish !flex-row rounded-xl mb-2 ">
-                        <Stack className="w-[55%] mx-4 gap-4 p-4">
-                            <Stack className="!text-white h-3/4 ">
-                                <Typography className="!text-[34px] !font-semibold">Empowering Women</Typography>
-                                <span className="text-sm text-blue-800">Join the community</span>
+                        <Stack className="w-full justify-between px-10 pb-10 pt-8">
+                            <Stack className="w-full ">
+                                <Typography className="!text-[1.7rem] !font-bold !text-[#21062E] !leading-[2.4rem] !tracking-tight">
+                                    Empowering Women: Igniting Strength, Inspiring Change.
+                                </Typography>
+                                <span className="text-sm !text-[#21062E] pr-2">
+                                    {"Through education, opportunity, and solidarity, we champion the empowerment of women, fostering a world where every woman's voice is heard and every dream is within reach."}
+                                </span>
                             </Stack>
-                            <Stack className="!flex-row gap-4">
+                            <Stack className="justify-start items-start">
                                 <Button onClick={() => setAddTopic(true)} variant="contained" size="small" className="!bg-white !text-[12px] !text-pinkish !capitalize">Start new discussion</Button>
                                 {/* <Button size="small" className="!bg-white !text-[12px] !text-pinkis !capitalize" >Learn more</Button> */}
                             </Stack>
                         </Stack>
-                        <Stack className="w-[45%]">
-                            <img src={woman} className="rounded-r-lg" />
+                        <Stack className="w-[70%]">
+                            <img src={woman} className="rounded-r-lg h-full" />
                         </Stack>
 
                     </Stack>
@@ -108,20 +111,22 @@ const Forum = () => {
                 {/* End Empowering text and Picture */}
 
                 {/* Threads right aside */}
-                <Stack className=" h-screen w-[400px] p-8 bg-white">
-                    <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-[5rem] right-0 ">
-                        <Stack className="h-1/2 overflow-y-auto  border-b-2">
+                <Stack className=" h-screen w-[320px] bg-white">
+                    <Stack className="border-l-2 h-dvh w-[250px] fixed top-[5rem] right-0 ">
+                        <Stack className="h-1/2 pt-5 overflow-y-auto border-b-2">
                             <TopForum />
                         </Stack>
                         <Stack className="h-1/2 overflow-y-auto">
-                            <Stack className="!flex-row items-center">
-                                <Typography className="!text-[18px] pb-2 !font-semibold">Official Hotlines</Typography>
-                                {
-                                    localStorage.getItem('role') === 'Personnel' &&
-                                    <Button onClick={() => setOpen(true)}><Add /> hotline</Button>
-                                }
+                            <Stack className="px-4">
+                                <Stack className="!flex-row items-center">
+                                    <Typography className="!text-[18px] pb-2 !font-semibold">Official Hotlines</Typography>
+                                    {
+                                        localStorage.getItem('role') === 'Personnel' &&
+                                        <Button onClick={() => setOpen(true)}><Add /> hotline</Button>
+                                    }
+                                </Stack>
+                                <OfficialsHotline />
                             </Stack>
-                            <OfficialsHotline />
                         </Stack>
 
                     </Stack>

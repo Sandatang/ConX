@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import { Image, VideoFile } from '@mui/icons-material'
 import { Button, IconButton, Stack, TextField, Typography } from '@mui/material'
 
-const WritePost = () => {
+const WritePost = (props) => {
     return (
-        <div className='sticky top-0 bg-white z-50'>
+        <div className={`${props.classes} bg-white top-0 w-[655px] z-50`}>
             <Stack>
-                <Typography className="!text-sm">Write a post</Typography>
+                <Typography variant='h5'>Update the citizens</Typography>
             </Stack>
             <Stack className="gap-2">
                 <TextField

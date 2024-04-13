@@ -1,4 +1,4 @@
-import { LocalPolice, Person, Search } from '@mui/icons-material';
+import { Add, LocalPolice, Person, Search } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Alert, Button, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -6,12 +6,15 @@ import { useForm } from 'react-hook-form';
 import AddPeronnelModal from '../components/AddPersonnelModal';
 import ModalDeActivate from "../components/UserManagement/ModalDeActivate";
 import * as UserApi from "../network/user_api";
+import ModalDeletion from '../components/UserManagement/ModalDeletion';
 
 const ManageUsers = () => {
   const [active1, setActive1] = useState(null);
   const [active2, setActive2] = useState(null);
   const [active3, setActive3] = useState(null);
   const [add, setAdd] = useState(false)
+  const [userToDelete, setUserToDelete] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
   const [update, setUpdate] = useState(false)
   const [userToUpdate, setUserToUpdate] = useState(null)
   const [user, setUser] = useState(null);
@@ -100,7 +103,10 @@ const ManageUsers = () => {
         </Stack>
         {/* End button for showing user base on role */}
 
-        <Button variant='contained' onClick={() => setAdd(!add)}>Add Personnel</Button>  {/* For adding personnel */}
+        <Stack className='!flex-row gap-2'>
+          <Button variant='contained' onClick={() => setAdd(!add)}> <Add/> Admin</Button>  {/* For adding personnel */}
+          <Button variant='contained' onClick={() => setAdd(!add)}> <Add/> Personnel</Button>  {/* For adding personnel */}
+        </Stack>
       </Stack>
 
       <Stack className='!flex-row my-4 justify-between'>
@@ -159,7 +165,7 @@ const ManageUsers = () => {
       {/* End of search and Sort */}
 
       {/* Users Table */}
-      <Stack className="overflow-x-auto max-h-[70%] ">
+      <Stack className="overflow-x-auto max-h-[80%] ">
         <table className="min-w-full divide-y divide-gray-200 relative">
           <thead className="bg-gray-300 border border-solid sticky top-0 z-50">
             <tr>
@@ -169,7 +175,7 @@ const ManageUsers = () => {
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User Type</th>
               <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Active</th>
-              <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Update</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Action</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y  divide-gray-200">
@@ -201,7 +207,7 @@ const ManageUsers = () => {
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-gray-900">{active1 ? 'Women' : 'Personnel'}</span>
+                  <span className="text-sm font-medium text-gray-900">{user.role}</span>
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -214,7 +220,18 @@ const ManageUsers = () => {
                     setUserToUpdate(user)
                     setUpdate(true)
                     setAdd(true)
-                  }} className="!text-sm !font-medium !text-gray-900" variant='outlined'>Edit</Button>
+                  }} className="!text-sm !font-medium !text-green-500" variant="ghost" >
+                    Edit
+                  </Button>
+                  {
+                    localStorage.getItem('role') === "Admin" &&
+                    <Button onClick={() => {
+                      setUserToDelete(user.id)
+                      setDeleteModal(true)
+                    }} className="!text-sm !font-medium !text-red-500" variant="ghost">
+                      Delete
+                    </Button>
+                  }
                 </td>
               </tr>
             ))) : (<Alert>No data</Alert>)}
@@ -227,6 +244,9 @@ const ManageUsers = () => {
       {add && <AddPeronnelModal user={userToUpdate} update={update} onClose={() => {
         setUpdate(false)
         setAdd(false)
+      }} />}
+      {deleteModal && <ModalDeletion userId={userToDelete} open={deleteModal} close={() => {
+        setDeleteModal(false)
       }} />}
       {/* Modal */}
 

@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { AccountCircle, ArrowBack, LocationOn } from "@mui/icons-material"
+import { AccountCircle, Add, Book, LocationOn } from "@mui/icons-material"
 import { Button, Stack, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import conxlogo from "../../assets/secondlogo.png"
 import * as JobApi from "../../network/job_api"
 import BreadCrumb from "../BreadCrumb"
-import EmergencyContacts from "../EmergencyContacts"
+import OfficialsHotline from "../Contacts/OfficialsHotline"
 import JobListingRightAside from "./JobListingRightAside"
-import conxlogo from "../../assets/secondlogo.png"
 
 const JobDetails = () => {
-    const back = <> <ArrowBack /> Back </>
+    const back = <> <Book /> Jobs </>
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
     const [job, setJob] = useState(null)
@@ -87,8 +87,8 @@ const JobDetails = () => {
 
             </React.Fragment >
         ) : (
-            <Stack className=" h-full overflow-auto mx-4 pb-10 no-scrollbar overflow-y-auto !flex-row">
-                <Stack className="h-auto w-full pt-2">
+            <Stack className=" h-full overflow-auto pb-10 no-scrollbar overflow-y-auto !flex-row">
+                <Stack className="h-auto w-full px-20 pt-2">
                     <Stack className="pb-4">
                         <Stack className="bg-pinkish px-4 py-2 mb-4 rounded-sm">
                             <BreadCrumb data={breadCrumbUrl} classes="!text-[12px] tracking-wider !text-white font-bold " />
@@ -135,13 +135,22 @@ const JobDetails = () => {
                         <img src={conxlogo} alt="logo" className="w-full h-3/4 aspect-video rounded-lg bg-[#E1BEE7] " />
                     </Stack>
                 </Stack>
-                <Stack className=" h-screen w-[400px] p-8 bg-white">
-                    <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-[5rem] right-0 ">
-                        <Stack className="h-1/2 overflow-y-auto  border-b-2">
+                <Stack className=" h-screen w-[320px] bg-white">
+                    <Stack className="border-l-2 h-dvh w-[250px] fixed top-[5rem] right-0 ">
+                        <Stack className="h-1/2 pt-5 px-1 overflow-y-auto border-b-2">
                             <JobListingRightAside loading={loading} job={moreJob} />
                         </Stack>
                         <Stack className="h-1/2 overflow-y-auto">
-                            <EmergencyContacts />
+                            <Stack className="px-4">
+                                <Stack className="!flex-row items-center">
+                                    <Typography className="!text-[18px] !mt-4 pb-2 !font-semibold">Official Hotlines</Typography>
+                                    {
+                                        localStorage.getItem('role') === 'Personnel' &&
+                                        <Button><Add /> hotline</Button>
+                                    }
+                                </Stack>
+                                <OfficialsHotline />
+                            </Stack>
                         </Stack>
 
                     </Stack>

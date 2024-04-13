@@ -1,5 +1,5 @@
 import { AccountCircle, ArrowCircleRight } from "@mui/icons-material"
-import { Button, Stack, Typography } from "@mui/material"
+import { Button, Stack, Typography, Alert } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as ForumApi from "../../network/forum_api"
@@ -27,8 +27,8 @@ const TopForum = () => {
     }, [])
     return (
         <>
-            <Typography className="!text-[18px] pb-2 !font-semibold">Top Forums</Typography>
 
+            <Typography className="!text-[18px] pb-2 px-4 !font-semibold">Top Forums</Typography>
             <Stack className="gap-3">
                 {
                     loading ? (
@@ -37,7 +37,7 @@ const TopForum = () => {
 
                             <Stack key={index} className="!flex-row animate-pulse">
 
-                                <Stack className="ml-2 !flex-row w-3/4 gap-1 items-center">
+                                <Stack className="ml-2 !flex-row w-full gap-1 items-center">
                                     <div className="bg-gray-300/90 h-8 w-8 rounded-full" />
                                     <Stack className="gap-2">
                                         <div className=" rounded-lg bg-gray-300/90 h-2 w-28 "></div>
@@ -50,7 +50,7 @@ const TopForum = () => {
                             </Stack>
                         ))
                     ) : (
-                        topForum && (
+                        topForum ? (
                             topForum.map((tf) => (
                                 <Stack key={tf.id} className="!flex-row">
                                     <Stack className="ml-2 !flex-row w-3/4 gap-1 items-center">
@@ -71,6 +71,8 @@ const TopForum = () => {
                                     </Button>
                                 </Stack>
                             ))
+                        ) : (
+                            <Alert severity="info">No data yet</Alert>
                         )
                     )
                 }
