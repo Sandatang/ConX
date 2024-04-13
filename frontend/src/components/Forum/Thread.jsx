@@ -54,7 +54,7 @@ const Thread = () => {
     }, [])
     return (
         <Stack className="h-full no-scrollbar overflow-y-auto !flex-row">
-            <Stack className="h-auto  w-full gap-4 mx-4 pt-2">
+            <Stack className="h-auto w-full px-20 gap-4 pt-2">
                 {
                     loading ? (
                         // Loading skeleton
@@ -194,9 +194,9 @@ const Thread = () => {
             </Stack>
 
             {/* Forum right aside */}
-            <Stack className=" h-full w-[400px] p-8 bg-white">
-                <Stack className="border-l-2 h-[500px] w-[300px]  fixed top-[5rem] right-0 ">
-                    <Stack className="h-1/2 overflow-y-auto  border-b-2">
+            <Stack className=" h-screen w-[320px] bg-white">
+                <Stack className="border-l-2 h-dvh w-[250px] fixed top-[5rem] right-0 ">
+                    <Stack className="h-1/2 pt-5 overflow-y-auto border-b-2">
                         <TopForum />
                     </Stack>
                     <Stack className="h-1/2 overflow-y-auto">

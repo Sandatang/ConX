@@ -8,13 +8,15 @@ const JobListingRightAside = (props) => {
     const navigate = useNavigate()
     return (
         <React.Fragment>
-            
-            <Typography className="!text-md capitalize !font-bold">More jobs</Typography>
+
+            <div className="!bg-white w-full z-50">
+                <Typography className="!text-md capitalize !font-bold !fixed top-20 ">More jobs</Typography>
+            </div>
 
             <Stack className="gap-2">
                 {
                     props.job.slice(0, 3).map((jb) => (
-                        <Card key={jb.id} className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[15rem] !h-28">
+                        <Card key={jb.id} className=" !rounded-lg border-[1px] shadow-lg !border-gray-400 !w-[14rem] !h-28">
                             <CardContent className="!flex !flex-col !h-full rounded-lg justify-start !m-0 !p-1 ">
                                 <Stack className="!flex-row items-center gap-2">
                                     <Work fontSize="large" />
@@ -40,11 +42,11 @@ const JobListingRightAside = (props) => {
                                 <Stack className="!flex-row items-center justify-between  px-2">
                                     <Typography className="!text-sm inline-block "> <span className="font-bold">{jb.wage}</span> per day</Typography>
                                     {/* <Link to={`../${jb.id}/details`}> */}
-                                        <Button onClick={() => {
-                                            navigate(`/jobs/${jb.id}/details`)
-                                            window.location.reload()
-                                        }}
-                                         variant="contained" className="!bg-black hover:!bg-black/80 !text-sm" size="small">Details</Button>
+                                    <Button onClick={() => {
+                                        navigate(`/jobs/${jb.id}/details`)
+                                        window.location.reload()
+                                    }}
+                                        variant="contained" className="!bg-black hover:!bg-black/80 !text-sm" size="small">Details</Button>
                                     {/* </Link> */}
                                 </Stack>
                             </CardContent>

@@ -5,11 +5,10 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import woman from "../assets/women.png";
 import ForumAddTopic from "../components/Forum/ForumAddTopic";
-import TopForum from "../components/Forum/TopForum";
 import { topics } from "../constants";
-import OfficialsHotline from "../components/Contacts/OfficialsHotline";
+import TopForum from "../components/Forum/TopForum"
+import OfficialsHotline from "../components/Contacts/OfficialsHotline"
 import AddHotline from "../components/Contacts/AddHotline";
-
 
 const Forum = () => {
     const [addTopic, setAddTopic] = useState(false);
@@ -41,9 +40,9 @@ const Forum = () => {
 
             <Stack className=" h-full no-scrollbar overflow-y-auto !flex-row" >
                 {/* Empowering text and Picture Container*/}
-                < Stack className="h-auto mx-4 w-full pt-2" >
+                < Stack className="h-auto w-full px-20 pt-2" >
                     <Stack className=" bg-pinkish !flex-row rounded-xl mb-2 ">
-                        <Stack className="w-[55%] justify-between px-10 pb-10 pt-8">
+                        <Stack className="w-full justify-between px-10 pb-10 pt-8">
                             <Stack className="w-full ">
                                 <Typography className="!text-[1.7rem] !font-bold !text-[#21062E] !leading-[2.4rem] !tracking-tight">
                                     Empowering Women: Igniting Strength, Inspiring Change.
@@ -57,8 +56,8 @@ const Forum = () => {
                                 {/* <Button size="small" className="!bg-white !text-[12px] !text-pinkis !capitalize" >Learn more</Button> */}
                             </Stack>
                         </Stack>
-                        <Stack className="w-[45%]">
-                            <img src={woman} className="rounded-r-lg" />
+                        <Stack className="w-[70%]">
+                            <img src={woman} className="rounded-r-lg h-full" />
                         </Stack>
 
                     </Stack>
@@ -112,8 +111,8 @@ const Forum = () => {
                 {/* End Empowering text and Picture */}
 
                 {/* Threads right aside */}
-                <Stack className=" h-screen w-[400px] p-8 bg-white">
-                    <Stack className="border-l-2 h-[500px] w-[300px] fixed top-[5rem] right-0 ">
+                <Stack className=" h-screen w-[320px] bg-white">
+                    <Stack className="border-l-2 h-dvh w-[250px] fixed top-[5rem] right-0 ">
                         <Stack className="h-1/2 pt-5 overflow-y-auto border-b-2">
                             <TopForum />
                         </Stack>

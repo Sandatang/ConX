@@ -37,7 +37,7 @@ const TopForum = () => {
 
                             <Stack key={index} className="!flex-row animate-pulse">
 
-                                <Stack className="ml-2 !flex-row w-3/4 gap-1 items-center">
+                                <Stack className="ml-2 !flex-row w-full gap-1 items-center">
                                     <div className="bg-gray-300/90 h-8 w-8 rounded-full" />
                                     <Stack className="gap-2">
                                         <div className=" rounded-lg bg-gray-300/90 h-2 w-28 "></div>
