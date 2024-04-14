@@ -446,6 +446,17 @@ namespace CONX.Controllers
                 _context.Threads.Remove(affectedThread);
             }
 
+            var affectedForumFollows = _context.ForumFollows
+                                               .Include(x => x.User)
+                                               .Where(x => x.UserId == userId)
+                                               .ToList();
+
+            //remove all followed forums by the user
+            foreach (var affectedForumFollow in affectedForumFollows)
+            {
+                _context.ForumFollows.Remove(affectedForumFollow);
+            }
+
             var affectedForums = _context.Forums
                                          .Include(x=> x.Creator)
                                          .Where(x=> x.CreatorId == userId)
@@ -456,16 +467,7 @@ namespace CONX.Controllers
                 _context.Forums.Remove(affectedForum);
             }
 
-            var affectedForumFollows = _context.ForumFollows
-                                                .Include(x=> x.User)
-                                                .Where(x=> x.UserId == userId)
-                                                .ToList();
-
-            //remove all followed forums by the user
-            foreach (var affectedForumFollow in affectedForumFollows)
-            {
-                _context.ForumFollows.Remove(affectedForumFollow);
-            }
+           
 
 
             var result1 = await _context.SaveChangesAsync();
