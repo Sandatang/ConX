@@ -415,6 +415,7 @@ namespace CONX.Controllers
         [Route("user/delete/{userId}")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
+            
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
@@ -423,11 +424,64 @@ namespace CONX.Controllers
                     new Response { Status = "Error", Message = " User not found", Field = "failed" });
             }
 
+
+            var affectedComments = _context.Comments
+                                           .Include(x=> x.User)
+                                           .Where(x=> x.UserId == userId)
+                                           .ToList();
+            //remove all created comments by the user
+            foreach (var affectedComment in affectedComments)
+            {
+                _context.Comments.Remove(affectedComment); 
+            }
+            
+
+            var affectedThreads = _context.Threads
+                                          .Include(x=>x.User)
+                                          .Where(x => x.UserId == userId)
+                                          .ToList();
+            //remove all created threads by the user
+            foreach (var affectedThread in affectedThreads)
+            {
+                _context.Threads.Remove(affectedThread);
+            }
+
+            var affectedForums = _context.Forums
+                                         .Include(x=> x.Creator)
+                                         .Where(x=> x.CreatorId == userId)
+                                         .ToList();
+            //remove all created forums by the user
+            foreach (var affectedForum in affectedForums)
+            {
+                _context.Forums.Remove(affectedForum);
+            }
+
+            var affectedForumFollows = _context.ForumFollows
+                                                .Include(x=> x.User)
+                                                .Where(x=> x.UserId == userId)
+                                                .ToList();
+
+            //remove all followed forums by the user
+            foreach (var affectedForumFollow in affectedForumFollows)
+            {
+                _context.ForumFollows.Remove(affectedForumFollow);
+            }
+
+
+            var result1 = await _context.SaveChangesAsync();
+
+            if (result1 <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new Response { Status = "Error", Message = "Something went wrong while deleting affected enetities", Field = "failed" });
+            }
+
+            
+
             // Cast the IdentityUser
             var customUser = (User)user;
 
-            // Update the DeActivate property
-            customUser.Id = "-1ForDelete";
+            
 
             // Save the data
             var result = await _userManager.DeleteAsync(customUser);
