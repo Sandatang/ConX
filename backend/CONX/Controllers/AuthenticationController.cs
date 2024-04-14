@@ -185,7 +185,9 @@ namespace CONX.Controllers
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
-            var users = iUsers.Select(user => new User
+            var users = ((List<User>)iUsers)
+                .Where(x => x.IsDeleted == false)
+                .Select(user => new User
             {
                 Id = user.Id,
                 Firstname = ((User)user).Firstname, // Cast to your custom User class
@@ -216,7 +218,9 @@ namespace CONX.Controllers
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
-            var users = iUsers.Select(user => new User
+            var users = ((List<User>)iUsers)
+                .Where(x => x.IsDeleted == false)
+                .Select(user => new User
             {
                 Id = user.Id,
                 EmployeeNumber = ((User)user).EmployeeNumber,
@@ -238,15 +242,17 @@ namespace CONX.Controllers
         [Route("getTotalUser")]
         public async Task<IActionResult> GetTotalUser()
         {
-            var totalUser = await _userManager.Users.ToListAsync();
+            
             var totalPersonnel = await _userManager.GetUsersInRoleAsync("personnel");
+            var totalFilteredPersonnel = ((List<User>)totalPersonnel).Where(x => !x.IsDeleted).ToList();
             var totalWomen = await _userManager.GetUsersInRoleAsync("women");
+            var totalFilteredWomen = ((List<User>)totalWomen).Where(x => !x.IsDeleted).ToList();
 
             var data = new
             {
-                users = totalUser.Count(),
-                personnel = totalPersonnel.Count(),
-                totalWomen = totalWomen.Count()
+                users = totalFilteredPersonnel.Count() + totalFilteredWomen.Count(),
+                personnel = totalFilteredPersonnel.Count(),
+                totalWomen = totalFilteredWomen.Count()
             };
 
 
