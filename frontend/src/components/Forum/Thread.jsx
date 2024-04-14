@@ -1,4 +1,4 @@
-import { Add, Comment, Report, ThumbUp } from "@mui/icons-material"
+import { Add, Close, Comment, Report, ThumbUp } from "@mui/icons-material"
 import { Alert, Avatar, Badge, Button, Divider, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
@@ -19,11 +19,13 @@ const Thread = () => {
     const { forumTitle, id } = useParams()
     const [forum, setForum] = useState(null)
     const [threadToOpen, setThreadToOpen] = useState(null)
+    const [threadToUpdate, setThreadToUpdate] = useState(null)
     const [threads, setThreads] = useState(null)
     const [error, setError] = useState(false)
     const [updatePostings, setUpdatePostings] = useState(false)
     const [loading, setLoading] = useState(true)
     const [open, setOpen] = useState(false)
+    const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
     const breadCrumbUrl = [
         { url: '../forum/topics', name: "Forum" },
         { name: forumTitle.split("-").join(" ") }
@@ -43,15 +45,17 @@ const Thread = () => {
                 }
             } catch (error) {
                 console.error(error)
+                setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
+
             } finally {
                 setTimeout(() => {
                     setLoading(false)
-                }, 1000)
+                }, 500)
             }
         }
-        getForum()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        const intervalId = setInterval(getForum, pollingInterval);
+        return () => clearInterval(intervalId);
+    }, [id, pollingInterval])
     return (
         <Stack className="h-full no-scrollbar overflow-y-auto !flex-row">
             <Stack className="h-auto w-full px-20 gap-4 pt-2">
@@ -127,11 +131,18 @@ const Thread = () => {
                                                                 </Typography>
 
                                                                 {/* UPDATE */}
-                                                                {
-                                                                    localStorage.getItem("userId") === thread.thread.userId &&
-                                                                    <Button variant="contained" onClick={() => setUpdatePostings(true)} className="!absolute right-2 top-2">update</Button>
-                                                                }
-                                                                {updatePostings && <ModalEditPostings thread={thread.thread} onClose={() => setUpdatePostings(false)} />}
+                                                                <Stack className="!absolute right-0 top-0 ">
+
+                                                                    <Button component="span" variant="ghost" className="!text-sm group"><Close className="!text-sm group-hover:!text-red-500" /></Button>
+                                                                    {
+                                                                        localStorage.getItem("userId") === thread.thread.userId &&
+                                                                        <Button variant="ghost" onClick={() => {
+                                                                            setThreadToUpdate(thread.thread)
+                                                                            setUpdatePostings(true)
+                                                                        }} className="!text-sm hover:!text-green-400">update</Button>
+                                                                    }
+
+                                                                </Stack>
 
                                                                 <Divider className="!my-4" />
                                                                 <Typography className="!text-sm">
@@ -176,7 +187,6 @@ const Thread = () => {
                                                         </Stack>
                                                     </Stack>
                                                 </Stack>
-                                                <ThreadCommentModa open={open} close={() => setOpen(false)} thread={threadToOpen} />
                                             </div>
 
                                         )) : (
@@ -189,7 +199,8 @@ const Thread = () => {
 
                     )
                 }
-
+                <ThreadCommentModa open={open} close={() => setOpen(false)} thread={threadToOpen} />
+                {updatePostings && <ModalEditPostings thread={threadToUpdate} onClose={() => setUpdatePostings(false)} />}
 
             </Stack>
 

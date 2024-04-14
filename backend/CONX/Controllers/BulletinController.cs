@@ -3,6 +3,7 @@ using CONX.Models.BulletinViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace CONX.Controllers
 {
@@ -106,16 +107,30 @@ namespace CONX.Controllers
                                                   .OrderByDescending(bp => bp.DateCreated)
                                                   .Select(bp => new
                                                   {
-                                                      BulletinId = bp.Id,
-                                                      Title = bp.PostTitle,
-                                                      Content = bp.PostBody,
-                                                      User = bp.User.Firstname + " " + bp.User.Lastname,
-                                                      CreatorId = bp.UserId,
-                                                      ImageName = bp.ImgUrl,
-                                                      Created = bp.DateCreated
+                                                      BulletinPost = new
+                                                      {
+                                                          BulletinId = bp.Id,
+                                                          Title = bp.PostTitle,
+                                                          Content = bp.PostBody,
+                                                          User = bp.User.Firstname + " " + bp.User.Lastname,
+                                                          CreatorId = bp.UserId,
+                                                          ImageName = bp.ImgUrl,
+                                                          Created = bp.DateCreated
+                                                      },
+                                                      Comment = _context.BulletinComments
+                                                                                        .Where(bc => bc.BulletinPostId == bp.Id)
+                                                                                        .OrderByDescending(bc => bc.Comment.Created)
+                                                                                        .Select(tc => new
+                                                                                        {
+                                                                                            CommentId = tc.CommentId,
+                                                                                            UserId = tc.Comment.UserId,
+                                                                                            User = tc.Comment.User.Firstname + " " + tc.Comment.User.Lastname,
+                                                                                            Content = tc.Comment.Content,
+                                                                                            Created = tc.Comment.Created,
+                                                                                        }).ToList()
                                                   }).ToListAsync();
 
-            if (post == null)
+            if (post.Count == 0)
             {
                 return StatusCode(StatusCodes.Status204NoContent,
                     new Response { Status = "Error", Message = "No Post yet", Field = "failed" });

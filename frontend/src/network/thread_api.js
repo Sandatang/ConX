@@ -18,10 +18,7 @@ export async function getAllThread(data) {
 export async function updateThread(data) {
   const response = await fetchData(`/api/forum/thread/update`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    body: data
   });
   return response.json();
 }
