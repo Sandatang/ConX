@@ -113,7 +113,7 @@ export default function AddPeronnelModal(props) {
                                     label="username "
                                     size="small"
                                     className="!w-full"
-                                    defaultValue={props.update ? props.user.userName : ""}
+                                    defaultValue={props.update ? props.user.user.userName : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("username", { required: true })}
                                 />
@@ -123,7 +123,7 @@ export default function AddPeronnelModal(props) {
                                     name="firstname"
                                     label="Firstname"
                                     size="small"
-                                    defaultValue={props.update ? props.user.firstname : ""}
+                                    defaultValue={props.update ? props.user.user.firstname : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
 
                                     // value={selectedItem.id || ''}
@@ -136,7 +136,7 @@ export default function AddPeronnelModal(props) {
                                     name="middlename"
                                     label="Middlename"
                                     size="small"
-                                    defaultValue={props.update ? props.user.middlename : ""}
+                                    defaultValue={props.update ? props.user.user.middlename : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("middlename", { required: false })}
                                 />
@@ -146,7 +146,7 @@ export default function AddPeronnelModal(props) {
                                     name="lastname"
                                     label="Lastname"
                                     size="small"
-                                    defaultValue={props.update ? props.user.lastname : ""}
+                                    defaultValue={props.update ? props.user.user.lastname : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("lastname", { required: true })}
                                 />
@@ -156,7 +156,7 @@ export default function AddPeronnelModal(props) {
                                     name="email"
                                     label="Email"
                                     size="small"
-                                    defaultValue={props.update ? props.user.email : ""}
+                                    defaultValue={props.update ? props.user.user.email : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("email", { required: true })}
                                 />
@@ -166,7 +166,7 @@ export default function AddPeronnelModal(props) {
                                         name="birthdate"
                                         label="Birthdate"
                                         sx={{ '& .MuiInputBase-root': { fontSize: '0.775rem' } }}
-                                        value={props.update ? dayjs(props.user.birthdate) : null}
+                                        value={props.update ? dayjs(props.user.user.birthdate) : null}
                                         disabledTime onChange={(date) => {
                                             setValue('birthdate',
                                                 date, { shouldValidate: true });

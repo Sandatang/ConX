@@ -97,7 +97,7 @@ export async function updateUser(data) {
 }
 
 export async function deleteUser(id){
-  const response = await fetchData(`/api/auth/delete/user/${id}`, { method: "DELETE"})
+  const response = await fetchData(`/api/auth/user/delete/${id}`, { method: "DELETE"})
   return response.json()
 }
 

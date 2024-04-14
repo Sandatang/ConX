@@ -1,16 +1,14 @@
 /* eslint-disable react/prop-types */
+import { Image } from "@mui/icons-material"
 import { Alert, Avatar, Button, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import * as ThreadApi from "../../network/thread_api"
 import Modal from "../Modal"
 import ModalHeading from "../ModalHeading"
-import { Image } from "@mui/icons-material"
 
 const ModalEditPostings = (props) => {
     const [message, setMessage] = useState(null)
-    const navigate = useNavigate()
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
 
 

@@ -20,17 +20,32 @@ const ManageUsers = () => {
   const [user, setUser] = useState(null);
   const [totalUser, setTotalUser] = useState(null);
   const { register, watch } = useForm()
+  const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
+
   const searchedValue = watch('searched')
 
 
   useEffect(() => {
     const getTotalUsers = async () => {
-      const response = await UserApi.getTotalOfUser()
-      setTotalUser(response)
+      try {
+        // const response = await UserApi.getTotalOfUser()
+        const responseOne = await UserApi.viewAllPersonnel()
+        const responseTwo = await UserApi.viewAllWomen()
+        setTotalUser({
+          "users": responseOne.length + responseTwo.length,
+          "personnel": responseOne.length,
+          "totalWomen": responseTwo.length
+        })
+
+      } catch (error) {
+        console.error(error)
+        setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
+      }
     }
     allUser()
-    getTotalUsers()
-  }, [])
+    const intervalId = setInterval(getTotalUsers, pollingInterval);
+    return () => clearInterval(intervalId);
+  }, [pollingInterval])
 
 
 
@@ -72,7 +87,7 @@ const ManageUsers = () => {
       setActive2(false)
       setActive3(true)
       setUser(responseOne.concat(responseTwo))
-      console.log(responseOne.concat(responseTwo))
+      // console.log(responseOne.concat(responseTwo))
     } catch (error) {
       console.error(error)
     }
@@ -81,7 +96,7 @@ const ManageUsers = () => {
 
   const filteredData = user && user.filter(item => {
     // Replace propertyName with the actual property name you want to check against
-    return Object.values(item).some(value => {
+    return Object.values(item.user).some(value => {
       if (typeof value === 'string') {
         return value.includes(searchedValue);
       }
@@ -104,8 +119,8 @@ const ManageUsers = () => {
         {/* End button for showing user base on role */}
 
         <Stack className='!flex-row gap-2'>
-          <Button variant='contained' onClick={() => setAdd(!add)}> <Add/> Admin</Button>  {/* For adding personnel */}
-          <Button variant='contained' onClick={() => setAdd(!add)}> <Add/> Personnel</Button>  {/* For adding personnel */}
+          <Button variant='contained' onClick={() => setAdd(!add)}> <Add /> Admin</Button>  {/* For adding personnel */}
+          <Button variant='contained' onClick={() => setAdd(!add)}> <Add /> Personnel</Button>  {/* For adding personnel */}
         </Stack>
       </Stack>
 
@@ -180,8 +195,8 @@ const ManageUsers = () => {
           </thead>
           <tbody className="bg-white divide-y  divide-gray-200">
             {filteredData && filteredData.length > 0 ? (filteredData.slice().sort((a, b) => {
-              const nameA = a.lastname.toLowerCase();
-              const nameB = b.lastname.toLowerCase();
+              const nameA = a.user.lastname.toLowerCase();
+              const nameB = b.user.lastname.toLowerCase();
               return nameA.localeCompare(nameB);
             }).map((user) => (
               <tr key={user.id}>
@@ -191,28 +206,28 @@ const ManageUsers = () => {
                       <AccountCircleIcon className="w-10 h-10 rounded-full text-gray-800" />
                     </span>
                     <span className="ml-4 flex flex-col">
-                      <span className="text-sm font-medium text-gray-900 capitalize"> {user.lastname}, {user.firstname} {user.middlename}</span>
-                      <span className="text-sm text-gray-500 text-start">{user.employeeNumber}</span>
+                      <span className="text-sm font-medium text-gray-900 capitalize"> {user.user.lastname}, {user.user.firstname} {user.user.middlename}</span>
+                      <span className="text-sm text-gray-500 text-start">{user.user.employeeNumber}</span>
                     </span>
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-gray-900">{new Date(user.birthdate).toDateString().split(" ").splice(1).join(" ")}</span>
+                  <span className="text-sm font-medium text-gray-900">{new Date(user.user.birthdate).toDateString().split(" ").splice(1).join(" ")}</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-gray-900">{user.userName}</span>
+                  <span className="text-sm font-medium text-gray-900">{user.user.userName}</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-gray-900">{user.email}</span>
+                  <span className="text-sm font-medium text-gray-900">{user.user.email}</span>
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-gray-900">{user.role}</span>
+                  <span className="text-sm font-medium text-gray-900">{user.user.role}</span>
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-center">
 
-                  <ModalDeActivate userId={user.id} status={user.deActivate} />
+                  <ModalDeActivate userId={user.user.id} status={user.user.deActivate} />
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -226,7 +241,7 @@ const ManageUsers = () => {
                   {
                     localStorage.getItem('role') === "Admin" &&
                     <Button onClick={() => {
-                      setUserToDelete(user.id)
+                      setUserToDelete(user.user.id)
                       setDeleteModal(true)
                     }} className="!text-sm !font-medium !text-red-500" variant="ghost">
                       Delete
@@ -245,9 +260,7 @@ const ManageUsers = () => {
         setUpdate(false)
         setAdd(false)
       }} />}
-      {deleteModal && <ModalDeletion userId={userToDelete} open={deleteModal} close={() => {
-        setDeleteModal(false)
-      }} />}
+      {deleteModal && <ModalDeletion userId={userToDelete} open={deleteModal} close={() => setDeleteModal(false)} />}
       {/* Modal */}
 
     </div>
