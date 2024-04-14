@@ -185,18 +185,26 @@ namespace CONX.Controllers
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
-            var users = iUsers.Select(user => new User
+            var users = iUsers.Select(user => new
             {
-                Id = user.Id,
-                Firstname = ((User)user).Firstname, // Cast to your custom User class
-                Middlename = ((User)user).Middlename,
-                Birthdate = ((User)user).Birthdate,
-                Lastname = ((User)user).Lastname,
-                UserName = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                DeActivate = ((User)user).DeActivate,
-            }).ToList();
+                user = new User
+                {
+
+                    Id = user.Id,
+                    Firstname = ((User)user).Firstname, // Cast to your custom User class
+                    Middlename = ((User)user).Middlename,
+                    Birthdate = ((User)user).Birthdate,
+                    Lastname = ((User)user).Lastname,
+                    UserName = user.UserName,
+                    IsDeleted = ((User)user).IsDeleted,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    DeActivate = ((User)user).DeActivate,
+                }
+
+            })
+             .Where(v => !v.user.IsDeleted || v.user.IsDeleted == null)
+             .ToList();
 
             // return if user is not null
             return Ok(users);
@@ -216,8 +224,11 @@ namespace CONX.Controllers
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
-            var users = iUsers.Select(user => new User
+            var users = iUsers.Select(user => new
             {
+                user = new User
+                {
+
                 Id = user.Id,
                 EmployeeNumber = ((User)user).EmployeeNumber,
                 Firstname = ((User)user).Firstname, // Cast to your custom User class
@@ -225,10 +236,15 @@ namespace CONX.Controllers
                 Birthdate = ((User)user).Birthdate,
                 Lastname = ((User)user).Lastname,
                 UserName = user.UserName,
+                IsDeleted = ((User)user).IsDeleted,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 DeActivate = ((User)user).DeActivate,
-            }).ToList();
+                }
+
+            })
+             .Where(v => !v.user.IsDeleted || v.user.IsDeleted == null)
+             .ToList();
 
             // Return if user is not null
             return Ok(users);
@@ -241,6 +257,7 @@ namespace CONX.Controllers
             var totalUser = await _userManager.Users.ToListAsync();
             var totalPersonnel = await _userManager.GetUsersInRoleAsync("personnel");
             var totalWomen = await _userManager.GetUsersInRoleAsync("women");
+
 
             var data = new
             {
@@ -460,6 +477,10 @@ namespace CONX.Controllers
                 return Ok(new Response { Status = "Error", Message = "User account is deactivated " });
             }
 
+            if (user != null && extendedUserProperties.IsDeleted == true)
+            {
+                return Ok(new Response { Status = "Error", Message = "Account does not exist " });
+            }
 
             if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
             {
