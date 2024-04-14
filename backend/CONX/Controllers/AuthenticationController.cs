@@ -425,68 +425,13 @@ namespace CONX.Controllers
             }
 
 
-            var affectedComments = _context.Comments
-                                           .Include(x=> x.User)
-                                           .Where(x=> x.UserId == userId)
-                                           .ToList();
-            //remove all created comments by the user
-            foreach (var affectedComment in affectedComments)
-            {
-                _context.Comments.Remove(affectedComment); 
-            }
-            
-
-            var affectedThreads = _context.Threads
-                                          .Include(x=>x.User)
-                                          .Where(x => x.UserId == userId)
-                                          .ToList();
-            //remove all created threads by the user
-            foreach (var affectedThread in affectedThreads)
-            {
-                _context.Threads.Remove(affectedThread);
-            }
-
-            var affectedForumFollows = _context.ForumFollows
-                                               .Include(x => x.User)
-                                               .Where(x => x.UserId == userId)
-                                               .ToList();
-
-            //remove all followed forums by the user
-            foreach (var affectedForumFollow in affectedForumFollows)
-            {
-                _context.ForumFollows.Remove(affectedForumFollow);
-            }
-
-            var affectedForums = _context.Forums
-                                         .Include(x=> x.Creator)
-                                         .Where(x=> x.CreatorId == userId)
-                                         .ToList();
-            //remove all created forums by the user
-            foreach (var affectedForum in affectedForums)
-            {
-                _context.Forums.Remove(affectedForum);
-            }
 
            
-
-
-            var result1 = await _context.SaveChangesAsync();
-
-            if (result1 <= 0)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                   new Response { Status = "Error", Message = "Something went wrong while deleting affected enetities", Field = "failed" });
-            }
-
-            
-
             // Cast the IdentityUser
             var customUser = (User)user;
 
-            
-
-            // Save the data
-            var result = await _userManager.DeleteAsync(customUser);
+            customUser.IsDeleted = true;
+            var result = await _userManager.UpdateAsync(customUser);
 
             if (!result.Succeeded)
             {
@@ -495,7 +440,7 @@ namespace CONX.Controllers
             }
 
             // Change deactivate col to 
-            return Ok(new Response { Status = "Success", Message = "User deactivated " });
+            return Ok(new Response { Status = "Success", Message = "User deleted " });
         }
 
 

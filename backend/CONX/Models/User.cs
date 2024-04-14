@@ -14,6 +14,7 @@ namespace CONX.Models
 
         public bool DeActivate { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
     }
 
     
