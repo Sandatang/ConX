@@ -4,6 +4,7 @@ using CONX.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CONX.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240413145157_AddedBulletinPostAndBulletinCommentsModel")]
+    partial class AddedBulletinPostAndBulletinCommentsModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +56,6 @@ namespace CONX.Migrations
 
                     b.ToTable("DeactivationLogs");
                 });
-
 
             modelBuilder.Entity("CONX.Models.BulletinPost", b =>
                 {
@@ -111,7 +112,6 @@ namespace CONX.Migrations
 
                     b.ToTable("BulletinComments");
                 });
-
 
             modelBuilder.Entity("CONX.Models.Comment", b =>
                 {
@@ -585,9 +585,6 @@ namespace CONX.Migrations
                     b.Property<string>("Firstname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
