@@ -52,7 +52,7 @@ namespace CONX.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeactivationLogs");
+                    b.ToTable("DeactivationLogs", (string)null);
                 });
 
             modelBuilder.Entity("CONX.Models.Comment", b =>
@@ -78,7 +78,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("CONX.Models.Connectivity", b =>
@@ -105,7 +105,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Connectivitys");
+                    b.ToTable("Connectivitys", (string)null);
                 });
 
             modelBuilder.Entity("CONX.Models.Forum", b =>
@@ -142,7 +142,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Forums");
+                    b.ToTable("Forums", (string)null);
                 });
 
             modelBuilder.Entity("CONX.Models.Jobs", b =>
@@ -195,7 +195,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Jobs");
+                    b.ToTable("Jobs", (string)null);
                 });
 
             modelBuilder.Entity("CONX.Models.JuncForumFollows", b =>
@@ -219,7 +219,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ForumFollows");
+                    b.ToTable("ForumFollows", (string)null);
                 });
 
             modelBuilder.Entity("CONX.Models.JuncForumThread", b =>
@@ -242,7 +242,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("ThreadId");
 
-                    b.ToTable("ForumThreads");
+                    b.ToTable("ForumThreads", (string)null);
                 });
 
             modelBuilder.Entity("CONX.Models.JuncThreadComment", b =>
@@ -265,7 +265,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("ThreadId");
 
-                    b.ToTable("ThreadComments");
+                    b.ToTable("ThreadComments", (string)null);
                 });
 
             modelBuilder.Entity("CONX.Models.Thread", b =>
@@ -304,7 +304,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Threads");
+                    b.ToTable("Threads", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
