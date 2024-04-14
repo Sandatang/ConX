@@ -11,10 +11,12 @@ namespace CONX.Models
         public DbSet<Thread> Threads { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Jobs> Jobs { get; set; }
+        public DbSet<BulletinPost> BulletinPost {  get; set; }
         public DbSet<Connectivity> Connectivitys { get; set; }
         public DbSet<JuncForumThread> ForumThreads { get; set; }
         public DbSet<JuncThreadComment> ThreadComments { get; set; }
         public DbSet<JuncForumFollows> ForumFollows { get; set; }
+        public DbSet<BulletinPostComment> BulletinComments { get; set; }
         public DbSet<AccountDeactivationLog> DeactivationLogs { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

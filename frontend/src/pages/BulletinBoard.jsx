@@ -1,15 +1,39 @@
 import { Add, PostAdd } from "@mui/icons-material";
 import { Button, IconButton, Stack, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Content from "../components/Board/Content";
 import WritePost from "../components/Board/WritePost";
 import OfficialsHotline from "../components/Contacts/OfficialsHotline";
 import TopForum from "../components/Forum/TopForum";
+import * as BulletinApi from "../network/bulletin_api"
+
 
 const BulletinBoard = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [toPost, setToPost] = useState(false);
   const writePostRef = useRef(null);
+  const [loading, setLoading] = useState(true)
+  const [bulletins, setBulletins] = useState(null)
+
+  useEffect(() => {
+    const getBulletinPost = async () => {
+      try {
+        const response = await BulletinApi.viewAllBUlletinPost()
+        console.log(response)
+        setBulletins(response)
+
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setTimeout(() => {
+
+          setLoading(false)
+        }, 1000)
+      }
+    }
+    const intervalId = setInterval(getBulletinPost, 1000);
+    return () => clearInterval(intervalId);
+  }, [])
 
   const handleScroll = () => {
     if (writePostRef.current) {
@@ -25,18 +49,25 @@ const BulletinBoard = () => {
 
 
   return (
-    <Stack className="!flex-row mx-16 relative" onClick={() => {
-      toPost && setToPost(false)
-    }}>
+    <Stack className="!flex-row mx-16 relative">
       <Stack
         ref={writePostRef}
         className="w-full h-screen py-4 overflow-y-auto no-scrollbar px-4"
         onScroll={handleScroll}
       >
-        <WritePost
-          classes={`${toPost ? "!block absolute" : "hidden"
-            }`}
-        />
+        {
+          loading ? (
+            <Stack className="animate-pulse gap-6">
+              <div className="bg-gray-300/50 h-[300px] round-2xl"></div>
+              <div className="bg-gray-300/50 h-[300px] round-2xl"></div>
+              <div className="bg-gray-300/50 h-[300px] round-2xl"></div>
+            </Stack>
+          ) : (
+            <>
+              <WritePost toPostFalse={() => setToPost(false)} classes={`${toPost ? "!block absolute" : "hidden"}`} />
+              <Content bulletins={bulletins} />
+            </>
+          )}
         {!toPost && (
           <div className="w-full flex justify-end cursor-pointer group" onClick={handlePostClick}>
             <IconButton
@@ -48,7 +79,6 @@ const BulletinBoard = () => {
             </IconButton>
           </div>
         )}
-        <Content />
       </Stack>
 
       <Stack className=" h-screen w-[320px] bg-white">

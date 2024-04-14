@@ -4,6 +4,7 @@ using CONX.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CONX.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240413145157_AddedBulletinPostAndBulletinCommentsModel")]
+    partial class AddedBulletinPostAndBulletinCommentsModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +54,8 @@ namespace CONX.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeactivationLogs", (string)null);
+                    b.ToTable("DeactivationLogs");
                 });
-
 
             modelBuilder.Entity("CONX.Models.BulletinPost", b =>
                 {
@@ -112,7 +113,6 @@ namespace CONX.Migrations
                     b.ToTable("BulletinComments");
                 });
 
-
             modelBuilder.Entity("CONX.Models.Comment", b =>
                 {
                     b.Property<int>("CommentId")
@@ -136,7 +136,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("CONX.Models.Connectivity", b =>
@@ -163,7 +163,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Connectivitys", (string)null);
+                    b.ToTable("Connectivitys");
                 });
 
             modelBuilder.Entity("CONX.Models.Forum", b =>
@@ -200,7 +200,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Forums", (string)null);
+                    b.ToTable("Forums");
                 });
 
             modelBuilder.Entity("CONX.Models.Jobs", b =>
@@ -253,7 +253,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Jobs", (string)null);
+                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("CONX.Models.JuncForumFollows", b =>
@@ -277,7 +277,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ForumFollows", (string)null);
+                    b.ToTable("ForumFollows");
                 });
 
             modelBuilder.Entity("CONX.Models.JuncForumThread", b =>
@@ -300,7 +300,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("ThreadId");
 
-                    b.ToTable("ForumThreads", (string)null);
+                    b.ToTable("ForumThreads");
                 });
 
             modelBuilder.Entity("CONX.Models.JuncThreadComment", b =>
@@ -323,7 +323,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("ThreadId");
 
-                    b.ToTable("ThreadComments", (string)null);
+                    b.ToTable("ThreadComments");
                 });
 
             modelBuilder.Entity("CONX.Models.Thread", b =>
@@ -362,7 +362,7 @@ namespace CONX.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Threads", (string)null);
+                    b.ToTable("Threads");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -585,9 +585,6 @@ namespace CONX.Migrations
                     b.Property<string>("Firstname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
