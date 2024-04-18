@@ -15,6 +15,17 @@ export async function registerWomen(data) {
 
   return response.json();
 }
+export async function registerAdmin(data) {
+  const response = await fetchData("/api/auth/register/admin", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+}
 
 export async function addPersonnel(data) {
   const response = await fetchData("/api/auth/register/personnel", {
@@ -53,6 +64,26 @@ export async function viewAllWomen() {
 
 export async function viewAllPersonnel() {
   const response = await fetchData("/api/auth/view/personnel", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
+export async function viewAllAdmin() {
+  const response = await fetchData("/api/auth/view/admin", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
+export async function viewDeActivated() {
+  const response = await fetchData("/api/auth/view/deActivated/accounts", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

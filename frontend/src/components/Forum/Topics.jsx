@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Bookmark, ForumOutlined, RemoveCircleOutline } from "@mui/icons-material"
+import { Favorite, ForumOutlined } from "@mui/icons-material"
 import { IconButton, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -88,11 +88,11 @@ const Topics = () => {
                                                     ?
                                                     <IconButton onClick={() => unFollowForum(tp.id, localStorage.getItem('userId'))}>
 
-                                                        <RemoveCircleOutline className="!text-pinkish !text-lg" />
+                                                        <Favorite className="!text-pinkish !text-lg" />
                                                     </IconButton>
                                                     :
                                                     <IconButton onClick={() => followForum(tp.id, localStorage.getItem('userId'))}>
-                                                        <Bookmark className="!text-pinkish !text-lg" />
+                                                        <Favorite className=" !text-lg" />
                                                     </IconButton>
 
                                             }

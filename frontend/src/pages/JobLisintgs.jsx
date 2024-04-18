@@ -68,7 +68,7 @@ const JobLisintgs = () => {
                         </Stack>
                     </form>
                     {
-                        userRole === "Personnel" &&
+                        userRole !== "Women" &&
                         <>
                             <Stack className="mr-4">
                                 <Button onClick={() => setAdd(true)} className="self-end" variant="contained">

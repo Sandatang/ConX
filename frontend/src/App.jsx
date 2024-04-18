@@ -27,8 +27,8 @@ function App() {
       <Route>
         <Route path="/login" element={<IsLogged />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/email/confirmation?Success=true" element={<EmailConfirmationMessage />} />
-        <Route path="/email/error?Error=true" element={<EmailConfirmationMessage />} />
+        <Route path="/email/confirmation/Success" element={<EmailConfirmationMessage />} />
+        <Route path="/email/error/Error" element={<EmailConfirmationMessage />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>

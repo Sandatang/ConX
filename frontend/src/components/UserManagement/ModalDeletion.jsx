@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,Alert } from '@mui/material'
-import { useForm } from 'react-hook-form'
-import * as UserApi from "../../network/user_api";
-import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as UserApi from "../../network/user_api";
 
 
 const ModalDeletion = (props) => {
-    const navigate = useNavigate()
     const { handleSubmit } = useForm()
     const [message, setMessage] = useState(null)
     const [error, setError] = useState(false)
