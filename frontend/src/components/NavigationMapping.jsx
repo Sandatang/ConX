@@ -1,4 +1,4 @@
-import { brgyLinks, womenLinks } from "../constants"
+import { adminLinks, brgyLinks, womenLinks } from "../constants"
 import Navigation from "./Navigation"
 
 const NavigationMapping = () => {
@@ -28,7 +28,7 @@ const NavigationMapping = () => {
         ))
       }
       {userRole === "Admin" &&
-        brgyLinks.map((data) => (
+        adminLinks.map((data) => (
           <Navigation
             key={data.id}
             link={data.link}

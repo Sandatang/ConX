@@ -1,19 +1,19 @@
 /* eslint-disable react/prop-types */
-import { Button, Stack, TextField, Typography } from '@mui/material'
+import { Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import * as JobApi from "../../network/job_api"
 import Modal from '../Modal'
 import ModalDialogMessage from '../ModalDialogMessage'
 import ModalHeading from '../ModalHeading'
 
 const AddJob = (props) => {
-    const navigate = useNavigate()
     const { register, reset, handleSubmit, formState: { isSubmitting } } = useForm()
     const [message, setMessage] = useState(null)
     const [open, setOpen] = useState(false)
     const [error, setError] = useState(false)
+    const [val, setVal] = useState('none');
+
 
     const addAndUpdateJob = async (data) => {
 
@@ -23,7 +23,8 @@ const AddJob = (props) => {
             const formData = {
                 ...data,
                 ...property,
-                'isActive': true
+                'isActive': true,
+                "experienceReq": val
             }
             if (props.update) {
                 response = await JobApi.updateJob(formData)
@@ -37,7 +38,8 @@ const AddJob = (props) => {
                 setMessage(response.message)
                 setOpen(true)
                 setTimeout(() => {
-                    navigate(0)
+                    setMessage(null)
+                    setOpen(false)
                 }, 1000)
             }
             else {
@@ -61,6 +63,11 @@ const AddJob = (props) => {
             }, 2000)
         }
     }
+
+
+    const handleChange = (event) => {
+        setVal(event.target.value);
+    };
     return (
         <Modal
 
@@ -127,6 +134,19 @@ const AddJob = (props) => {
 
                                 // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                 />
+                                <Typography>Experienced Required <span className='text-red-500'>*</span></Typography>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={val}
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value={'none'}>N/A</MenuItem>
+                                    <MenuItem value={'1'}>Atleat 1 Year</MenuItem>
+                                    <MenuItem value={'2'}>Atleat 2 Year</MenuItem>
+                                    <MenuItem value={'3'}>Atleat 3 Year</MenuItem>
+                                    <MenuItem value={'4'}>Atleat 4 Year</MenuItem>
+                                </Select>
                                 <Typography>Contact Person <span className='text-red-500'>*</span></Typography>
                                 <TextField
                                     id="outline-idno"

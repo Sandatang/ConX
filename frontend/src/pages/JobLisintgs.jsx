@@ -11,11 +11,10 @@ const JobLisintgs = () => {
     const userRole = localStorage.getItem("role")
     const [add, setAdd] = useState(false)
     const [loading, setLoading] = useState(true)
-    const [job, setJob] = useState(null)
+    const [job, setJob] = useState([])
     const { register, watch } = useForm()
     const searchedValue = watch('searched')
-
-
+    const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
 
     useEffect(() => {
         const getAllJob = async () => {
@@ -26,15 +25,19 @@ const JobLisintgs = () => {
 
             } catch (error) {
                 console.error(error)
+                setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
+
             } finally {
 
                 setTimeout(() => {
                     setLoading(false)
-                }, 1000)
+                }, 500)
             }
         }
-        getAllJob()
-    }, [])
+        const intervalId = setInterval(getAllJob, pollingInterval);
+        return () => clearInterval(intervalId);
+
+    }, [pollingInterval])
 
     const filteredData = job && job.filter(item => {
         // Replace propertyName with the actual property name you want to check against
@@ -68,7 +71,7 @@ const JobLisintgs = () => {
                         </Stack>
                     </form>
                     {
-                        userRole !== "Women" &&
+                        userRole !== "Women" && userRole !== "Admin" &&
                         <>
                             <Stack className="mr-4">
                                 <Button onClick={() => setAdd(true)} className="self-end" variant="contained">

@@ -33,12 +33,13 @@ const ManageUsers = () => {
   useEffect(() => {
     const getTotalUsers = async () => {
       try {
+        let user = localStorage.getItem('role');
         const responseOne = await UserApi.viewAllPersonnel()
         const responseTwo = await UserApi.viewAllWomen()
 
         const responseThree = await UserApi.viewAllAdmin()
         setTotalUser({
-          "users": responseOne.length + responseTwo.length + responseThree.length,
+          "users": user === "Admin" ? responseOne.length + responseTwo.length + responseThree.length : responseOne.length + responseTwo.length,
           "personnel": responseOne.length,
           "totalWomen": responseTwo.length,
           "totalAdmin": responseThree.length,
@@ -235,17 +236,21 @@ const ManageUsers = () => {
               <Typography className='!text-2xl !font-bold'>{totalUser && totalUser.totalWomen}</Typography>
             </Stack>
           </Stack>
-          <Stack className='bg-violet-500 p-4 !text-white w-56 aspect-video rounded-md'>
-            <Stack className='!flex-row justify-between '>
-              <Typography className='!text-lg !font-bold tracking-widest'>
-                Admin Users
-              </Typography>
-              <AdminPanelSettings fontSize='large' />
+          {
+            localStorage.getItem('role') === "Admin" &&
+            <Stack className='bg-violet-500 p-4 !text-white w-56 aspect-video rounded-md'>
+              <Stack className='!flex-row justify-between '>
+                <Typography className='!text-lg !font-bold tracking-widest'>
+                  Admin Users
+                </Typography>
+                <AdminPanelSettings fontSize='large' />
+              </Stack>
+              <Stack className='h-1/2 justify-center'>
+                <Typography className='!text-2xl !font-bold'>{totalUser && totalUser.totalAdmin}</Typography>
+              </Stack>
             </Stack>
-            <Stack className='h-1/2 justify-center'>
-              <Typography className='!text-2xl !font-bold'>{totalUser && totalUser.totalAdmin}</Typography>
-            </Stack>
-          </Stack>
+          }
+
         </Stack>
         {/* End View users by role */}
 
@@ -333,7 +338,7 @@ const ManageUsers = () => {
                     {
                       localStorage.getItem('role') === "Admin" &&
                         active5 ? (
-                        <Button  className="!text-sm !font-medium" variant='text' disabled={true}>Deleted</Button>
+                        <Button className="!text-sm !font-medium" variant='text' disabled={true}>Deleted</Button>
                       ) : (
 
                         <Button onClick={() => {

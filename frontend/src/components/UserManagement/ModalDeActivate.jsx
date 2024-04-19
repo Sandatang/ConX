@@ -61,7 +61,7 @@ const ModalDeActivate = (props) => {
         <>
             {props.job ? (
                 <IconButton onClick={handleClickOpen} className="!rounded-md hover:!bg-transparent group">
-                    <span className='text-sm text-red-500 group-hover:!text-black/50 '>Close Job</span>
+                    <span className='text-sm text-red-500 group-hover:!text-black/50 '>Delete Job</span>
                 </IconButton>
             ) : (
                 props.active5 ? (
