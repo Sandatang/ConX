@@ -686,15 +686,15 @@ namespace CONX.Controllers
 
             var extendedUserProperties = (User)user;
 
+            if (user != null && extendedUserProperties.IsDeleted == true)
+            {
+                return Ok(new Response { Status = "Error", Message = "Account does not exist " });
+            }
+
             if (user != null && extendedUserProperties.DeActivate == true)
             {
 
                 return Ok(new Response { Status = "Error", Message = "User account is deactivated " });
-            }
-
-            if (user != null && extendedUserProperties.IsDeleted == true)
-            {
-                return Ok(new Response { Status = "Error", Message = "Account does not exist " });
             }
 
             if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
