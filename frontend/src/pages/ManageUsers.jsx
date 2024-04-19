@@ -14,6 +14,7 @@ const ManageUsers = () => {
   const [active2, setActive2] = useState(null);
   const [active3, setActive3] = useState(null);
   const [active4, setActive4] = useState(null);
+  const [active5, setActive5] = useState(null);
   const [add, setAdd] = useState(false)
   const [addAdmin, setAddAdmin] = useState(false)
   const [userToDelete, setUserToDelete] = useState(false)
@@ -68,6 +69,7 @@ const ManageUsers = () => {
       setActive2(false)
       setActive3(false)
       setActive4(false)
+      setActive5(false)
       setUser(response)
     } catch (error) {
       console.error(error)
@@ -82,12 +84,28 @@ const ManageUsers = () => {
       setActive2(false)
       setActive3(false)
       setActive4(true)
+      setActive5(false)
       setUser(response)
     } catch (error) {
       console.error(error)
     }
   }
 
+  async function generateDeletedAccounts() {
+    try {
+      const response = await UserApi.viewDeletedAccounts()
+      console.log(response)
+
+      setActive1(false)
+      setActive2(false)
+      setActive3(false)
+      setActive4(false)
+      setActive5(true)
+      setUser(response)
+    } catch (error) {
+      console.error(error)
+    }
+  }
   async function generatePersonnelUser() {
     try {
       const response = await UserApi.viewAllPersonnel()
@@ -97,6 +115,8 @@ const ManageUsers = () => {
       setActive2(true)
       setActive3(false)
       setActive4(false)
+      setActive5(false)
+
       setUser(response)
     } catch (error) {
       console.error(error)
@@ -113,6 +133,8 @@ const ManageUsers = () => {
       setActive2(false)
       setActive3(true)
       setActive4(false)
+      setActive5(false)
+
       setUser(responseOne.concat(responseTwo))
       // console.log(responseOne.concat(responseTwo))
     } catch (error) {
@@ -162,7 +184,10 @@ const ManageUsers = () => {
             <Button onClick={generateWomenUser} variant={active1 ? 'contained' : 'text'}>Women</Button>|
             {
               localStorage.getItem('role') === "Admin" &&
-              <Button onClick={generateAdminUser} variant={active4 ? 'contained' : 'text'}>Admin</Button>
+              <>
+                <Button onClick={generateAdminUser} variant={active4 ? 'contained' : 'text'}>Admin</Button>|
+                <Button onClick={generateDeletedAccounts} variant={active5 ? 'contained' : 'text'}>Deleted accounts</Button>
+              </>
             }
           </Stack>
           {/* End button for showing user base on role */}
@@ -251,7 +276,7 @@ const ManageUsers = () => {
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Birthdate</th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Username</th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User Type</th>
+                {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User Type</th> */}
                 <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Active</th>
                 <th scope="col" className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Action</th>
               </tr>
@@ -284,31 +309,41 @@ const ManageUsers = () => {
                     <span className="text-sm font-medium text-gray-900">{user.user.email}</span>
                   </td>
 
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  {/* <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm font-medium text-gray-900">{user.user.role}</span>
-                  </td>
+                  </td> */}
 
                   <td className="px-6 py-4 whitespace-nowrap text-center">
 
-                    <ModalDeActivate userId={user.user.id} status={user.user.deActivate} />
+                    <ModalDeActivate userId={user.user.id} active5={active5} status={user.user.deActivate} />
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap text-center">
-                    <Button onClick={() => {
-                      setUserToUpdate(user)
-                      setUpdate(true)
-                      setAdd(true)
-                    }} className="!text-sm !font-medium !text-green-500" variant="ghost" >
-                      Edit
-                    </Button>
+                    {
+                      !active5 &&
+                      <Button onClick={() => {
+                        setUserToUpdate(user)
+                        setUpdate(true)
+                        setAdd(true)
+                      }} className="!text-sm !font-medium !text-green-500" variant="ghost" >
+                        Edit
+                      </Button>
+                    }
+
                     {
                       localStorage.getItem('role') === "Admin" &&
-                      <Button onClick={() => {
-                        setUserToDelete(user.user.id)
-                        setDeleteModal(true)
-                      }} className="!text-sm !font-medium !text-red-500" variant="ghost">
-                        Delete
-                      </Button>
+                        active5 ? (
+                        <Button  className="!text-sm !font-medium" variant='text' disabled={true}>Deleted</Button>
+                      ) : (
+
+                        <Button onClick={() => {
+                          setUserToDelete(user.user.id)
+                          setDeleteModal(true)
+                        }}
+                          className="!text-sm !font-medium !text-red-500" variant="ghost">
+                          Delete
+                        </Button>
+                      )
                     }
                   </td>
                 </tr>

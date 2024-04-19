@@ -92,6 +92,16 @@ export async function viewDeActivated() {
 
   return response.json();
 }
+export async function viewDeletedAccounts() {
+  const response = await fetchData("/api/auth/view/deleted/accounts", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
 
 export async function getTotalOfUser() {
   const response = await fetchData("/api/auth/getTotalUser", { method: "GET" });

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { AccountCircle, Comment, Favorite } from "@mui/icons-material"
-import { Alert, Button, Stack, Typography } from "@mui/material"
+import { Alert, Badge, Button, Stack, Typography } from "@mui/material"
 import { useState } from "react"
 import BulletinComments from "./BulletinComments"
 
@@ -44,8 +44,11 @@ const Content = (props) => {
                                     setBulletinToOPen(bulletin)
                                     setOpen(true)
                                 }} className="gap-2  !text-slate-600 !text-sm items-center cursor-pointer">
-                                    <Comment className="cursor-pointer" />
-                                    Comment
+                                    <Badge sx={{ "& .MuiBadge-badge": { fontSize: 6, height: 10, minWidth: 10 } }} badgeContent={bulletin.comment.length} color="primary">
+
+                                        <Comment className="cursor-pointer" />
+                                        Comment
+                                    </Badge>
                                 </Button>
 
                             </Stack>
@@ -55,7 +58,7 @@ const Content = (props) => {
 
                 )
             }
-            {open && <BulletinComments open={open} bulletin={bulletinToOPen} close={() => setBulletinToOPen(false)}/>}
+            {open && <BulletinComments open={open} bulletin={bulletinToOPen} close={() => setBulletinToOPen(false)} />}
         </Stack>
     )
 }
