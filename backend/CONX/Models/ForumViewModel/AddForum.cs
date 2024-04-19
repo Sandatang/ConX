@@ -12,5 +12,8 @@ namespace CONX.Models.ForumViewModel
 
         [Required(ErrorMessage = "Include atleast 1 keyword")]
         public string Keywords {  get; set; }
+
+        [Required(ErrorMessage = "Description is required")]
+        public string Description { get; set; }
     }
 }

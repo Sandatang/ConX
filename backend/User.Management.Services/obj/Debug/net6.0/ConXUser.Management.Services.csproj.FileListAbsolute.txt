@@ -1,0 +1,12 @@
+H:\CONX System\backend\User.Management.Services\bin\Debug\net6.0\ConXUser.Management.Services.deps.json
+H:\CONX System\backend\User.Management.Services\bin\Debug\net6.0\ConXUser.Management.Services.dll
+H:\CONX System\backend\User.Management.Services\bin\Debug\net6.0\ConXUser.Management.Services.pdb
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\ConXUser.Management.Services.csproj.AssemblyReference.cache
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\ConXUser.Management.Services.GeneratedMSBuildEditorConfig.editorconfig
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\ConXUser.Management.Services.AssemblyInfoInputs.cache
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\ConXUser.Management.Services.AssemblyInfo.cs
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\ConXUser.Management.Services.csproj.CoreCompileInputs.cache
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\ConXUser.Management.Services.dll
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\refint\ConXUser.Management.Services.dll
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\ConXUser.Management.Services.pdb
+H:\CONX System\backend\User.Management.Services\obj\Debug\net6.0\ref\ConXUser.Management.Services.dll

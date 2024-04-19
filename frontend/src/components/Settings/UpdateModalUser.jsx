@@ -19,10 +19,11 @@ const UpdateModalUser = (props) => {
     try {
       const formData = {
         ...data,
-        // userId: localStorage.getItem("userId")
+        'userName': props.user.username,
+        userId: localStorage.getItem("userId")
       }
       const response = await UserApi.updateUser(formData);
-      if (response.status === "Success") {
+      if (response.status === " Success") {
         navigate(0)
       } else {
         setError("Update is unsuccessful try again later")
@@ -34,8 +35,7 @@ const UpdateModalUser = (props) => {
 
   return (
     <Modal
-      onDismiss={props.onClose}
-      heading={<ModalHeading title="Add Personnel" desc="" />}
+      heading={<ModalHeading title="Update Profile" desc="" onDismiss={props.onClose}/>}
       width=" w-[35%]"
     >
       <div className="w-full ">
@@ -51,7 +51,7 @@ const UpdateModalUser = (props) => {
                   label="Firstname "
                   size="small"
                   className="!w-full"
-                  InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                  // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                   defaultValue={props.user.firstname}
                   {...register("firstname")}
                 />
@@ -61,7 +61,7 @@ const UpdateModalUser = (props) => {
                   label="Middlename"
                   size="small"
                   className="!w-full"
-                  InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                  // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                   defaultValue={props.user.middlename}
                   {...register("middlename")}
 
@@ -72,7 +72,7 @@ const UpdateModalUser = (props) => {
                   label="Lastname "
                   size="small"
                   className="!w-full"
-                  InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                  // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                   defaultValue={props.user.lastname}
                   {...register("lastname")}
 
@@ -96,7 +96,7 @@ const UpdateModalUser = (props) => {
                   label="Email"
                   size="small"
                   className="!w-full"
-                  InputLabelProps={{ style: { fontSize: '0.775rem' } }}
+                  // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                   defaultValue={props.user.email}
                   {...register("email")}
 

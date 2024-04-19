@@ -36,7 +36,7 @@ export default {
         },
       };
 
-      addUtilities(newUtilities)
+      addUtilities(newUtilities);
     },
   ],
 };

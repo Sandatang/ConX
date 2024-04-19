@@ -1,240 +1,97 @@
-import { Avatar, Button, Card, CardActions, CardContent, Stack, Typography } from "@mui/material"
-import { Link } from "react-router-dom"
+import { Add, Search } from "@mui/icons-material"
+import { Button, LinearProgress, Stack, Typography } from "@mui/material"
+import { useEffect, useState } from "react"
+import * as JobApi from "../network/job_api"
+import AddJob from "../components/Job/AddJob"
+import JobCard from "../components/Job/JobCard"
+import { useForm } from "react-hook-form"
+
 
 const JobLisintgs = () => {
+    const userRole = localStorage.getItem("role")
+    const [add, setAdd] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [job, setJob] = useState([])
+    const { register, watch } = useForm()
+    const searchedValue = watch('searched')
+    const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
+
+    useEffect(() => {
+        const getAllJob = async () => {
+
+            try {
+                const response = await JobApi.viewAllJob()
+                setJob(response)
+
+            } catch (error) {
+                console.error(error)
+                setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
+
+            } finally {
+
+                setTimeout(() => {
+                    setLoading(false)
+                }, 500)
+            }
+        }
+        const intervalId = setInterval(getAllJob, pollingInterval);
+        return () => clearInterval(intervalId);
+
+    }, [pollingInterval])
+
+    const filteredData = job && job.filter(item => {
+        // Replace propertyName with the actual property name you want to check against
+        return Object.values(item).some(value => {
+            if (typeof value === 'string') {
+                return value.includes(searchedValue);
+            }
+            return false; // You can handle other types if needed
+        });
+    });
     return (
-        <Stack className="overflow-y-auto no-scrollbar px-8 py-4">
-            <Stack className="!flex-row gap-3 items-center mb-2">
-                <Typography className="!text-2xl !font-semibold tracking-wider ! capitalize" >Jobs available</Typography>
-                <Typography className="!text-md bg-gray-100/70 px-6 py-2 rounded-full shadow-sm !font-medium">121</Typography>
+        !loading ?
+            <Stack className="overflow-y-auto no-scrollbar px-8 py-4">
+                <Stack className="!flex-row gap-3 w-full  justify-between items-center mb-2">
+                    <Stack className="!flex-row gap-2">
+                        <Typography className="!text-2xl !font-semibold tracking-wider ! capitalize" >Jobs available</Typography>
+                        <Typography className="!text-md bg-gray-100/70 px-6 py-2 rounded-full shadow-sm !font-medium">{job.filter(jb => jb.isActive).length}</Typography>
+                    </Stack>
+                    <form className="flex flex-row items-center justify-center mb-4" >
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="p-2 border-2 rounded-md w-full"
+                            {...register('searched')}
+                        />
+                        <Stack className="!relative">
+                            <Button variant='text' className=" " type='submit' >
+                                <Search />
+                                {/* <Typography>Search...</Typography> */}
+                            </Button>
+                        </Stack>
+                    </form>
+                    {
+                        userRole !== "Women" && userRole !== "Admin" &&
+                        <>
+                            <Stack className="mr-4">
+                                <Button onClick={() => setAdd(true)} className="self-end" variant="contained">
+                                    <Add />
+                                    Job
+                                </Button>
+                            </Stack>
+
+                            {add && <AddJob onClose={() => setAdd(false)} />}
+                        </>
+                    }
+                </Stack>
+
+                <Stack className="w-full">
+                    <div className=" mt-4 grid grid-cols-3 gap-y-8">
+                        <JobCard job={job} filteredData={filteredData} />
+                    </div>
+                </Stack>
             </Stack>
-
-            <Stack className="w-full">
-                <div className=" mt-4 grid grid-cols-3 gap-y-8">
-                    <Card className=" !rounded-lg border-[1px] shadow-sm !border-gray-400 !w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
-                        <CardContent className="!flex !flex-col justify-between !h-56 !bg-yellow-500/60 rounded-lg">
-                            <Stack >
-                                <Typography className="!text-sm bg-white p-2 rounded-xl inline-block ">December 19, 2024</Typography>
-                                <Typography component="div" className="!my-2 !text-sm !font-semibold">General Hospital</Typography>
-                                <Stack className="!flex-row gap-8 justify-start items-center h-12">
-                                    <Typography className="!text-lg !font-bold capitalize w-3/4">Hospital janitor</Typography>
-                                    <Avatar />
-                                </Stack>
-                            </Stack>
-
-                            <div className=" mt-4 grid grid-cols-2 gap-[5px]">
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                            </div>
-                        </CardContent>
-                        <Stack className="!flex-row items-center justify-between px-2 border-2">
-                            <Stack className="mt-2">
-                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
-                                <Typography color="text.secondary" className="!text-sm">Metro cebu</Typography>
-                            </Stack>
-                            <CardActions>
-                                <Link to={`1/details`}>
-                                    <Button variant="contained" className="!bg-black hover:!bg-black/80" size="small">Details</Button>
-                                </Link>
-                            </CardActions>
-                        </Stack>
-
-                    </Card>
-
-                    <Card className=" cursor-pointer !rounded-lg border-[1px] shadow-sm !border-gray-400 !w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
-                        <CardContent className="!flex !flex-col justify-between !h-56 !bg-yellow-500/60 rounded-lg">
-                            <Stack >
-                                <Typography className="!text-sm bg-white p-2 rounded-xl inline-block ">December 19, 2024</Typography>
-                                <Typography component="div" className="!my-2 !text-sm !font-semibold">General Hospital</Typography>
-                                <Stack className="!flex-row gap-8 justify-start items-center h-12">
-                                    <Typography className="!text-lg !font-bold capitalize w-3/4">Hospital janitor</Typography>
-                                    <Avatar />
-                                </Stack>
-                            </Stack>
-
-                            <div className=" mt-4 grid grid-cols-2 gap-[5px]">
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                            </div>
-                        </CardContent>
-                        <Stack className="!flex-row items-center px-2 gap-4">
-                            <Stack className="mt-2">
-                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
-                                <Typography color="text.secondary" className="!text-sm">Metro cebu</Typography>
-                            </Stack>
-                            <CardActions>
-                                <Button variant="contained" className="!bg-black" size="small">Details</Button>
-                            </CardActions>
-                        </Stack>
-
-                    </Card>
-
-                    <Card className=" cursor-pointer !rounded-lg border-[1px] shadow-sm !border-gray-400 !w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
-                        <CardContent className="!flex !flex-col justify-between !h-56 !bg-yellow-500/60 rounded-lg">
-                            <Stack >
-                                <Typography className="!text-sm bg-white p-2 rounded-xl inline-block ">December 19, 2024</Typography>
-                                <Typography component="div" className="!my-2 !text-sm !font-semibold">General Hospital</Typography>
-                                <Stack className="!flex-row gap-8 justify-start items-center h-12">
-                                    <Typography className="!text-lg !font-bold capitalize w-3/4">Hospital janitor</Typography>
-                                    <Avatar />
-                                </Stack>
-                            </Stack>
-
-                            <div className=" mt-4 grid grid-cols-2 gap-[5px]">
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                            </div>
-                        </CardContent>
-                        <Stack className="!flex-row items-center px-2 gap-4">
-                            <Stack className="mt-2">
-                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
-                                <Typography color="text.secondary" className="!text-sm">Metro cebu</Typography>
-                            </Stack>
-                            <CardActions>
-                                <Button variant="contained" className="!bg-black" size="small">Details</Button>
-                            </CardActions>
-                        </Stack>
-
-                    </Card>
-
-                    <Card className=" cursor-pointer !rounded-lg border-[1px] shadow-sm !border-gray-400 !w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
-                        <CardContent className="!flex !flex-col justify-between !h-56 !bg-yellow-500/60 rounded-lg">
-                            <Stack >
-                                <Typography className="!text-sm bg-white p-2 rounded-xl inline-block ">December 19, 2024</Typography>
-                                <Typography component="div" className="!my-2 !text-sm !font-semibold">General Hospital</Typography>
-                                <Stack className="!flex-row gap-8 justify-start items-center h-12">
-                                    <Typography className="!text-lg !font-bold capitalize w-3/4">Hospital janitor</Typography>
-                                    <Avatar />
-                                </Stack>
-                            </Stack>
-
-                            <div className=" mt-4 grid grid-cols-2 gap-[5px]">
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                            </div>
-                        </CardContent>
-                        <Stack className="!flex-row items-center px-2 gap-4">
-                            <Stack className="mt-2">
-                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
-                                <Typography color="text.secondary" className="!text-sm">Metro cebu</Typography>
-                            </Stack>
-                            <CardActions>
-                                <Button variant="contained" className="!bg-black" size="small">Details</Button>
-                            </CardActions>
-                        </Stack>
-
-                    </Card>
-
-                    <Card className=" cursor-pointer !rounded-lg border-[1px] shadow-sm !border-gray-400 !w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
-                        <CardContent className="!flex !flex-col justify-between !h-56 !bg-yellow-500/60 rounded-lg">
-                            <Stack >
-                                <Typography className="!text-sm bg-white p-2 rounded-xl inline-block ">December 19, 2024</Typography>
-                                <Typography component="div" className="!my-2 !text-sm !font-semibold">General Hospital</Typography>
-                                <Stack className="!flex-row gap-8 justify-start items-center h-12">
-                                    <Typography className="!text-lg !font-bold capitalize w-3/4">Hospital janitor</Typography>
-                                    <Avatar />
-                                </Stack>
-                            </Stack>
-
-                            <div className=" mt-4 grid grid-cols-2 gap-[5px]">
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                            </div>
-                        </CardContent>
-                        <Stack className="!flex-row items-center px-2 gap-4">
-                            <Stack className="mt-2">
-                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
-                                <Typography color="text.secondary" className="!text-sm">Metro cebu</Typography>
-                            </Stack>
-                            <CardActions>
-                                <Button variant="contained" className="!bg-black" size="small">Details</Button>
-                            </CardActions>
-                        </Stack>
-
-                    </Card>
-
-                    <Card className=" cursor-pointer !rounded-lg border-[1px] shadow-sm !border-gray-400 !w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
-                        <CardContent className="!flex !flex-col justify-between !h-56 !bg-yellow-500/60 rounded-lg">
-                            <Stack >
-                                <Typography className="!text-sm bg-white p-2 rounded-xl inline-block ">December 19, 2024</Typography>
-                                <Typography component="div" className="!my-2 !text-sm !font-semibold">General Hospital</Typography>
-                                <Stack className="!flex-row gap-8 justify-start items-center h-12">
-                                    <Typography className="!text-lg !font-bold capitalize w-3/4">Hospital janitor</Typography>
-                                    <Avatar />
-                                </Stack>
-                            </Stack>
-
-                            <div className=" mt-4 grid grid-cols-2 gap-[5px]">
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                                <Stack className="!text-center">
-                                    <Typography variant="body1" component="span" className="!text-[0.545rem] inline-block px-2 py-1 rounded-lg border-[1px] border-black group overflow-x-hidden cursor-pointer">Partime/Fulltime</Typography>
-                                </Stack>
-                            </div>
-                        </CardContent>
-                        <Stack className="!flex-row items-center px-2 gap-4">
-                            <Stack className="mt-2">
-                                <Typography className="!text-sm inline-block "> <span className="font-bold">Php 15,000</span> / monthly</Typography>
-                                <Typography color="text.secondary" className="!text-sm">Metro cebu</Typography>
-                            </Stack>
-                            <CardActions>
-                                <Button variant="contained" className="!bg-black" size="small">Details</Button>
-                            </CardActions>
-                        </Stack>
-
-                    </Card>
-
-
-
-
-
-
-
-
-
-
-                </div>
-            </Stack>
-        </Stack>
+            : <LinearProgress />
     )
 }
 

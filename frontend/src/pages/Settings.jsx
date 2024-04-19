@@ -32,20 +32,11 @@ const Settings = () => {
                         {
                             settingLinks.map((data) => (
                                 <Button
-                                    // onClick={
-                                    //     data.id === "changepassword"
-                                    //         ? () => setChangePasswordClick(true)
-                                    //         : undefined
-                                    // }
                                     onClick={() => changeLink(data.link)}
                                     key={data.id}
                                     className="!w-full !font-semibold !tracking-tighter px-2 gap-4 !justify-start items-center !text-slate-800 hover:!text-slate-700">
-                                    {/* <Link */}
-                                    {/* // to={`../settings${data.link}`} */}
-                                    {/* className="flex px-2 gap-4 items-center w-full !text-slate-700 hover:!text-slate-500"> */}
                                     {data.icon}
                                     <span className="!capitalize !text-[1em]   tracking-wide">{data.title}</span>
-                                    {/* </Link> */}
                                 </Button>
                             ))
                         }

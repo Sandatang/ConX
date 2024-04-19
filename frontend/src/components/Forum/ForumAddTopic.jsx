@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom"
 
 const ForumAddTopic = (props) => {
     const navigate = useNavigate()
-    const { register, handleSubmit, formState: { isSubmitting } } = useForm();
+    const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm();
     const [message, setMessage] = useState(null)
-    
+
     const forumCreation = async (data) => {
         try {
             const formData = {
@@ -19,8 +19,9 @@ const ForumAddTopic = (props) => {
                 userId: localStorage.getItem("userId")
             }
             const response = await ForumApi.createForum(formData)
-            if(response.status === "Success"){
+            if (response.status === "Success") {
                 setMessage(response.message)
+                reset()
                 setTimeout(() => {
                     navigate(0)
                 }, [2000])
@@ -31,8 +32,8 @@ const ForumAddTopic = (props) => {
     }
     return (
         <Modal
-            onDismiss={props.onClose}
-            heading={<ModalHeading title={`Add Forum`} class="!text-pinkish font-bold !text-[1.5rem]" desc="" />}
+
+            heading={<ModalHeading title={`Add Forum`} class="!text-pinkish font-bold !text-[1.5rem]" desc="" onDismiss={props.onClose} />}
             width=" w-[35%]"
         >
             <div className="w-full ">
@@ -60,6 +61,19 @@ const ForumAddTopic = (props) => {
                                 InputLabelProps={{ style: { fontSize: "0.775rem" } }}
                                 {...register("keywords", { required: true })}
 
+                            />
+                        </Stack>
+                        <Stack className="gap-2">
+                            <Typography> Description </Typography>
+                            <TextField
+                                multiline
+                                rows={4}
+                                name="description"
+                                label="Description"
+                                size="small"
+                                className="!w-full"
+                                InputLabelProps={{ style: { fontSize: "0.775rem" } }}
+                                {...register("description", { required: true })}
                             />
                         </Stack>
                         <Button type="submit" disabled={isSubmitting} variant="contained" className="!bg-pinkish w-full !mt-2"> Add </Button>

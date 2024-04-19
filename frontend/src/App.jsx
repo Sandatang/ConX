@@ -1,6 +1,8 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
-import ForumContentContainer from "./components/Forum/ForumContentContainer"
+import EmailConfirmationMessage from "./components/EmailConfirmationMessage"
+import FollowedForum from "./components/Forum/FollowedForum"
 import ForumSpecificTopicContainer from "./components/Forum/ForumSpecificTopicContainer"
+import MyForum from "./components/Forum/MyForum"
 import Thread from "./components/Forum/Thread"
 import Topics from "./components/Forum/Topics"
 import IsLogged from "./components/IsLogged"
@@ -9,6 +11,8 @@ import Layout from "./components/Layout"
 import ChangePassword from "./components/Settings/ChangePassword"
 import ChangeUnConfirmed from "./components/Settings/ChangeUnConfirmed"
 import PersonalInformation from "./components/Settings/PersonalInformation"
+import Analytics from "./pages/Analytics"
+import BulletinBoard from "./pages/BulletinBoard"
 import Forum from "./pages/Forum"
 import JobLisintgs from "./pages/JobLisintgs"
 import MainContent from "./pages/MainContent"
@@ -16,7 +20,7 @@ import ManageUsers from "./pages/ManageUsers"
 import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
-import BulletinBoard from "./pages/BulletinBoard"
+import Testimonial from "./pages/Testimonial"
 function App() {
 
   const router = createBrowserRouter(
@@ -24,33 +28,97 @@ function App() {
       <Route>
         <Route path="/login" element={<IsLogged />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/email/confirmation/Success" element={<EmailConfirmationMessage />} />
+        <Route path="/email/error/Error" element={<EmailConfirmationMessage />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
           <Route element={<MainContent />}>
+
             {/* BRGY Links */}
-            <Route path="/bulletin" element={<BulletinBoard />} />
-            <Route path="/manage-users" element={<ManageUsers />} />
+            {
+              localStorage.getItem('role') === 'Personnel' &&
+              <>
+                <Route path="/bulletin" element={<BulletinBoard />} />
+                <Route path="/manage-users" element={<ManageUsers />} />
+                {/* <Route path="/analytics" element={<Analytics />} /> */}
+                <Route path="/testimonial" element={<Testimonial />} />
 
-            <Route path="/forum/*" element={<Forum />} >
-              <Route path="topics/*" element={<ForumContentContainer />} >
-                <Route index element={<Topics />} />
-              </Route>
-            </Route>
+                <Route path="/forum/*" element={<Forum />} >
+                  <Route path="topics" element={<Topics />} />
+                  <Route path="followed" element={<FollowedForum />} />
+                  <Route path="my-forum" element={<MyForum />} />
+                </Route>
 
-            <Route path="forum/topics/:forumTitle" element={<ForumSpecificTopicContainer />} >
-              <Route index element={<Thread />} />
-            </Route>
+                <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Thread />} />
+                </Route>
 
-            <Route path="/jobs/*" element={<Layout />}>
-              <Route index element={<JobLisintgs />} />
-              <Route path=":id/details" element={<JobDetails />} />
-            </Route>
+                <Route path="/jobs/*" element={<Layout />}>
+                  <Route index element={<JobLisintgs />} />
+                  <Route path=":id/details" element={<JobDetails />} />
+                </Route>
+              </>
+            }
+
+            {/* End of BRGY Links */}
+            {/* BRGY Links */}
+            {
+              localStorage.getItem('role') === 'Admin' &&
+              <>
+                <Route path="/bulletin" element={<BulletinBoard />} />
+                <Route path="/manage-users" element={<ManageUsers />} />
+                <Route path="/analytics" element={<Analytics />} />
+
+                <Route path="/forum/*" element={<Forum />} >
+                  <Route path="topics" element={<Topics />} />
+                  <Route path="followed" element={<FollowedForum />} />
+                  <Route path="my-forum" element={<MyForum />} />
+                </Route>
+
+                <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Thread />} />
+                </Route>
+
+
+                <Route path="/jobs/*" element={<Layout />}>
+                  <Route index element={<JobLisintgs />} />
+                  <Route path=":id/details" element={<JobDetails />} />
+                </Route>
+              </>
+            }
+
             {/* End of BRGY Links */}
 
 
+            {/* Women Links */}
+
+            {
+              localStorage.getItem('role') === 'Women' &&
+              <>
+                <Route path="/bulletin" element={<BulletinBoard />} />
+
+                <Route path="/forum/*" element={<Forum />} >
+                  <Route path="topics" element={<Topics />} />
+                  <Route path="followed" element={<FollowedForum />} />
+                  <Route path="my-forum" element={<MyForum />} />
+                </Route>
+
+                <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Thread />} />
+                </Route>
+
+                <Route path="/jobs/*" element={<Layout />}>
+                  <Route index element={<JobLisintgs />} />
+                  <Route path=":id/details" element={<JobDetails />} />
+                </Route>
+              </>
+            }
+            {/* End of Women Links */}
+
+
             <Route path="/settings/*" element={<Settings />} >
-              <Route path="personal-information" element={<PersonalInformation />} />
+              <Route path="profile" element={<PersonalInformation />} />
               <Route path="confirmation/*" element={<ChangeUnConfirmed />} >
                 <Route path="change-password" element={<ChangePassword />} />
               </Route>

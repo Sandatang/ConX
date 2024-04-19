@@ -1,11 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Button } from "@mui/material"
-import { useEffect } from "react"
 import { NavLink } from "react-router-dom"
 
 const Navigation = (props) => {
-    useEffect(() => {
-    }, [])
     return (
         <Button
             component={NavLink}

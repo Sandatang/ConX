@@ -12,10 +12,15 @@ const MainContent = () => {
 
             <Stack className="!flex-row h-dvh bg-gray-200 flex">
                 {/* Side Navigation */}
-                <Stack className="!flex-row !h-vh flex-none w-[250px] justify-start bg-white p-4 ">
-                    <Stack spacing={2} className='w-full sticky top-10'>
 
-                        <NavigationMapping />
+                <Stack className=" !h-screen w-[250px] justify-start bg-white p-4 ">
+                    <Stack className="!flex-row fixed top-18 left-0 z-10 !h-screen flex-none w-[200px] justify-start p-4 ">
+                        <Stack spacing={2}
+
+                            className='w-full '>
+
+                            <NavigationMapping />
+                        </Stack>
                     </Stack>
                 </Stack>
                 {/* Contents */}
@@ -24,6 +29,8 @@ const MainContent = () => {
                 </Stack >
 
             </Stack>
+
+
         </>
     )
 }

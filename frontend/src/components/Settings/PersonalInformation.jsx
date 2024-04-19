@@ -1,5 +1,4 @@
-import { AccountCircle, Cake } from "@mui/icons-material"
-import { Button, Stack, Typography } from "@mui/material"
+import { Button, LinearProgress, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import * as UserApi from "../../network/user_api"
 import UpdateModalUser from "./UpdateModalUser"
@@ -9,6 +8,7 @@ const PersonalInformation = () => {
     const [userInfo, setUserInfo] = useState(null)
     const [error, setError] = useState(null)
     const [openUpdateModal, setOpenUpdateModal] = useState(null)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
 
@@ -23,51 +23,98 @@ const PersonalInformation = () => {
                 }
             } catch (error) {
                 console.error(error)
+            } finally {
+                setTimeout(() => {
+                    setLoading(false)
+                }, 1000)
             }
         }
         userData()
     }, [userId])
     return (
         <>
-            <Button onClick={() => setOpenUpdateModal(true)} className="self-end" variant="outlined">Update Details</Button>
-            <Stack className="!flex-row mt-2 gap-4">
-                <Stack className="w-1/4 gap-6 justify-center">
-                    <Typography className="!text-slate-700 !tracking-wider !text-md">Firstname</Typography>
-                    <Typography className="!text-slate-700 !tracking-wider !text-md">Middlename</Typography>
-                    <Typography className="!text-slate-700 !tracking-wider !text-md">Lastname</Typography>
-                    <Typography className="!text-slate-700 !tracking-wider !text-md">Email</Typography>
-                    <Typography className="!text-slate-700 !tracking-wider !text-md">Birthday</Typography>
+            {loading ? <LinearProgress />
 
-                </Stack>
-                {!error && userInfo !== null && (
 
-                    <Stack key={userInfo} className="w-3/4 gap-4 items-center">
-                        <Typography className="capitalize !text-md border-b border-slate-400 pb-1 w-full !text-slate-500">
-                            <AccountCircle fontSize="small" className="!text-slate-600 mr-2" />
-                            {userInfo.firstname}
-                        </Typography>
-                        <Typography className="capitalize !text-md border-b border-slate-400 pb-1 w-full !text-slate-500">
-                            <AccountCircle fontSize="small" className="!text-slate-600 mr-2" />
-                            {userInfo.middlename}
-                        </Typography>
-                        <Typography className="capitalize !text-md border-b border-slate-400 pb-1 w-full !text-slate-500">
-                            <AccountCircle fontSize="small" className="!text-slate-600 mr-2" />
-                            {userInfo.lastname}
-                        </Typography>
-                        <Typography className=" border-b !text-md border-slate-400 pb-1 w-full !text-slate-500">
-                            <AccountCircle fontSize="small" className="!text-slate-600 mr-2" />
-                            {userInfo.email}
-                        </Typography>
-                        <Typography className="capitalize !text-md border-b border-slate-400 pb-1 w-full !text-slate-500">
-                            <Cake fontSize="small" className="!text-slate-600 mr-2" />
-                            {new Date(userInfo.birthdate).toDateString().split(" ").splice(1).join(" ")}
-                        </Typography>
-                    </Stack>
+                : !error && userInfo !== null && (
+                    <div key={userInfo}>
+                        <Typography className="!text-lg !font-semibold tracking-wider"> My Profile </Typography>
+                        {/* <Divider className="!mb-2" /> */}
+                        <div className="border px-2 py-4 rounded-md shadow-sm ">
+                            <Stack className="!flex-row gap-4 items-center">
+                                <div className="border-2 border-pinkish w-14 aspect-square rounded-full p-1">
+                                    {/* <img src={dog} alt="user img" className="bg-cover" /> */}
+                                </div>
+                                <Stack>
+                                    <Stack className=" !flex-row">
+                                        <Typography className="!capitalize">
+                                            <span>{userInfo.firstname}</span> {" "}
+                                            <span>{userInfo.middlename}</span>{" "}
+                                            <span>{userInfo.lastname}</span>{" "}
+                                        </Typography>
+                                    </Stack>
+                                    <Typography className="!text-slate-400 !text-sm">{userInfo.email}</Typography>
+                                </Stack>
+                            </Stack>
+                            <Stack>
+                                <Button onClick={() => setOpenUpdateModal(true)} className="self-end" variant="outlined">Update Details</Button>
+                            </Stack>
+                        </div>
+                        <Stack className="mt-2 gap-4 border px-2 py-4 rounded-md">
+                            <Typography className="!text-lg !font-semibold tracking-wider"> Personal Information</Typography>
+
+                            <Stack className="!flex-row gap-2 justify-between">
+                                <Stack className="w-[33%] gap-1">
+                                    <Typography className="capitalize !text-md !text-slate-500">Firstname</Typography>
+                                    <Typography className="capitalize !text-md pb-1 w-full !text-slate-800">
+                                        {userInfo.firstname}
+                                    </Typography>
+                                </Stack>
+                                <Stack className="w-[33%] gap-1">
+                                    <Typography className="capitalize !text-md !text-slate-500">middlename</Typography>
+                                    <Typography className="capitalize !text-md  pb-1 w-full !text-slate-800">
+                                        {userInfo.middlename}
+                                    </Typography>
+                                </Stack>
+                                <Stack className="w-[33%] gap-1">
+                                    <Typography className="capitalize !text-md !text-slate-500">Lastname</Typography>
+                                    <Typography className="capitalize !text-md  pb-1 w-full !text-slate-800">
+                                        {userInfo.lastname}
+                                    </Typography>
+                                </Stack>
+                            </Stack>
+
+                            <Stack className="!flex-row gap-2 justify-between">
+                                <Stack className="w-[33%] gap-1">
+                                    <Typography className="capitalize !text-md !text-slate-500">Username</Typography>
+                                    <Typography className="!text-md pb-1 w-full !text-slate-800">
+                                        {userInfo.username}
+                                    </Typography>
+                                </Stack>
+                                <Stack className="w-[33%] gap-1">
+                                    <Typography className="capitalize !text-md !text-slate-500">Email Address</Typography>
+                                    <Typography className="!text-md pb-1 w-full !text-slate-800">
+                                        {userInfo.email}
+                                    </Typography>
+                                </Stack>
+                                <Stack className="w-[33%] gap-1">
+                                    <Typography className="capitalize !text-md !text-slate-500">Birthday</Typography>
+                                    <Typography className="capitalize !text-md  pb-1 w-full !text-slate-800">
+                                        {new Date(userInfo.birthdate).toDateString().split(" ").splice(1).join(" ")}
+                                    </Typography>
+                                </Stack>
+                            </Stack>
+
+
+
+                        </Stack>
+
+                    </div>
+
                 )}
 
-            </Stack>
 
-            {openUpdateModal && <UpdateModalUser user={userInfo} onClose={() => setOpenUpdateModal(false)}/>}
+            {openUpdateModal && <UpdateModalUser user={userInfo} onClose={() => setOpenUpdateModal(false)} />}
         </>
     )
 }

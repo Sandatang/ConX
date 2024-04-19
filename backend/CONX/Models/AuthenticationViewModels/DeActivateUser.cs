@@ -6,5 +6,7 @@ namespace CONX.Models.AuthenticationViewModels
     {
         [Required]
         public string UserId { get; set; }
+        public string DeactivatorId { get; set; }
+        public string DeactivationReason { get; set; }
     }
 }

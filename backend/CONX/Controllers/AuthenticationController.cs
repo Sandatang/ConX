@@ -2,15 +2,17 @@
 using CONX.Models.Authentication.Login;
 using CONX.Models.Authentication.Signup;
 using CONX.Models.AuthenticationViewModels;
-using Microsoft.AspNetCore.Authorization;
+using CONX.Models.AuthenticationViewModels.Signup;
+using ConXUser.Management.Service.Model;
+using ConXUser.Management.Service.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Xml.Linq;
 
 namespace CONX.Controllers
 {
@@ -21,13 +23,18 @@ namespace CONX.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly IEmailServices _emailService;
+        private readonly ApplicationDbContext _context;
 
-        public AuthenticationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthenticationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IEmailServices emailService, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _emailService = emailService;
+            _context = context;
         }
+
         // Add a user women
         [HttpPost]
         [Route("register/women")]
@@ -75,8 +82,15 @@ namespace CONX.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, "women");
+
+            // Token for email verification
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+            var message = new Message(new string[] { user.Email! }, "Email Verificaiton", confirmationLink!);
+            _emailService.SendEmail(message);
+
             return StatusCode(StatusCodes.Status200OK,
-                   new Response { Status = "Success", Message = " User created successfully" });
+                   new Response { Status = "Success", Message = $" User created successfully & Email is sent {user.Email} for verification"});
 
 
         }
@@ -109,6 +123,7 @@ namespace CONX.Controllers
             var user = new User();
 
             // Add women user to DB
+            user.EmployeeNumber = addPersonnel.EmployeeNumber;
             user.Email = addPersonnel.Email;
             user.UserName = addPersonnel.Username;
             user.Firstname = addPersonnel.Firstname;
@@ -125,10 +140,108 @@ namespace CONX.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, "personnel");
+
+
+            // Token for email verification
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+            var message = new Message(new string[] { user.Email! }, "Email Verification", confirmationLink!);
+            _emailService.SendEmail(message);
+
             return StatusCode(StatusCodes.Status200OK,
-                   new Response { Status = "Success", Message = " User created successfully" });
+                   new Response { Status = "Success", Message = $" User created successfully & Email is sent {user.Email} for verification" });
 
 
+           // return StatusCode(StatusCodes.Status200OK,
+             //      new Response { Status = "Success", Message = " User created successfully" });
+
+
+        }
+
+        // Add a personnel
+        [HttpPost]
+        [Route("register/admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] AddAdmin addAdmin)
+        {
+            // Check user if exist in DB
+            var userExist = await _userManager.FindByEmailAsync(addAdmin.Email);
+            if (userExist != null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden,
+                    new Response { Status = "Error", Message = " Email already exist ", Field = "failed" });
+            }
+
+
+            //Check if username exist in DB
+            var usernameExist = await _userManager.FindByNameAsync(addAdmin.Username);
+            if (usernameExist != null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden,
+                    new Response { Status = "Error", Message = "Username already exist", Field = "failed" });
+            }
+
+            //Default password
+            string defaultPassword = "Admin123@";
+
+            var user = new User();
+
+            // Add women user to DB
+            user.Email = addAdmin.Email;
+            user.UserName = addAdmin.Username;
+            user.Firstname = addAdmin.Firstname;
+            user.Lastname = addAdmin.Lastname;
+            user.Middlename = addAdmin.Middlename;
+            user.Birthdate = addAdmin.Birthdate;
+
+
+            var result = await _userManager.CreateAsync(user, defaultPassword);
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new Response { Status = "Error", Message = " User not created" });
+            }
+
+            await _userManager.AddToRoleAsync(user, "admin");
+
+
+            // Token for email verification
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+            var message = new Message(new string[] { user.Email! }, "Email Verification", confirmationLink!);
+            _emailService.SendEmail(message);
+
+            return StatusCode(StatusCodes.Status200OK,
+                   new Response { Status = "Success", Message = $" User created successfully & Email is sent {user.Email} for verification" });
+
+
+            // return StatusCode(StatusCodes.Status200OK,
+            //      new Response { Status = "Success", Message = " User created successfully" });
+
+
+        }
+
+        [HttpGet]
+        [Route("emailConfirmation")]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            { 
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+
+                if (result.Succeeded)
+                {
+                    //return StatusCode(StatusCodes.Status200OK,
+                    //    new Response { Status = "Success", Message = " Email Verified Successfully " });
+                    return Redirect("http://localhost:5173/email/confirmation/Success");
+                }
+            }
+
+            //return StatusCode(StatusCodes.Status500InternalServerError,
+            //            new Response { Status = "Error", Message = " This User Does not Exist", Field="failed" });
+
+            return Redirect("http://localhost:5173/email/error/Error");
         }
 
         // View all women
@@ -145,18 +258,26 @@ namespace CONX.Controllers
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
-            var users = iUsers.Select(user => new User
+            var users = iUsers.Select(user => new
             {
-                Id = user.Id,
-                Firstname = ((User)user).Firstname, // Cast to your custom User class
-                Middlename = ((User)user).Middlename,
-                Birthdate = ((User)user).Birthdate,
-                Lastname = ((User)user).Lastname,
-                UserName = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                DeActivate = ((User)user).DeActivate,
-            }).ToList();
+                user = new User
+                {
+
+                    Id = user.Id,
+                    Firstname = ((User)user).Firstname, // Cast to your custom User class
+                    Middlename = ((User)user).Middlename,
+                    Birthdate = ((User)user).Birthdate,
+                    Lastname = ((User)user).Lastname,
+                    UserName = user.UserName,
+                    IsDeleted = ((User)user).IsDeleted,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    DeActivate = ((User)user).DeActivate,
+                }
+
+            })
+             .Where(v => !v.user.IsDeleted || v.user.IsDeleted == null)
+             .ToList();
 
             // return if user is not null
             return Ok(users);
@@ -176,21 +297,170 @@ namespace CONX.Controllers
                         new Response { Status = "Success", Message = " Users currently empty" });
             }
 
-            var users = iUsers.Select(user => new User
+            var users = iUsers.Select(user => new
             {
+                user = new User
+                {
+
                 Id = user.Id,
+                EmployeeNumber = ((User)user).EmployeeNumber,
                 Firstname = ((User)user).Firstname, // Cast to your custom User class
                 Middlename = ((User)user).Middlename,
                 Birthdate = ((User)user).Birthdate,
                 Lastname = ((User)user).Lastname,
                 UserName = user.UserName,
+                IsDeleted = ((User)user).IsDeleted,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 DeActivate = ((User)user).DeActivate,
-            }).ToList();
+                }
+
+            })
+             .Where(v => !v.user.IsDeleted || v.user.IsDeleted == null)
+             .ToList();
 
             // Return if user is not null
             return Ok(users);
+        }
+        // View all personnel
+        [HttpGet]
+        [Route("view/admin")]
+        public async Task<IActionResult> ViewAdmin()
+        {
+            var iUsers = await _userManager.GetUsersInRoleAsync("admin");
+
+            //Check if personnel is null
+            if (iUsers == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                        new Response { Status = "Success", Message = " Users currently empty" });
+            }
+
+            var users = iUsers.Select(user => new
+            {
+                user = new User
+                {
+
+                    Id = user.Id,
+                    Firstname = ((User)user).Firstname, // Cast to your custom User class
+                    Middlename = ((User)user).Middlename,
+                    Birthdate = ((User)user).Birthdate,
+                    Lastname = ((User)user).Lastname,
+                    UserName = user.UserName,
+                    IsDeleted = ((User)user).IsDeleted,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    DeActivate = ((User)user).DeActivate,
+                }
+
+            })
+             .Where(v => !v.user.IsDeleted || v.user.IsDeleted == null)
+             .ToList();
+
+            // Return if user is not null
+            return Ok(users);
+        }
+
+        // View all personnel
+        [HttpGet]
+        [Route("view/deActivated/accounts")]
+        public async Task<IActionResult> ViewDeActivatedAccounts()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            //Check if personnel is null
+            if (users == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                        new Response { Status = "Success", Message = " Users currently empty" });
+            }
+
+            var deUsers = users
+                .Where(us => ((User)us).IsDeleted == false)
+                .Select(us => new
+            {
+                user = new User
+                {
+
+                    Id = us.Id,
+                    EmployeeNumber = ((User)us).EmployeeNumber,
+                    Firstname = ((User)us).Firstname, // Cast to your custom User class
+                    Middlename = ((User)us).Middlename,
+                    Birthdate = ((User)us).Birthdate,
+                    Lastname = ((User)us).Lastname,
+                    UserName = us.UserName,
+                    IsDeleted = ((User)us).IsDeleted,
+                    Email = us.Email,
+                    PhoneNumber = us.PhoneNumber,
+                    DeActivate = ((User)us).DeActivate,
+                }
+            })
+             .ToList();
+
+            // Return if user is not null
+            return Ok(deUsers);
+        }
+
+        [HttpGet]
+        [Route("view/deleted/accounts")]
+        public async Task<IActionResult> ViewDeletedAccounts()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            //Check if personnel is null
+            if (users == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                        new Response { Status = "Success", Message = " Users currently empty" });
+            }
+
+            var deUsers = users
+                .Where(us => ((User)us).IsDeleted == true)
+                .Select(us => new
+                {
+                    user = new User
+                    {
+
+                        Id = us.Id,
+                        EmployeeNumber = ((User)us).EmployeeNumber,
+                        Firstname = ((User)us).Firstname, // Cast to your custom User class
+                        Middlename = ((User)us).Middlename,
+                        Birthdate = ((User)us).Birthdate,
+                        Lastname = ((User)us).Lastname,
+                        UserName = us.UserName,
+                        IsDeleted = ((User)us).IsDeleted,
+                        Email = us.Email,
+                        PhoneNumber = us.PhoneNumber,
+                        DeActivate = ((User)us).DeActivate,
+                    }
+                })
+             .ToList();
+
+            // Return if user is not null
+            return Ok(deUsers);
+        }
+
+        [HttpGet]
+        [Route("getTotalUser")]
+        public async Task<IActionResult> GetTotalUser()
+        {
+            var totalUser = await _userManager.Users.CountAsync();
+            var totalPersonnel = await _userManager.GetUsersInRoleAsync("personnel");
+            var totalWomen = await _userManager.GetUsersInRoleAsync("women");
+            var totalAdmin = await _userManager.GetUsersInRoleAsync("admin");
+
+
+            var data = new
+            {
+                users = totalUser,
+                personnel = totalPersonnel.Count(),
+                totalWomen = totalWomen.Count(),
+                totalAdmin = totalAdmin.Count(),
+            };
+
+
+            return Ok(data);
+
         }
 
         [HttpGet]
@@ -224,7 +494,7 @@ namespace CONX.Controllers
         [Route("password-confirmation")]
         public async Task<IActionResult> PasswordConfirmation([FromBody] PasswordConfirmation passwordConfirmation)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -253,7 +523,7 @@ namespace CONX.Controllers
 
             var user = await _userManager.FindByIdAsync(changePassword.UserId);
 
-            if(user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                      new Response { Status = " Error ", Message = " User not found", Field = "failed" });
@@ -274,7 +544,7 @@ namespace CONX.Controllers
                      new Response { Status = " Error ", Message = " Something went wrong", Field = "failed" });
             }
 
-            return Ok(new Response { Status = "Success", Message="Password change successfully"});
+            return Ok(new Response { Status = "Success", Message = "Password change successfully" });
         }
 
         // User Update
@@ -288,21 +558,21 @@ namespace CONX.Controllers
             }
 
             var user = await _userManager.FindByIdAsync(updateUser.UserId);
-            if(user == null)
+            if (user == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                         new Response { Status = "Error", Message = " User not found", Field = "failed" });
             }
             // Update the users data
             var userToUpdate = (User)user;
-            if(updateUser.UserName != null)
+            if (updateUser.UserName != null)
             {
                 userToUpdate.UserName = updateUser.UserName;
             }
             userToUpdate.Firstname = updateUser.Firstname;
             userToUpdate.Middlename = updateUser.Middlename;
-            userToUpdate.Lastname= updateUser.Lastname;
-            userToUpdate.Email= updateUser.Email;
+            userToUpdate.Lastname = updateUser.Lastname;
+            userToUpdate.Email = updateUser.Email;
             userToUpdate.Birthdate = updateUser.Birthdate;
 
             var result = await _userManager.UpdateAsync(userToUpdate);
@@ -313,35 +583,9 @@ namespace CONX.Controllers
             }
 
 
-            return Ok(new Response { Status = " Success", Message = "Update Successfully"});
+            return Ok(new Response { Status = " Success", Message = "Update Successfully" });
         }
 
-        // Delete user single deletion only
-        [HttpDelete]
-        [Route("delete/user/{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            // Check if user exist
-            if(user == null)
-            {
-                return StatusCode(StatusCodes.Status404NotFound,
-                    new Response { Status = "Error", Message = "User not found", Field = "failed" });
-            }
-
-            var result = await _userManager.DeleteAsync(user);
-
-            // Check if deletion not succeded
-            if (!result.Succeeded)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "Error", Message = " Something went wrong try again later.", Field = "failed" });
-            }
-
-            // If success
-            return Ok($"User {id} deleted successfully");
-        }
 
         // De activate user
         [HttpPut]
@@ -350,7 +594,15 @@ namespace CONX.Controllers
         {
             var user = await _userManager.FindByIdAsync(deActivateUser.UserId);
 
-            if(user == null)
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+
+            var deactUser = await _userManager.FindByIdAsync(deActivateUser.DeactivatorId);
+
+            if (deactUser == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = " User not found", Field = "failed" });
@@ -360,7 +612,7 @@ namespace CONX.Controllers
             var customUser = (User)user;
 
             // Update the DeActivate property
-            customUser.DeActivate = !customUser.DeActivate;
+            customUser.DeActivate = !customUser.DeActivate; 
 
             // Save the data
             var result = await _userManager.UpdateAsync(customUser);
@@ -371,8 +623,56 @@ namespace CONX.Controllers
                     new Response { Status = "Error", Message = " Something went wrong", Field = "failed" });
             }
 
+            var logs = new AccountDeactivationLog();
+
+            logs.DeactivatedAccountId = deActivateUser.UserId;
+            logs.DeactivatedAccountName = ((User)user).Firstname + " " + ((User)user).Lastname;
+            logs.DeactReason = deActivateUser.DeactivationReason;
+            logs.DeactivatorId = deActivateUser.DeactivatorId;
+            logs.DeactivatorName = ((User)deactUser).Firstname + " " + ((User)deactUser).Lastname;
+
+            // Save the data
+            _context.Update(customUser);
+            await _context.SaveChangesAsync();
+
+            _context.Update(logs);
+            await _context.SaveChangesAsync();
+
             // Change deactivate col to 
             return Ok(new Response { Status = "Success", Message = "User deactivated " });
+        }
+
+        // Delete
+        [HttpDelete]
+        [Route("user/delete/{userId}")]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " User not found", Field = "failed" });
+            }
+
+
+
+           
+            // Cast the IdentityUser
+            var customUser = (User)user;
+
+            customUser.IsDeleted = true;
+            var result = await _userManager.UpdateAsync(customUser);
+
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = " Something went wrong", Field = "failed" });
+            }
+
+            // Change deactivate col to 
+            return Ok(new Response { Status = "Success", Message = "User deleted " });
         }
 
 
@@ -384,8 +684,33 @@ namespace CONX.Controllers
             // Check user if exist
             var user = await _userManager.FindByNameAsync(loginUser.Username);
 
+            var extendedUserProperties = (User)user;
+
+            if (user != null && extendedUserProperties.IsDeleted == true)
+            {
+                return Ok(new Response { Status = "Error", Message = "Account does not exist " });
+            }
+
+            if (user != null && extendedUserProperties.DeActivate == true)
+            {
+
+                return Ok(new Response { Status = "Error", Message = "User account is deactivated " });
+            }
+
             if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
             {
+                if (!user.EmailConfirmed)
+                {
+                    // Token for email verification
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+                    var message = new Message(new string[] { user.Email! }, "Confirmation Email Link", confirmationLink!);
+                    _emailService.SendEmail(message);
+
+                    return StatusCode(StatusCodes.Status200OK,
+                           new Response { Status = "Success", Message = $" User Email is not verified, Email is sent to {user.Email} for verification" });
+                }
+
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),

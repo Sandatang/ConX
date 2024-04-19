@@ -1,4 +1,4 @@
-import { AccountCircle, Announcement, Book, Forum, ManageAccounts, Password, Settings, VideoCameraFront } from "@mui/icons-material";
+import { AccountCircle, Analytics, Announcement, Approval, Book, Forum, ManageAccounts, Password, Settings, VideoCameraFront } from "@mui/icons-material";
 
 export const brgyLinks = [
   {
@@ -23,11 +23,16 @@ export const brgyLinks = [
   },
   {
     id: "forum",
-    link: "/forum/topics",
+    link: "/forum",
     title: "Forum",
     icon: <Forum fontSize="medium" className="!text-red-500" />
   },
-
+  {
+    id: "testimonial",
+    link: "/testimonial",
+    title: "Testimonial",
+    icon: <Approval fontSize="medium" className="!text-red-500" />
+  },
 
   {
     id: "manage-users",
@@ -35,6 +40,104 @@ export const brgyLinks = [
     title: "Manage Users",
     icon: <ManageAccounts fontSize="medium" className="!text-violet-500" />
   },
+
+  {
+    id: "setting",
+    link: "/settings",
+    title: "Settings",
+    icon: <Settings fontSize="medium" className="!text-orange-500" />
+  },
+];
+export const adminLinks = [
+  {
+    id: "bulletin",
+    link: "/bulletin",
+    title: "Bulletin Board",
+    icon: <Announcement fontSize="medium" className="!text-blue-500" />
+  },
+
+  {
+    id: "newsfeed",
+    link: "/workshop",
+    title: "Workshop",
+    icon: <VideoCameraFront fontSize="medium" className="!text-yellow-500" />
+  },
+
+  {
+    id: "joblistings",
+    link: "/jobs",
+    title: "Job Listings",
+    icon: <Book fontSize="medium" className="!text-pink-500" />
+  },
+  {
+    id: "forum",
+    link: "/forum",
+    title: "Forum",
+    icon: <Forum fontSize="medium" className="!text-red-500" />
+  },
+  {
+    id: "testimonial",
+    link: "/testimonial",
+    title: "Testimonial",
+    icon: <Approval fontSize="medium" className="!text-red-500" />
+  },
+
+  {
+    id: "manage-users",
+    link: "/manage-users",
+    title: "Manage Users",
+    icon: <ManageAccounts fontSize="medium" className="!text-violet-500" />
+  },
+
+  {
+    id: "analytics",
+    link: "/analytics",
+    title: "Analytics",
+    icon: <Analytics fontSize="medium" className="!text-orange-500" />
+  },
+  {
+    id: "setting",
+    link: "/settings",
+    title: "Settings",
+    icon: <Settings fontSize="medium" className="!text-orange-500" />
+  },
+];
+
+export const womenLinks = [
+  {
+    id: "bulletin",
+    link: "/bulletin",
+    title: "Bulletin Board",
+    icon: <Announcement fontSize="medium" className="!text-blue-500" />
+  },
+
+  {
+    id: "newsfeed",
+    link: "/workshop",
+    title: "Workshop",
+    icon: <VideoCameraFront fontSize="medium" className="!text-yellow-500" />
+  },
+
+  {
+    id: "joblistings",
+    link: "/jobs",
+    title: "Job Listings",
+    icon: <Book fontSize="medium" className="!text-pink-500" />
+  },
+  {
+    id: "forum",
+    link: "/forum",
+    title: "Forum",
+    icon: <Forum fontSize="medium" className="!text-red-500" />
+  },
+
+
+  // {
+  //   id: "manage-users",
+  //   link: "/manage-users",
+  //   title: "Manage Users",
+  //   icon: <ManageAccounts fontSize="medium" className="!text-violet-500" />
+  // },
   {
     id: "setting",
     link: "/settings",
@@ -46,8 +149,8 @@ export const brgyLinks = [
 export const settingLinks = [
   {
     id: "personal",
-    link: "/personal-information",
-    title: "Personal Information",
+    link: "/profile",
+    title: "My Profile",
     icon: <AccountCircle fontSize="small" className="!text-slate-800 mr-2  self-end" />
   },
   {
@@ -68,11 +171,11 @@ export const settingLinks = [
 export const topics = [
   {
     link: "/topics",
-    title: "Threads"
+    title: "Topics"
   },
   {
-    link: "/following",
-    title: "Following"
+    link: "/followed",
+    title: "Followed"
   },
   {
     link: "/my-forum",

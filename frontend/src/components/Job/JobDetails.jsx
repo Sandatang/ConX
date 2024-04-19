@@ -1,117 +1,169 @@
-import { AccountCircle, LocationOn } from "@mui/icons-material"
-import { List, ListItem, ListItemText, Stack, Typography } from "@mui/material"
+/* eslint-disable react-hooks/exhaustive-deps */
+import { AccountCircle, Add, Book, LocationOn } from "@mui/icons-material"
+import { Button, Stack, Typography } from "@mui/material"
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import conxlogo from "../../assets/secondlogo.png"
+import * as JobApi from "../../network/job_api"
+import BreadCrumb from "../BreadCrumb"
+import OfficialsHotline from "../Contacts/OfficialsHotline"
 import JobListingRightAside from "./JobListingRightAside"
 
 const JobDetails = () => {
+    const back = <> <Book /> Jobs </>
+    const { id } = useParams()
+    const [loading, setLoading] = useState(true)
+    const [job, setJob] = useState(null)
+    const [moreJob, setMoreJob] = useState(null)
+    const breadCrumbUrl = [
+        { url: '../', name: back },
+    ]
+
+
+    useEffect(() => {
+        const getOneJob = async () => {
+            try {
+                const response = await JobApi.viewOneJob(id)
+                const moreJobResponse = await JobApi.viewAllJob()
+                setJob(response)
+                setMoreJob(moreJobResponse)
+
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setTimeout(() => {
+                    setLoading(false)
+                }, 1000)
+            }
+        }
+
+        getOneJob()
+    }, [])
     return (
-        <Stack className="py-8 px-10 no-scrollbar overflow-y-auto  !flex-row gap-2">
-            <Stack>
-                <Stack className="pb-4">
-                    <Stack>
-                        <Typography>Job Title</Typography>
-                        <Stack className="!flex-row gap-2">
-                            <AccountCircle fontSize="large" />
-                            <Stack>
-                                <Stack className="!flex-row items-center justify-center gap-2">
+        loading ? (
+            <React.Fragment>
+                <Stack className="w-full">
 
-                                    <Typography className="!text-blue-400 !font-semibold !text-md">Google</Typography>
-                                    <Typography className="!text-md"> <LocationOn className="!text-md" /> Cebu City</Typography>
+                    <Stack className="h-auto w-[70%] pt-2">
+                        <Stack className="p-4 gap-4">
+                            <Stack className=" bg-gray-200/70 rounded-md animate-pulse">
+                                <Stack className="py-14 px-8 gap-2">
+                                    <div className=" rounded-lg bg-gray-300/90 h-2 w-3/4 "></div>
+                                    <div className=" rounded-lg bg-gray-300/90 h-2 w-1/2 "></div>
+                                    <div className=" rounded-lg bg-gray-300/90 h-2 w-3/4 "></div>
 
-                                </Stack>
-                                <Stack className="!flex-row items-center justify-center gap-2">
-                                    <Typography className="!text-sm !text-slate-600">Fulltime </Typography>
-                                    <Typography className="!text-sm !text-slate-600">Remote</Typography>
-                                    <Typography className="!text-sm !text-slate-600">2-4 Years</Typography>
                                 </Stack>
                             </Stack>
+                            <Stack className="bg-gray-200/90 h-8 w-full" />
+                            <div className="flex w-full justify-end">
+                                <Stack className="bg-gray-200/90 h-8 w-1/4 justify-end" />
+                            </div>
+                            <Stack className="bg-gray-200/90 h-48 w-full" />
+
+                        </Stack>
+                    </Stack>
+
+                    <Stack className=" h-screen w-[400px] p-8 bg-white">
+                        <Stack className="border-l-2 h-[500px] w-[300px] px-4  fixed top-[5rem] right-0 ">
+                            {Array.from({ length: 4 }).map((_, index) => (
+
+                                <Stack key={index} className="!flex-row animate-pulse">
+
+                                    <Stack className="ml-2 !flex-row w-3/4 gap-1 items-center">
+                                        <div className="bg-gray-300/90 h-8 w-8 rounded-full" />
+                                        <Stack className="gap-2">
+                                            <div className=" rounded-lg bg-gray-300/90 h-2 w-28 "></div>
+                                            <div className=" rounded-lg bg-gray-300/90 h-2 w-20 "></div>
+                                        </Stack>
+                                    </Stack>
+                                    <Button  >
+                                        <div className="w-4 h-4 rounded-full bg-gray-300/90" />
+                                    </Button>
+                                </Stack>
+                            ))}
                         </Stack>
                     </Stack>
                 </Stack>
 
-                <Stack className="my-2">
-                    <Typography className="py-2 !font-semibold !text-md">About this role</Typography>
-                    <Typography className="!text-md !text-slate-600">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </Typography>
-                </Stack>
+            </React.Fragment >
+        ) : (
+            <Stack className=" h-full overflow-auto pb-10 no-scrollbar overflow-y-auto !flex-row">
+                <Stack className="h-auto w-full px-20 pt-2">
+                    <Stack className="pb-4">
+                        <Stack className="bg-pinkish px-4 py-2 mb-4 rounded-sm">
+                            <BreadCrumb data={breadCrumbUrl} classes="!text-[12px] tracking-wider !text-white font-bold " />
+                        </Stack>
+                        <Stack>
+                            <Typography>{job.jobTitle}</Typography>
+                            <Stack className="!flex-row gap-2">
+                                <AccountCircle fontSize="large" />
+                                <Stack>
+                                    <Stack className="!flex-row items-center justify-center gap-2">
 
-                <Stack className="my-2">
-                    <Typography className="py-2 !font-semibold !text-md">Qualifications</Typography>
-                    <Stack className="ml-4">
+                                        <Typography className="!text-blue-400 !font-semibold !text-md">{job.contactPerson}</Typography>
+                                        <Typography className="!text-md capitalize"> <LocationOn className="!text-md" /> {job.location}</Typography>
 
-                        <List sx={{
-                            width: '100%',
-                            maxWidth: 360,
-                            maxHeight: 300,
-                            '& ul': {
-                                padding: 0
-                            },
-                            listStyleType: 'disc'
-                        }}>
-                            <ListItem sx={{ display: 'list-item' }} className="!py-0" disableGutters>
-                                <ListItemText className="!text-sm" >
-                                    <Typography className="!text-md">  Lorem ipsum dolor sit amet, consectetur </Typography>
-                                </ListItemText>
-                            </ListItem>
-                            <ListItem sx={{ display: 'list-item' }} className="!py-0" disableGutters>
-                                <ListItemText className="!text-sm" >
-                                    <Typography className="!text-md">  Lorem ipsum dolor sit amet, consectetur </Typography>
-                                </ListItemText>
-                            </ListItem>
-                            <ListItem sx={{ display: 'list-item' }} className="!py-0" disableGutters>
-                                <ListItemText className="!text-sm" >
-                                    <Typography className="!text-md">  Lorem ipsum dolor sit amet, consectetur </Typography>
-                                </ListItemText>
-                            </ListItem>
-                            <ListItem sx={{ display: 'list-item' }} className="!py-0" disableGutters>
-                                <ListItemText className="!text-sm" >
-                                    <Typography className="!text-md">  Lorem ipsum dolor sit amet, consectetur </Typography>
-                                </ListItemText>
-                            </ListItem>
-                        </List>
+                                    </Stack>
+                                    <Stack className="!flex-row items-center gap-2">
+                                        <Typography className="!text-sm !text-slate-600">Partime / Fulltime </Typography>
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                        </Stack>
+                    </Stack>
+
+                    <Stack className="my-2">
+                        <Typography className="py-2 !font-semibold !text-md">About this role</Typography>
+                        <Typography className="!text-md !text-slate-600">
+                            {job.jobDescription}
+                        </Typography>
+                    </Stack>
+
+                    <Stack className="my-2">
+                        <Typography className="py-2 !font-semibold !text-md">Required Experience</Typography>
+                        <Typography className="!text-md !text-slate-600">
+                            {job.experienceReq !== "none" ? `Atleast ${job.experienceReq} year experience for this job` : "No experience required as long as you can execute the tasks."}
+                        </Typography>
+                    </Stack>
+
+                    <Stack className="my-2">
+                        <Typography className="py-2 !font-semibold !text-md">Salary</Typography>
+                        <Typography className="!text-md !text-slate-600">Per Day : <span className="font-bold text-black">{job.wage}</span></Typography>
+                        <Typography className="!text-md !text-slate-600">Monthly : <span className="font-bold !text-black ">Php{(job.wage * 30).toLocaleString()}</span></Typography>
+                    </Stack>
+
+                    <Stack className="my-2">
+                        <Typography className="py-2 !font-semibold !text-md">Contacts</Typography>
+                        <Typography className="!text-md !text-slate-600">Look for : <span className="font-bold text-black">{job.contactPerson}</span></Typography>
+                        <Typography className="!text-md !text-slate-600">If you have questions you may call <span className="font-bold !text-black underline underline-offset-2">{job.contactNumber}</span></Typography>
+                    </Stack>
+
+                    <Stack className="my-10">
+                        <img src={conxlogo} alt="logo" className="w-full h-3/4 aspect-video rounded-lg border-[1px] border-pinkish shadow-lg " />
                     </Stack>
                 </Stack>
+                <Stack className=" h-screen w-[320px] bg-white">
+                    <Stack className="border-l-2 h-dvh w-[250px] fixed top-[5rem] right-0 ">
+                        <Stack className="h-1/2 pt-5 px-1 overflow-y-auto border-b-2">
+                            <JobListingRightAside loading={loading} job={moreJob} />
+                        </Stack>
+                        <Stack className="h-1/2 overflow-y-auto">
+                            <Stack className="px-4">
+                                <Stack className="!flex-row items-center">
+                                    <Typography className="!text-[18px] !mt-4 pb-2 !font-semibold">Official Hotlines</Typography>
+                                    {
+                                        localStorage.getItem('role') === 'Personnel' &&
+                                        <Button><Add /> hotline</Button>
+                                    }
+                                </Stack>
+                                <OfficialsHotline />
+                            </Stack>
+                        </Stack>
 
-                <Stack className="my-2">
-                    <Typography className="py-2 !font-semibold !text-md">Responsibility</Typography>
-                    <Stack className="ml-4">
-
-                        <List sx={{
-                            width: '100%',
-                            maxWidth: 360,
-                            maxHeight: 300,
-                            '& ul': {
-                                padding: 0
-                            },
-                            listStyleType: 'disc'
-                        }}>
-                            <ListItem sx={{ display: 'list-item' }} className="!py-0" disableGutters>
-                                <ListItemText className="!text-sm" >
-                                    <Typography className="!text-md">  Lorem ipsum dolor sit amet, consectetur </Typography>
-                                </ListItemText>
-                            </ListItem>
-                            <ListItem sx={{ display: 'list-item' }} className="!py-0" disableGutters>
-                                <ListItemText className="!text-sm" >
-                                    <Typography className="!text-md">  Lorem ipsum dolor sit amet, consectetur </Typography>
-                                </ListItemText>
-                            </ListItem>
-                            <ListItem sx={{ display: 'list-item' }} className="!py-0" disableGutters>
-                                <ListItemText className="!text-sm" >
-                                    <Typography className="!text-md">  Lorem ipsum dolor sit amet, consectetur </Typography>
-                                </ListItemText>
-                            </ListItem>
-                            <ListItem sx={{ display: 'list-item' }} className="!py-0" disableGutters>
-                                <ListItemText className="!text-sm" >
-                                    <Typography className="!text-md">  Lorem ipsum dolor sit amet, consectetur </Typography>
-                                </ListItemText>
-                            </ListItem>
-                        </List>
                     </Stack>
                 </Stack>
             </Stack>
-
-            <JobListingRightAside/>
-        </Stack>
+        )
     )
 }
 

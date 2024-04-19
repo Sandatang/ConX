@@ -14,6 +14,7 @@ namespace CONX.Models
         public bool isClosed { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateClosed { get; set; }
+        public string? ImgUrl { get; set; }
 
     }
 }

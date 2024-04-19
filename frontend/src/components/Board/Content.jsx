@@ -1,121 +1,65 @@
+/* eslint-disable react/prop-types */
 import { AccountCircle, Comment, Favorite } from "@mui/icons-material"
-import { Button, Stack, Typography } from "@mui/material"
-import sample from "../../assets/sample3.png"
+import { Alert, Badge, Button, Stack, Typography } from "@mui/material"
+import { useState } from "react"
+import BulletinComments from "./BulletinComments"
 
-const Content = () => {
+const Content = (props) => {
+    const [bulletinToOPen, setBulletinToOPen] = useState(null)
+    const [open, setOpen] = useState(false)
+
     return (
-        <>
-            <Stack>
-                <Stack className="!flex-row items-center">
-                    <AccountCircle className="!text-[3rem]" />
-                    <Stack>
-                        <Typography className="!text-md">Bgry user name</Typography>
-                        <Typography className="!text-large !font-semibold !text-slate-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
-                    </Stack>
-                </Stack>
-                <Stack>
-                    <img src={sample} className="object-cover rounded-xl h-80 w-full" />
-                </Stack>
-                <Stack className="my-2 !flex-row justify-evenly ">
-                    <Button className="gap-2 items-center !text-slate-600 !text-sm cursor-pointer">
-                        <Favorite className="cursor-pointer"/>
-                        Heart
-                    </Button>
-                    <Button className="gap-2  !text-slate-600 !text-sm items-center cursor-pointer">
-                        <Comment className="cursor-pointer"/>
-                        Comment
-                    </Button>
-                </Stack>
-            </Stack>
-            <Stack>
-                <Stack className="!flex-row items-center">
-                    <AccountCircle className="!text-[3rem]" />
-                    <Stack>
-                        <Typography className="!text-md">Bgry user name</Typography>
-                        <Typography className="!text-large !font-semibold !text-slate-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
-                    </Stack>
-                </Stack>
-                <Stack>
-                    <img src={sample} className="object-cover rounded-xl h-80 w-full" />
-                </Stack>
-                <Stack className="my-2 !flex-row justify-evenly ">
-                    <Button className="gap-2 items-center !text-slate-600 !text-sm cursor-pointer">
-                        <Favorite className="cursor-pointer"/>
-                        Heart
-                    </Button>
-                    <Button className="gap-2  !text-slate-600 !text-sm items-center cursor-pointer">
-                        <Comment className="cursor-pointer"/>
-                        Comment
-                    </Button>
-                </Stack>
-            </Stack>
-            <Stack>
-                <Stack className="!flex-row items-center">
-                    <AccountCircle className="!text-[3rem]" />
-                    <Stack>
-                        <Typography className="!text-md">Bgry user name</Typography>
-                        <Typography className="!text-large !font-semibold !text-slate-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
-                    </Stack>
-                </Stack>
-                <Stack>
-                    <img src={sample} className="object-cover rounded-xl h-80 w-full" />
-                </Stack>
-                <Stack className="my-2 !flex-row justify-evenly ">
-                    <Button className="gap-2 items-center !text-slate-600 !text-sm cursor-pointer">
-                        <Favorite className="cursor-pointer"/>
-                        Heart
-                    </Button>
-                    <Button className="gap-2  !text-slate-600 !text-sm items-center cursor-pointer">
-                        <Comment className="cursor-pointer"/>
-                        Comment
-                    </Button>
-                </Stack>
-            </Stack>
-            <Stack>
-                <Stack className="!flex-row items-center">
-                    <AccountCircle className="!text-[3rem]" />
-                    <Stack>
-                        <Typography className="!text-md">Bgry user name</Typography>
-                        <Typography className="!text-large !font-semibold !text-slate-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
-                    </Stack>
-                </Stack>
-                <Stack>
-                    <img src={sample} className="object-cover rounded-xl h-80 w-full" />
-                </Stack>
-                <Stack className="my-2 !flex-row justify-evenly ">
-                    <Button className="gap-2 items-center !text-slate-600 !text-sm cursor-pointer">
-                        <Favorite className="cursor-pointer"/>
-                        Heart
-                    </Button>
-                    <Button className="gap-2  !text-slate-600 !text-sm items-center cursor-pointer">
-                        <Comment className="cursor-pointer"/>
-                        Comment
-                    </Button>
-                </Stack>
-            </Stack>
-            <Stack>
-                <Stack className="!flex-row items-center">
-                    <AccountCircle className="!text-[3rem]" />
-                    <Stack>
-                        <Typography className="!text-md">Bgry user name</Typography>
-                        <Typography className="!text-large !font-semibold !text-slate-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
-                    </Stack>
-                </Stack>
-                <Stack>
-                    <img src={sample} className="object-cover rounded-xl h-80 w-full" />
-                </Stack>
-                <Stack className="my-2 !flex-row justify-evenly ">
-                    <Button className="gap-2 items-center !text-slate-600 !text-sm cursor-pointer">
-                        <Favorite className="cursor-pointer"/>
-                        Heart
-                    </Button>
-                    <Button className="gap-2  !text-slate-600 !text-sm items-center cursor-pointer">
-                        <Comment className="cursor-pointer"/>
-                        Comment
-                    </Button>
-                </Stack>
-            </Stack>
-        </>
+        <Stack className=" gap-10">
+            {
+                !props.bulletins ? (
+                    <Alert severity="info">No data yet</Alert>
+                ) : (
+                    props.bulletins.map((bulletin) => (
+
+                        <Stack key={bulletin.bulletinPost.bulletinId} className="border-[1px] px-4 py-6 rounded-2xl bg-white shadow-xl">
+                            <Stack className="!flex-row items-center gap-4">
+                                <AccountCircle className="!text-[3rem]" />
+                                <Stack>
+                                    <Typography variant="h2" className="!text-md !font-bold">{bulletin.bulletinPost.user != " " ? bulletin.bulletinPost.user : "User name"}</Typography>
+                                    <Typography variant="body2" className="!text-sm">Barangay Personnel</Typography>
+                                </Stack>
+                            </Stack>
+                            <Stack className="py-4">
+                                <Typography variant="h1" className="!text-lg capitalize !font-bold !text-black">
+                                    {bulletin.bulletinPost.title}
+                                </Typography>
+                                <Typography variant="body1">
+                                    {bulletin.bulletinPost.content}
+                                </Typography>
+                            </Stack>
+                            <Stack className="p-4 border-[1px] rounded-xl">
+                                <img src={`https://localhost:44398/api/image/name/${bulletin.bulletinPost.imageName}`} className="w-full aspect-video" alt="Bulletin Image" />
+                            </Stack>
+                            <Stack className="my-2 !flex-row justify-evenly ">
+                                <Button className="gap-2 items-center !text-slate-600 !text-sm cursor-pointer">
+                                    <Favorite className="cursor-pointer" />
+                                    Heart
+                                </Button>
+                                <Button onClick={() => {
+                                    setBulletinToOPen(bulletin)
+                                    setOpen(true)
+                                }} className="gap-2  !text-slate-600 !text-sm items-center cursor-pointer">
+                                    <Badge sx={{ "& .MuiBadge-badge": { fontSize: 6, height: 10, minWidth: 10 } }} badgeContent={bulletin.comment.length} color="primary">
+
+                                        <Comment className="cursor-pointer" />
+                                        Comment
+                                    </Badge>
+                                </Button>
+
+                            </Stack>
+
+                        </Stack>
+                    ))
+
+                )
+            }
+            {open && <BulletinComments open={open} bulletin={bulletinToOPen} close={() => setBulletinToOPen(false)} />}
+        </Stack>
     )
 }
 
