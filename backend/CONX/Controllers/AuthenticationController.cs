@@ -402,6 +402,45 @@ namespace CONX.Controllers
         }
 
         [HttpGet]
+        [Route("view/deleted/accounts")]
+        public async Task<IActionResult> ViewDeletedAccounts()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            //Check if personnel is null
+            if (users == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent,
+                        new Response { Status = "Success", Message = " Users currently empty" });
+            }
+
+            var deUsers = users
+                .Where(us => ((User)us).IsDeleted == true)
+                .Select(us => new
+                {
+                    user = new User
+                    {
+
+                        Id = us.Id,
+                        EmployeeNumber = ((User)us).EmployeeNumber,
+                        Firstname = ((User)us).Firstname, // Cast to your custom User class
+                        Middlename = ((User)us).Middlename,
+                        Birthdate = ((User)us).Birthdate,
+                        Lastname = ((User)us).Lastname,
+                        UserName = us.UserName,
+                        IsDeleted = ((User)us).IsDeleted,
+                        Email = us.Email,
+                        PhoneNumber = us.PhoneNumber,
+                        DeActivate = ((User)us).DeActivate,
+                    }
+                })
+             .ToList();
+
+            // Return if user is not null
+            return Ok(deUsers);
+        }
+
+        [HttpGet]
         [Route("getTotalUser")]
         public async Task<IActionResult> GetTotalUser()
         {
@@ -594,6 +633,9 @@ namespace CONX.Controllers
 
             // Save the data
             _context.Update(customUser);
+            await _context.SaveChangesAsync();
+
+            _context.Update(logs);
             await _context.SaveChangesAsync();
 
             // Change deactivate col to 
