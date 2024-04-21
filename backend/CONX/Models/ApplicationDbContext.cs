@@ -13,6 +13,10 @@ namespace CONX.Models
         public DbSet<Jobs> Jobs { get; set; }
         public DbSet<BulletinPost> BulletinPost {  get; set; }
         public DbSet<Connectivity> Connectivitys { get; set; }
+        public DbSet<Testimony> Testimonials { get; set; }
+        public DbSet<Resource> EmpResources {  get; set; }
+        public DbSet<Workshop> Workshops { get; set; }
+        public DbSet<JuncWorkshopResource> WorkshopResources { get; set; }
         public DbSet<JuncForumThread> ForumThreads { get; set; }
         public DbSet<JuncThreadComment> ThreadComments { get; set; }
         public DbSet<JuncForumFollows> ForumFollows { get; set; }

@@ -4,6 +4,7 @@ using CONX.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CONX.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240421052644_AddedWorkshopsTable")]
+    partial class AddedWorkshopsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -322,29 +324,6 @@ namespace CONX.Migrations
                     b.HasIndex("ThreadId");
 
                     b.ToTable("ThreadComments");
-                });
-
-            modelBuilder.Entity("CONX.Models.JuncWorkshopResource", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ResourceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkShopId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResourceId");
-
-                    b.HasIndex("WorkShopId");
-
-                    b.ToTable("WorkshopResources");
                 });
 
             modelBuilder.Entity("CONX.Models.Resource", b =>
@@ -845,25 +824,6 @@ namespace CONX.Migrations
                     b.Navigation("Comment");
 
                     b.Navigation("Thread");
-                });
-
-            modelBuilder.Entity("CONX.Models.JuncWorkshopResource", b =>
-                {
-                    b.HasOne("CONX.Models.Resource", "Resource")
-                        .WithMany()
-                        .HasForeignKey("ResourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CONX.Models.Workshop", "Workshop")
-                        .WithMany()
-                        .HasForeignKey("WorkShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resource");
-
-                    b.Navigation("Workshop");
                 });
 
             modelBuilder.Entity("CONX.Models.Resource", b =>
