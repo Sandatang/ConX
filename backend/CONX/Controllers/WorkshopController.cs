@@ -1,8 +1,8 @@
-﻿using CONX.Models.BulletinViewModel;
-using CONX.Models;
+﻿using CONX.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CONX.Models.WorkshopViewModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace CONX.Controllers
 {
@@ -34,7 +34,7 @@ namespace CONX.Controllers
                 Directory.CreateDirectory(_uploadPath);
             }
         }
-
+            
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> CreateWorkshop([FromBody] CreateWorkshop model)
@@ -82,6 +82,19 @@ namespace CONX.Controllers
             return Ok(new Response { Status = "Success", Message = "Workshop created succesfully", });
 
         }
+
+        [HttpGet]
+        [Route("view/{category}")]
+        public async Task<IActionResult> ViewWorkshopLivelihood(string category)
+        {
+            var wp = await _context.Workshops.
+                                              Where(w => w.Category == category)
+                                              .ToListAsync();
+
+            return Ok(wp);
+        }
+
+
 
         [HttpPost]
         [Route("edit")]
