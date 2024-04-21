@@ -21,6 +21,7 @@ import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
 import Testimonial from "./pages/Testimonial"
+import Workshop from "./pages/Workshop"
 function App() {
 
   const router = createBrowserRouter(
@@ -41,7 +42,7 @@ function App() {
               <>
                 <Route path="/bulletin" element={<BulletinBoard />} />
                 <Route path="/manage-users" element={<ManageUsers />} />
-                {/* <Route path="/analytics" element={<Analytics />} /> */}
+                <Route path="/workshop" element={<Workshop />} />
                 <Route path="/testimonial" element={<Testimonial />} />
 
                 <Route path="/forum/*" element={<Forum />} >
@@ -69,6 +70,8 @@ function App() {
                 <Route path="/bulletin" element={<BulletinBoard />} />
                 <Route path="/manage-users" element={<ManageUsers />} />
                 <Route path="/analytics" element={<Analytics />} />
+                <Route path="/testimonial" element={<Testimonial />} />
+                <Route path="/workshop" element={<Workshop />} />
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
@@ -97,6 +100,8 @@ function App() {
               localStorage.getItem('role') === 'Women' &&
               <>
                 <Route path="/bulletin" element={<BulletinBoard />} />
+                <Route path="/testimonial" element={<Testimonial />} />
+                <Route path="/workshop" element={<Workshop />} />
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />

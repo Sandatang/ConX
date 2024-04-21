@@ -117,7 +117,12 @@ export const womenLinks = [
     title: "Workshop",
     icon: <VideoCameraFront fontSize="medium" className="!text-yellow-500" />
   },
-
+  {
+    id: "testimonial",
+    link: "/testimonial",
+    title: "Testimonial",
+    icon: <Approval fontSize="medium" className="!text-red-500" />
+  },
   {
     id: "joblistings",
     link: "/jobs",

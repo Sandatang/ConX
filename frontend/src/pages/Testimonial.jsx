@@ -1,41 +1,44 @@
-import { Approval } from '@mui/icons-material';
-import { Avatar, Button, Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
+import { Create } from '@mui/icons-material';
+import { Button, Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import ModalTestimonyOrReport from '../components/Testimonials/ModalTestimonyOrReport';
+import * as TestimonyApi from "../network/testimony_api";
 
-
-const defaultTestimonials = [
-    {
-        name: 'John Doe',
-        position: 'CEO',
-        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        avatarSrc: 'https://via.placeholder.com/150',
-    },
-    {
-        name: 'Jane Smith',
-        position: 'Designer',
-        comment: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        avatarSrc: 'https://via.placeholder.com/150',
-    },
-    {
-        name: 'Alice Johnson',
-        position: 'Developer',
-        comment: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-        avatarSrc: 'https://via.placeholder.com/150',
-    },
-];
 
 const Testimonial = () => {
     const [index, setIndex] = useState(0);
+    const [open, setOpen] = useState(false);
+    const [report, setReport] = useState(false);
+    const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
+    const [testimonies, setTestimonies] = useState(null);
 
     useEffect(() => {
+
+        const getAllTestimonys = async () => {
+            try {
+                const response = await TestimonyApi.getAllTestimony();
+                setTestimonies(response)
+            } catch (error) {
+                console.error(error)
+                setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
+
+            }
+        }
         const timer = setTimeout(() => {
-            setIndex((prevIndex) => (prevIndex + 1) % defaultTestimonials.length);
+            if (testimonies !== null) {
+                setIndex(prevIndex => (prevIndex + 1) % testimonies.length);
+            }
         }, 2000);
 
-        return () => clearTimeout(timer);
-    }, [index]);
+        const intervalId = setInterval(getAllTestimonys, pollingInterval);
+        return () => {
+            clearInterval(intervalId)
+            clearTimeout(timer)
+        };
 
-    const { name, position, comment, avatarSrc } = defaultTestimonials[index];
+    }, []);
+    const testimonial = testimonies !== null ? testimonies[index] : { fullName: "", content: "", created: "" };
+
     return (
 
         <Stack className="w-full h-screen overflow-y-auto no-scrollbar justify-center pt-8 px-16 ">
@@ -47,10 +50,26 @@ const Testimonial = () => {
                 </Typography>
             </Stack>
             <Stack className='!flex-row justify-end py-10 items-center'>
-                <Typography variant='body1' className='!text-slate-700'>
-                    Add your testimony
-                    <Button component={"span"}><Approval /></Button>
-                </Typography>
+                <Stack>
+                    <Typography variant='body1' className='!text-slate-700'>
+                        <Button onClick={() => {
+                            setOpen(true);
+                            setReport(false)
+                        }}
+                            className='!bg-pinkish !text-white' component={"span"}>
+                            Write your testimony
+                            <Create />
+                        </Button>
+                    </Typography>
+                    <Typography
+                        onClick={() => {
+                            setOpen(true);
+                            setReport(true)
+                        }}
+                        component={"button"} variant='body2' className='!text-center !text-slate-400 hover:!text-red-500 cursor-pointer'>
+                        or report a bug
+                    </Typography>
+                </Stack>
             </Stack>
             <Stack className='!flex-row gap-4 pb-10'>
 
@@ -58,9 +77,9 @@ const Testimonial = () => {
                 <Card
                     style={{
                         transform: `rotate(${index % 2 === 0 ? 1 : -1}deg)`,
-                        zIndex: defaultTestimonials.length - index
+                        zIndex: testimonies && testimonies.length - index
                     }}
-                    className={` w-1/2 px-4 !h-64  items-center shadow-xl relative justify-center mt-2 rounded-md`} variant='outlined'>
+                    className={` w-1/2 px-4 !h-64  items-center !shadow-2xl relative justify-center mt-2 rounded-md border-[1px] border-pinkish !shadow-pinkish`} >
                     <Typography className='absolute top-6 -left-4 -rotate-45 z-50 !font-bold bg-yellow-200 py-1 px-2 rounded-tr-md text-xs'>
                         Testimonials
                     </Typography>
@@ -71,11 +90,10 @@ const Testimonial = () => {
                             <div className='!flex flex-row justify-end items-center gap-2 '>
                                 <div className='!flex flex-col justify-end items-center gap-2'>
 
-                                    <Avatar src={avatarSrc} className='!h-16 !w-16' alt={"asdasdas"} />
-                                    {name}
+                                    {testimonial.fullName}
                                     <Typography variant='body2'>
-
-                                        {position}
+                                        {testimonial.fullName}
+                                        {testimonial.created}
                                     </Typography>
 
                                 </div>
@@ -85,7 +103,7 @@ const Testimonial = () => {
 
 
                     <CardContent>
-                        <Typography variant="body1">{comment}</Typography>
+                        <Typography variant="body1">{testimonial.content}</Typography>
                     </CardContent>
                 </Card >
 
@@ -101,6 +119,8 @@ const Testimonial = () => {
                 </Stack>
 
             </Stack>
+
+            {open && <ModalTestimonyOrReport report={report} onClose={() => setOpen(false)} />}
 
         </Stack >
 
