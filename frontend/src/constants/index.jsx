@@ -187,4 +187,18 @@ export const topics = [
     title: "My Forum"
   },
 ]
+export const category = [
+  {
+    link: "/livelihood",
+    title: "Livelihood"
+  },
+  {
+    link: "/self-defense",
+    title: "Self-Defense"
+  },
+  {
+    link: "/self-growth",
+    title: "Self-Growth"
+  },
+]
 

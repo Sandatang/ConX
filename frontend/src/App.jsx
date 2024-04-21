@@ -22,6 +22,9 @@ import Register from "./pages/Register"
 import Settings from "./pages/Settings"
 import Testimonial from "./pages/Testimonial"
 import Workshop from "./pages/Workshop"
+import Livelihood from "./components/Workshop/Livelihood"
+import SelfDefense from "./components/Workshop/SelfDefense"
+import Resources from "./components/Workshop/Resources"
 function App() {
 
   const router = createBrowserRouter(
@@ -71,7 +74,6 @@ function App() {
                 <Route path="/manage-users" element={<ManageUsers />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/testimonial" element={<Testimonial />} />
-                <Route path="/workshop" element={<Workshop />} />
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
@@ -79,10 +81,18 @@ function App() {
                   <Route path="my-forum" element={<MyForum />} />
                 </Route>
 
+                <Route path="/workshop/*" element={<Workshop />} >
+                  <Route path="livelihood" element={<Livelihood />} />
+                  <Route path="self-defense" element={<SelfDefense />} />
+                  <Route path="self-growth" element={<MyForum />} />
+                </Route>
+
                 <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
                   <Route index element={<Thread />} />
                 </Route>
-
+                <Route path="workshop/:category/:workshopTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Resources />} />
+                </Route>
 
                 <Route path="/jobs/*" element={<Layout />}>
                   <Route index element={<JobLisintgs />} />

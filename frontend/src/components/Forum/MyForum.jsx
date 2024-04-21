@@ -36,7 +36,7 @@ const MyForum = () => {
                     // Loading skeleton
                     <Stack className="border w-full border-gray-200 rounded-lg p-4 animate-pulse">
 
-                        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                        <div className="mt-4 grid grid-cols-1 gap-4 ">
                             <Stack className="!flex-row gap-4 bg-gray-300/90 rounded-md p-10 !items-center"></Stack>
                             <Stack className="!flex-row gap-4 bg-gray-300/90 rounded-md p-10 !items-center"></Stack>
                             <Stack className="!flex-row gap-4 bg-gray-300/90 rounded-md p-10 !items-center"></Stack>
@@ -49,7 +49,7 @@ const MyForum = () => {
                     forum ? (
 
                         <Stack className=' w-full'>
-                            <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                            <div className="mt-4 grid grid-cols-1 gap-4">
                                 {forum.map((tp) => (
                                     // Populate data of forum
                                     <Stack key={tp.title} className="!flex-row relative gap-4 bg-gray-200/90 rounded-md p-4 !items-center">
