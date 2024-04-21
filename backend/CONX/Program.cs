@@ -1,11 +1,13 @@
 using CONX.Models;
-using CONX.Models.Authentication.Signup;
 using ConXUser.Management.Service.Model;
 using ConXUser.Management.Service.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.AspNetCore.Http.Features; // Make sure to include this namespace
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +58,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+// Increase maximum request size
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 2147483648; // 2 GB in bytes
+});
 
 var app = builder.Build();
 

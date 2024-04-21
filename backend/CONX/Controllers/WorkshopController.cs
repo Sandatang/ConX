@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using CONX.Models.WorkshopViewModel;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace CONX.Controllers
 {
     [ApiController]
@@ -39,7 +40,6 @@ namespace CONX.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateWorkshop([FromBody] CreateWorkshop model)
         {
-
 
             // Check if user is null 
             var user = await _userManager.FindByIdAsync(model.CreatorId);
@@ -152,7 +152,6 @@ namespace CONX.Controllers
         public async Task<IActionResult> AddResource([FromForm] AddResource model)
         {
 
-
             // Check if user is null 
             var user = await _userManager.FindByIdAsync(model.UploaderId);
             if (user == null)
@@ -160,8 +159,13 @@ namespace CONX.Controllers
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = "User not found", Field = "failed" });
             }
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Video.FileName);
+            var filePath = Path.Combine(_uploadPath, fileName); // Specify your file upload path
 
-
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await model.Video.CopyToAsync(fileStream);
+            }
 
             // Create new Postings
             var resource = new Resource
@@ -169,7 +173,18 @@ namespace CONX.Controllers
                 VideoTitle = model.VideoTitle,
                 VideoDescription = model.VideoDescription,
                 UploaderId = model.UploaderId,
+                VideoUrl = fileName,
             };
+            
+
+            _context.EmpResources.Add(resource);
+            var resourcesResult = await _context.SaveChangesAsync();
+
+            if (resourcesResult <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = " Something went wrong. Try again later", Field = "failed" });
+            }
 
             //process File and copy to path
             if (model.Video == null && model.Video.Length <= 0)
@@ -178,17 +193,9 @@ namespace CONX.Controllers
                  new Response { Status = "Error", Message = "Uploaded image is corrupted", Field = "failed" });
 
             }
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Video.FileName);
-            var filePath = Path.Combine(_uploadPath, fileName); // Specify your file upload path
-            resource.VideoUrl = fileName;
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await model.Video.CopyToAsync(fileStream);
-            }
+            
 
             // Que data to be inserted in Db
-            _context.EmpResources.Add(resource);
             _context.WorkshopResources.Add(new JuncWorkshopResource
             {
                 WorkShopId = model.WorkshopId,
@@ -210,5 +217,30 @@ namespace CONX.Controllers
 
         }
 
+        [HttpGet]
+        [Route("resource/{workshopId}")]
+        public async Task<IActionResult> ViewThread(string workshopId)
+        {
+            var convertedId = Int32.Parse(workshopId);
+            var postings = await _context.WorkshopResources
+                                    .Where(x => x.WorkShopId == convertedId)
+                                    .Select(x => new
+                                    {
+                                        workshopId = x.WorkShopId,
+                                        userId = x.Resource.Uploader.Id,
+                                        videoTtile = x.Resource.VideoTitle,
+                                        videoDescription = x.Resource.VideoDescription,
+                                        videoUrl = x.Resource.VideoUrl,
+
+                                    }).ToListAsync();
+
+            if (postings.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " Workshop not exist", Field = "failed" });
+            }
+
+            return Ok(postings);
+        }
     }
 }
