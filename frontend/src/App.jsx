@@ -25,6 +25,7 @@ import Workshop from "./pages/Workshop"
 import Livelihood from "./components/Workshop/Livelihood"
 import SelfDefense from "./components/Workshop/SelfDefense"
 import Resources from "./components/Workshop/Resources"
+import SelfGrowth from "./components/Workshop/SelfGrowth"
 function App() {
 
   const router = createBrowserRouter(
@@ -52,6 +53,16 @@ function App() {
                   <Route path="topics" element={<Topics />} />
                   <Route path="followed" element={<FollowedForum />} />
                   <Route path="my-forum" element={<MyForum />} />
+                </Route>
+
+                <Route path="/workshop/*" element={<Workshop />} >
+                  <Route path="livelihood" element={<Livelihood />} />
+                  <Route path="self-defense" element={<SelfDefense />} />
+                  <Route path="self-growth" element={<SelfGrowth />} />
+                </Route>
+
+                <Route path="workshop/:category/:workshopTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Resources />} />
                 </Route>
 
                 <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
@@ -84,14 +95,15 @@ function App() {
                 <Route path="/workshop/*" element={<Workshop />} >
                   <Route path="livelihood" element={<Livelihood />} />
                   <Route path="self-defense" element={<SelfDefense />} />
-                  <Route path="self-growth" element={<MyForum />} />
+                  <Route path="self-growth" element={<SelfGrowth />} />
+                </Route>
+
+                <Route path="workshop/:category/:workshopTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Resources />} />
                 </Route>
 
                 <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >
                   <Route index element={<Thread />} />
-                </Route>
-                <Route path="workshop/:category/:workshopTitle/:id" element={<ForumSpecificTopicContainer />} >
-                  <Route index element={<Resources />} />
                 </Route>
 
                 <Route path="/jobs/*" element={<Layout />}>
@@ -117,6 +129,16 @@ function App() {
                   <Route path="topics" element={<Topics />} />
                   <Route path="followed" element={<FollowedForum />} />
                   <Route path="my-forum" element={<MyForum />} />
+                </Route>
+
+                <Route path="/workshop/*" element={<Workshop />} >
+                  <Route path="livelihood" element={<Livelihood />} />
+                  <Route path="self-defense" element={<SelfDefense />} />
+                  <Route path="self-growth" element={<SelfGrowth />} />
+                </Route>
+
+                <Route path="workshop/:category/:workshopTitle/:id" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Resources />} />
                 </Route>
 
                 <Route path="forum/topic/:forumTitle/:id" element={<ForumSpecificTopicContainer />} >

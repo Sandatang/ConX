@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import * as WorkshopApi from "../../network/workshop_api";
 
-const SelfDefense = () => {
+const SelfGrowth = () => {
     const [category, setCategory] = useState(null)
 
     useEffect(() => {
         const viewAll = async () => {
             try {
-                const response = await WorkshopApi.getWorkshops('2');
+                const response = await WorkshopApi.getWorkshops('3');
                 setCategory(response)
                 console.log(response)
             } catch (error) {
@@ -39,7 +39,7 @@ const SelfDefense = () => {
 
                         </Stack>
                     </Stack>
-                )) : (
+                )): (
                     <Alert severity="info">No workshops yet. Stay tuned.</Alert>
                 )
             }
@@ -47,4 +47,4 @@ const SelfDefense = () => {
     )
 }
 
-export default SelfDefense
+export default SelfGrowth

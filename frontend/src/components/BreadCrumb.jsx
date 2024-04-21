@@ -8,17 +8,19 @@ const BreadCrumb = (props) => {
             <Breadcrumbs aria-label="breadcrumb" className="!text-white">
                 {
                     props.data.map((dt) => (
-                        <Link
-                            key={dt.name }
-                            underline="hover"
-                            sx={{ display: 'flex', alignItems: 'center' }}
-                            color="inherit"
-                            to={dt.url}
-                            className={`${props.classes} capitalize hover:underline underline-offset-1`}
-                        >
-                            {/* <Home sx={{ mr: 0.5 }} fontSize="inherit" /> */}
-                            {dt.name}
-                        </Link>
+                        <div key={dt.name}>
+                            <Link
+                                underline="hover"
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                                color="inherit"
+                                to={dt.url}
+                                className={`${props.classes} capitalize hover:underline underline-offset-1`}
+                            >
+                                {/* <Home sx={{ mr: 0.5 }} fontSize="inherit" /> */}
+                                {dt.name}
+                            </Link>
+                            <span className={`${props.classes} pl-4`}>/</span>
+                        </div>
                     ))
 
                 }

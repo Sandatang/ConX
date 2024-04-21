@@ -18,3 +18,18 @@ export async function getWorkshops(data) {
   });
   return response.json();
 }
+
+export async function addVideoResource(data) {
+  const response = await fetchData("/api/workshop/resource/add", {
+    method: "POST",
+    body: data,
+  });
+  return response.json();
+}
+
+export async function getWorkshopResource(data) {
+  const response = await fetchData(`/api/workshop/resource/${data}`, {
+    method: "GET",
+  });
+  return response.json();
+}
