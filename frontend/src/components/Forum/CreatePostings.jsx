@@ -2,11 +2,10 @@ import { Add, Image, Remove } from "@mui/icons-material"
 import { Avatar, Button, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import * as ThreadApi from "../../network/thread_api"
 
 const CreatePostings = () => {
-    const navigate = useNavigate()
     const [addComment, setAddComment] = useState(false)
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
     const { id } = useParams()
@@ -19,9 +18,8 @@ const CreatePostings = () => {
         formData.append("forumId", id);
         formData.append("Image", data.file[0]);
         formData.append("userId", localStorage.getItem('userId'));
-        const response = await ThreadApi.addThread(formData)
-        console.log(response)
-        navigate(0)
+        await ThreadApi.addThread(formData)
+        setAddComment(false)
     }
 
     return (
@@ -66,7 +64,7 @@ const CreatePostings = () => {
 
                             <div className="flex flex-row gap-2 w-full justify-between !mt-2">
                                 {/* <input type="file" {...register('file')} /> */}
-                                <Button component="label" variant="ghost" startIcon={<Image className="!text-green-500"/>}  >
+                                <Button component="label" variant="ghost" startIcon={<Image className="!text-green-500" />}  >
                                     <input type="file" {...register('file')} />
                                 </Button>
 

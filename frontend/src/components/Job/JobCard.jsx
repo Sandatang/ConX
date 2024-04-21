@@ -80,7 +80,7 @@ const JobCard = (props) => {
 
                         </Card>
                     ))
-            ) : props.job ? props.job
+            ) : props.job.length > 0 ? props.job
                 .filter(jb => jb.isActive)
                 .map((jb) => (
 
@@ -146,7 +146,7 @@ const JobCard = (props) => {
                         </Stack>
 
                     </Card>
-                )) : (<Alert>No data</Alert>)
+                )) : (<Alert className='w-full' severity='info'>No data</Alert>)
             }
 
             {open && <AddJob update={true} job={jobToEdit} onClose={() => setOpen(false)} />}

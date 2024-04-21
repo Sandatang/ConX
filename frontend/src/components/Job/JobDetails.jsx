@@ -120,6 +120,13 @@ const JobDetails = () => {
                     </Stack>
 
                     <Stack className="my-2">
+                        <Typography className="py-2 !font-semibold !text-md">Required Experience</Typography>
+                        <Typography className="!text-md !text-slate-600">
+                            {job.experienceReq !== "none" ? `Atleast ${job.experienceReq} year experience for this job` : "No experience required as long as you can execute the tasks."}
+                        </Typography>
+                    </Stack>
+
+                    <Stack className="my-2">
                         <Typography className="py-2 !font-semibold !text-md">Salary</Typography>
                         <Typography className="!text-md !text-slate-600">Per Day : <span className="font-bold text-black">{job.wage}</span></Typography>
                         <Typography className="!text-md !text-slate-600">Monthly : <span className="font-bold !text-black ">Php{(job.wage * 30).toLocaleString()}</span></Typography>
@@ -131,8 +138,8 @@ const JobDetails = () => {
                         <Typography className="!text-md !text-slate-600">If you have questions you may call <span className="font-bold !text-black underline underline-offset-2">{job.contactNumber}</span></Typography>
                     </Stack>
 
-                    <Stack>
-                        <img src={conxlogo} alt="logo" className="w-full h-3/4 aspect-video rounded-lg bg-[#E1BEE7] " />
+                    <Stack className="my-10">
+                        <img src={conxlogo} alt="logo" className="w-full h-3/4 aspect-video rounded-lg border-[1px] border-pinkish shadow-lg " />
                     </Stack>
                 </Stack>
                 <Stack className=" h-screen w-[320px] bg-white">

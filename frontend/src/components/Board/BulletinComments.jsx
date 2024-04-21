@@ -4,13 +4,13 @@ import AddComment from "../Comment/AddComment"
 import Modal from "../Modal"
 import ModalHeading from "../ModalHeading"
 
-const ThreadCommentModa = ({ open, thread, close }) => {
+const BulletinComments = ({ open, bulletin, close }) => {
     return (
-        thread && open && (
+        bulletin && open && (
 
             <Modal
 
-                heading={<ModalHeading title={`${thread.thread.title} Post`} desc="" classname="!text-center " onDismiss={() => {
+                heading={<ModalHeading title={`${bulletin.bulletinPost.title} Post`} desc="" classname="!text-center " onDismiss={() => {
                     close()
                 }} />}
                 width=" w-1/2"
@@ -25,30 +25,28 @@ const ThreadCommentModa = ({ open, thread, close }) => {
                             <Stack className="!flex-row gap-2 w-full border-[1px] border-b-0  rounded-md">
                                 <Stack className="w-1/4 h-full gap-4 items-center bg-slate-200/50 p-4">
                                     <Avatar className="!mr-2 " />
-                                    <Typography variant="body1" component="span" className="!capitalize !text-sm !font-bold">{thread.thread.user}</Typography>
+                                    <Typography variant="body1" component="span" className="!capitalize !text-sm !font-bold">{bulletin.bulletinPost.user}</Typography>
                                 </Stack>
                                 <Stack className="ml-4 min-h-46 !w-full py-4 pr-4 gap-1">
 
                                     <Typography className="!font-bold capitalize">
-                                        {thread.thread.title}
+                                        {bulletin.bulletinPost.title}
                                     </Typography>
                                     <Typography className="!text-sm pl-6">
-                                        {thread.thread.content}
+                                        {bulletin.bulletinPost.content}
                                     </Typography>
                                 </Stack>
                             </Stack>
 
                         </Stack>
                         {/* <Divider/> */}
-                        <Stack className="px-8 mt-4">
-                            <Typography className="!text-sm">
-                                <img src={`https://localhost:44398/api/image/name/${thread.thread.imgUrl}`} alt="Thread Image" />
-                            </Typography>
+                        <Stack className="px-8 mt-4 border-[1px] m-4 rounded-lg shadow-sm">
+                            <img src={`https://localhost:44398/api/image/name/${bulletin.bulletinPost.imageName}`} alt="Thread Image" />
                         </Stack>
                         <Stack className="gap-4 my-4 py-4 border-[1px]">
                             <Stack className="px-4 gap-2">
 
-                                <AddComment threadId={thread.thread.threadId} thread={thread} />
+                                <AddComment bulletinPostId={bulletin.bulletinPost.bulletinId} bulletin={bulletin} />
                             </Stack>
                         </Stack>
                     </Stack>
@@ -59,4 +57,4 @@ const ThreadCommentModa = ({ open, thread, close }) => {
     )
 }
 
-export default ThreadCommentModa
+export default BulletinComments

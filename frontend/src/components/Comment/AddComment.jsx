@@ -1,25 +1,42 @@
 /* eslint-disable react/prop-types */
 import { Avatar, Button, Stack, TextField, Typography } from "@mui/material"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as CommentApi from "../../network/comment_api"
-import { useState } from "react"
 
 const AddComment = (props) => {
-    const { register,reset, handleSubmit, formState: { isSubmitting } } = useForm()
-    const [comments, setComments] = useState(props.thread.comment)
+    const { register, reset, handleSubmit, formState: { isSubmitting } } = useForm()
+    const [comments, setComments] = useState(props.bulletin ? props.bulletin.comment : props.thread.comment)
     const [toComment, setToComment] = useState(false)
 
+
+
     const createComment = async (data) => {
-        const formData = {
-            ...data,
-            "threadId": props.threadId,
-            "userId": localStorage.getItem('userId')
+        try {
+            if (props.bulletin) {
+                const formData = {
+                    ...data,
+                    "bulletinPostId": props.bulletinPostId,
+                    "userId": localStorage.getItem('userId')
+                }
+                const response = await CommentApi.addBulletinComment(formData)
+                setComments([response[0], ...comments])
+                reset()
+
+            } else {
+
+                const formData = {
+                    ...data,
+                    "threadId": props.threadId,
+                    "userId": localStorage.getItem('userId')
+                }
+                const response = await CommentApi.addComment(formData)
+                setComments([response[0], ...comments])
+                reset()
+            }
+        } catch (error) {
+            console.error(error)
         }
-        const response = await CommentApi.addComment(formData)
-        console.log(response)
-        setComments([...comments, response[0]])
-        console.log(props)
-        reset()
     }
     return (
         <>

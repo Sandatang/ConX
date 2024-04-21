@@ -1,4 +1,5 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
+import EmailConfirmationMessage from "./components/EmailConfirmationMessage"
 import FollowedForum from "./components/Forum/FollowedForum"
 import ForumSpecificTopicContainer from "./components/Forum/ForumSpecificTopicContainer"
 import MyForum from "./components/Forum/MyForum"
@@ -19,7 +20,7 @@ import ManageUsers from "./pages/ManageUsers"
 import ProtectedRoutes from "./pages/ProtectedRoutes"
 import Register from "./pages/Register"
 import Settings from "./pages/Settings"
-import EmailConfirmationMessage from "./components/EmailConfirmationMessage"
+import Testimonial from "./pages/Testimonial"
 function App() {
 
   const router = createBrowserRouter(
@@ -27,8 +28,8 @@ function App() {
       <Route>
         <Route path="/login" element={<IsLogged />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/email/confirmation?Success=true" element={<EmailConfirmationMessage />} />
-        <Route path="/email/error?Error=true" element={<EmailConfirmationMessage />} />
+        <Route path="/email/confirmation/Success" element={<EmailConfirmationMessage />} />
+        <Route path="/email/error/Error" element={<EmailConfirmationMessage />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
@@ -40,7 +41,8 @@ function App() {
               <>
                 <Route path="/bulletin" element={<BulletinBoard />} />
                 <Route path="/manage-users" element={<ManageUsers />} />
-                <Route path="/analytics" element={<Analytics />} />
+                {/* <Route path="/analytics" element={<Analytics />} /> */}
+                <Route path="/testimonial" element={<Testimonial />} />
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />

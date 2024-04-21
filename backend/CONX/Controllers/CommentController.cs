@@ -102,6 +102,75 @@ namespace CONX.Controllers
 
         }
 
+        [HttpPost]
+        [Route("add/bulletin")]
+        public async Task<IActionResult> AddBulletinComment([FromBody] AddBulletinComment addBulletinComment)
+        {
+            var bulletin = await _context.BulletinPost.FindAsync(addBulletinComment.BulletinPostId);
+            if (bulletin != null)
+            {
+                var user = await _userManager.FindByIdAsync(addBulletinComment.UserId);
+
+                if (user == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound,
+                       new Response { Status = "Error", Message = " User not exist", Field = "failed" });
+                }
+
+                var comment = new Comment
+                {
+                    UserId = addBulletinComment.UserId,
+                    Content = addBulletinComment.Content,
+                    Created = DateTime.Now,
+                };
+
+                //Que data to add in Comments table
+                _context.Comments.Add(comment);
+                //Save data to Database
+                var commentResult = await _context.SaveChangesAsync();
+
+                if (commentResult <= 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                      new Response { Status = "Error", Message = " Something went wrong, Try again later", Field = "failed" });
+                }
+
+                var bulletinComment = new BulletinPostComment
+                {
+                    CommentId = comment.CommentId,
+                    BulletinPostId = addBulletinComment.BulletinPostId,
+                };
+
+                //Que data to add in PostComments table
+                _context.BulletinComments.Add(bulletinComment);
+                //Save data to Database
+                var juncPostCommentResult = await _context.SaveChangesAsync();
+
+                if (juncPostCommentResult <= 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                      new Response { Status = "Error", Message = " Something went wrong, Try again later", Field = "failed" });
+                }
+
+                var newComment = await _context.Comments
+                                                        .Where(c => c.CommentId == comment.CommentId)
+                                                        .Select(c => new
+                                                        {
+                                                            CommentId = c.CommentId,
+                                                            UserId = c.UserId,
+                                                            User = c.User.Firstname + " " + c.User.Lastname,
+                                                            Content = c.Content,
+                                                            Created = c.Created,
+                                                        }).ToListAsync();
+
+                return Ok(newComment);
+            }
+
+            return StatusCode(StatusCodes.Status404NotFound,
+              new Response { Status = "Error", Message = " Bulletin not found ", Field = "failed" });
+
+        }
+
         [HttpPut]
         [Route("update")]
         public async Task<IActionResult> UpdateComment([FromBody] EditComment editComment)

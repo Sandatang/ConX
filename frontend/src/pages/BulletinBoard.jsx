@@ -14,26 +14,30 @@ const BulletinBoard = () => {
   const writePostRef = useRef(null);
   const [loading, setLoading] = useState(true)
   const [bulletins, setBulletins] = useState(null)
+  const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
+
+
 
   useEffect(() => {
     const getBulletinPost = async () => {
       try {
         const response = await BulletinApi.viewAllBUlletinPost()
-        console.log(response)
         setBulletins(response)
 
       } catch (error) {
         console.error(error)
+        setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
+
       } finally {
         setTimeout(() => {
 
           setLoading(false)
-        }, 1000)
+        }, 500)
       }
     }
-    const intervalId = setInterval(getBulletinPost, 1000);
+    const intervalId = setInterval(getBulletinPost, pollingInterval);
     return () => clearInterval(intervalId);
-  }, [])
+  }, [pollingInterval])
 
   const handleScroll = () => {
     if (writePostRef.current) {

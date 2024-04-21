@@ -8,6 +8,5 @@ namespace CONX.Models.AuthenticationViewModels
         public string UserId { get; set; }
         public string DeactivatorId { get; set; }
         public string DeactivationReason { get; set; }
-        public DateTime Date {  get; set; }
     }
 }

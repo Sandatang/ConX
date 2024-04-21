@@ -4,22 +4,22 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as UserApi from "../network/user_api";
-import Modal from "./Modal";
-import ModalHeading from "./ModalHeading";
+import * as UserApi from "../../network/user_api";
+import Modal from "../Modal";
+import ModalHeading from "../ModalHeading";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
-export default function AddPeronnelModal(props) {
+export default function AddAdminModal(props) {
     const navigate = useNavigate()
     const { register, setValue, reset, handleSubmit, formState: { isSubmitting }, } = useForm();
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null)
 
-    async function onAddPersonnel(credentials) {
+    async function onAddAdmin(credentials) {
         try {
 
-            const response = await UserApi.registerPersonnel(credentials);
+            const response = await UserApi.registerAdmin(credentials);
 
             console.log(response)
             if (response.field) {
@@ -80,7 +80,7 @@ export default function AddPeronnelModal(props) {
 
     return (
         <Modal
-            heading={<ModalHeading title={`${props.update ? "Update user" : "Add personnel"}`} desc="" onDismiss={() => {
+            heading={<ModalHeading title={`${props.update ? "Update user" : "Add Admin"}`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
             width=" w-[35%]"
@@ -90,21 +90,9 @@ export default function AddPeronnelModal(props) {
             {success && <Alert severity='success'>{success}</Alert>}
             <div className="w-full ">
                 <div className="p-2">
-                    <form action="" onSubmit={handleSubmit(props.update ? onUpdateDetails : onAddPersonnel)} >
+                    <form action="" onSubmit={handleSubmit(props.update ? onUpdateDetails : onAddAdmin)} >
                         <div className="w-full sm:gap-1">
                             <div className="w-full flex-col flex gap-3">
-
-                                {!props.update &&
-                                    <TextField
-                                        id="outline-idno"
-                                        name="employeeNumber"
-                                        label="employeeNumber # "
-                                        size="small"
-                                        className="!w-full"
-                                        InputLabelProps={{ style: { fontSize: '0.775rem' } }}
-                                        {...register("employeeNumber", { required: true })}
-                                    />
-                                }
 
                                 <TextField
                                     id="outline-idno"
@@ -125,7 +113,6 @@ export default function AddPeronnelModal(props) {
                                     defaultValue={props.update ? props.user.user.firstname : ""}
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
 
-                                    // value={selectedItem.id || ''}
 
                                     {...register("firstname", { required: true })}
                                 />

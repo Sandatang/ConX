@@ -7,7 +7,7 @@ import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import conxLogo from "../assets/logo.png";
+import conxLogo from "../assets/secondlogo.png";
 import * as UserApi from "../network/user_api";
 
 
@@ -54,8 +54,8 @@ const Register = () => {
   return (
     <Stack className='md:!flex-row !justify-evenly'>
       <Stack className='!items-center !justify-center'>
-        <img src={conxLogo} className="logo ConX" alt="ConX logo" />
-        <h1 className="text-center">
+      <img src={conxLogo} className="object-contain mix-blend-color-burn" alt="ConX logo" />
+        <h1 className="absolute top-[75%] !text-center">
           ConX: Connecting and Empowering Female Communities
           <br />
           within the Barangay of Metro Cebu

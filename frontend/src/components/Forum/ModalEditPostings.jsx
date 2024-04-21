@@ -1,36 +1,42 @@
 /* eslint-disable react/prop-types */
+import { Image } from "@mui/icons-material"
 import { Alert, Avatar, Button, Stack, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import * as ThreadApi from "../../network/thread_api"
 import Modal from "../Modal"
 import ModalHeading from "../ModalHeading"
 
 const ModalEditPostings = (props) => {
     const [message, setMessage] = useState(null)
-    const navigate = useNavigate()
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
 
-    const modalEditPostings = async (data) => {
 
+    const modalEditPostings = async (data) => {
+        console.log(data)
         try {
-            const formData = {
-                ...data,
-                "threadId": props.thread.threadId
+            const formData = new FormData();
+            formData.append("title", data.title);
+            formData.append("threadId", props.thread.threadId);
+            formData.append("content", data.content);
+            if (data.file.length > 0) {
+                formData.append("Image", data.file[0]);
+            } else {
+                // Handle the case where no file is selected
+                formData.append("Image", null)
             }
+            // formData.append("Image", {data.file.length > 0 ?  data.file[0] : ""});
+            formData.append("userId", localStorage.getItem('userId'));
             const response = await ThreadApi.updateThread(formData)
             if (response.status === "Success") {
                 setMessage(response.message)
-
+                setTimeout(() => {
+                    props.onClose()
+                }, 1000)
                 return
             }
         } catch (error) {
             console.error(error)
-        } finally {
-            setTimeout(() => {
-                navigate(0)
-            }, 2000)
         }
     }
 
@@ -38,7 +44,7 @@ const ModalEditPostings = (props) => {
         <Modal
 
             heading={<ModalHeading title={`Update Postings`} desc="" onDismiss={props.onClose} />}
-            width=" w-[40%]"
+            width=" w-[50%]"
         >
             {message && <Alert severity='success'>{message}</Alert>}
             <Stack className={`!flex-row py-4 transition-opacity duration-500 ease-in-out`}>
@@ -74,9 +80,21 @@ const ModalEditPostings = (props) => {
 
                                 />
                             </Stack>
-                            <div className="flex w-full justify-end">
+                            {props.thread.imgUrl && (
+                                <>
+                                    <Typography variant="span" className="!text-sm !text-slate-700"><span className="!text-md font-bold">Image : </span> {props.thread.imgUrl}</Typography>
+                                </>
+                            )}
+                            <div className="flex w-full justify-between my-2 gap-10">
+                                <Button component="label" variant="contained" startIcon={<Image className="!text-green-500" />}  >
+
+                                    <input type="file" {...register('file')} />
+                                </Button>
+
                                 <Button type="submit" disabled={isSubmitting} className="!self-end !mt-2" variant="contained">Post</Button>
+
                             </div>
+
                         </form>
                     </Stack>
                 </Stack>

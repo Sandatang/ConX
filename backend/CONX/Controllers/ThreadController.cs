@@ -132,6 +132,7 @@ namespace CONX.Controllers
             var convertedId = Int32.Parse(threadId);
             var postings = await _context.ForumThreads
                                     .Where(x => x.ForumId == convertedId)
+                                    .OrderByDescending(x => x.Thread.DateCreated)
                                     .Select(x => new
                                     {
                                         threadId = x.ThreadId,
@@ -145,7 +146,7 @@ namespace CONX.Controllers
 
                                     }).ToListAsync();
 
-            if (postings.Count > 0)
+            if (postings.Count == 0)
             {
                 return StatusCode(StatusCodes.Status404NotFound,
                     new Response { Status = "Error", Message = " Thread not exist", Field = "failed" });

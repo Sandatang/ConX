@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
-import { useForm } from 'react-hook-form'
-import * as UserApi from "../../network/user_api";
-import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as UserApi from "../../network/user_api";
 
 
 const ModalDeletion = (props) => {
-    const navigate = useNavigate()
     const { handleSubmit } = useForm()
     const [message, setMessage] = useState(null)
     const [error, setError] = useState(false)
@@ -16,14 +14,13 @@ const ModalDeletion = (props) => {
         try {
             const response = await UserApi.deleteUser(props.userId);
             console.log(response)
-            props.onclose
-            navigate(0)
+            // navigate(0)
 
             if (response.status === "Success") {
                 setMessage(response.message)
 
                 setTimeout(() => {
-                    navigate(0)
+                    props.onclose()
                 }, 1000)
             }
             if (response.status === "Error") {
@@ -50,7 +47,7 @@ const ModalDeletion = (props) => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {!error && message && message}
+                        {!error && message && <Alert seveirty="success">{message}</Alert>}
                         {error && message && message}
                         {!error && !message && 'Account can no longer be used and retrieve if deleted!!!'}
 

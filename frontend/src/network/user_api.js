@@ -15,6 +15,17 @@ export async function registerWomen(data) {
 
   return response.json();
 }
+export async function registerAdmin(data) {
+  const response = await fetchData("/api/auth/register/admin", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+}
 
 export async function addPersonnel(data) {
   const response = await fetchData("/api/auth/register/personnel", {
@@ -61,6 +72,36 @@ export async function viewAllPersonnel() {
 
   return response.json();
 }
+export async function viewAllAdmin() {
+  const response = await fetchData("/api/auth/view/admin", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
+export async function viewDeActivated() {
+  const response = await fetchData("/api/auth/view/deActivated/accounts", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
+export async function viewDeletedAccounts() {
+  const response = await fetchData("/api/auth/view/deleted/accounts", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
 
 export async function getTotalOfUser() {
   const response = await fetchData("/api/auth/getTotalUser", { method: "GET" });
@@ -97,7 +138,7 @@ export async function updateUser(data) {
 }
 
 export async function deleteUser(id){
-  const response = await fetchData(`/api/auth/delete/user/${id}`, { method: "DELETE"})
+  const response = await fetchData(`/api/auth/user/delete/${id}`, { method: "DELETE"})
   return response.json()
 }
 
