@@ -8,7 +8,7 @@ import ModalAddResource from "./ModalAddResource";
 import BreadCrumb from "../BreadCrumb";
 
 const Resources = () => {
-    const { workshopTitle, id,category } = useParams()
+    const { workshopTitle, id, category } = useParams()
     const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
     const [open, setOpen] = useState(false)
     const [resources, setResources] = useState(null)
@@ -37,14 +37,16 @@ const Resources = () => {
         <Stack className="mt-4 px-8">
             <Stack className="!flex-row justify-between">
                 <BreadCrumb data={breadCrumbUrl} classes="!text-[12px] hover:!text-slate-600 tracking-wider !text-black font-bold " />
-
-                <Button
-                    onClick={() => {
-                        setOpen(true)
-                    }}
-                    variant="contained">
-                    Add Video
-                </Button>
+                {
+                    localStorage.getItem('role') !== "Women" &&
+                    <Button
+                        onClick={() => {
+                            setOpen(true)
+                        }}
+                        variant="contained">
+                        Add Video
+                    </Button>
+                }
             </Stack>
             <Stack className="!flex-row pb-8 w-full h-dvh ">
 

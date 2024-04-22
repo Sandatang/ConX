@@ -1,11 +1,14 @@
-import { Button, Stack } from "@mui/material"
-import { NavLink, Outlet } from "react-router-dom"
-import { category } from "../constants"
+import { Button, Stack, Typography } from "@mui/material"
 import { useState } from "react"
+import { NavLink, Outlet, useLocation } from "react-router-dom"
 import ModalAddWorkshop from "../components/Workshop/ModalAddWorkshop"
+import { category } from "../constants"
+import conxlogo from "../assets/secondlogo.png"
 
 const Workshop = () => {
     const [open, setOpen] = useState(false);
+    let location = useLocation();
+
     return (
         <Stack className=" overflow-y-auto no-scrollbar">
             <Stack className="!flex-row fixed p-8 w-full bg-white gap-20">
@@ -42,10 +45,19 @@ const Workshop = () => {
             </Stack>
             <Stack className="!flex-row p-8 w-full bg-white justify-center gap-20" />
             <Stack className="my-10 gap-10 px-16 ">
-                <Outlet />
+                {location.pathname === "/workshop" ? (
+                    <Stack className="items-center gap-6">
+                        <Typography variant="h4">Welcome to Our Empowerment Workshop!</Typography>
+                        <Typography variant="body1">Explore our collection of empowerment videos to learn and grow.</Typography>
+                        <img src={conxlogo} alt="logo" className="w-[60%] aspect-video" />
+
+                    </Stack>
+                ) : (
+                    <Outlet />
+                )}
             </Stack>
 
-            {open && <ModalAddWorkshop onClose={() => setOpen(false)}/>}
+            {open && <ModalAddWorkshop onClose={() => setOpen(false)} />}
         </Stack>
     )
 }

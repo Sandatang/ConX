@@ -68,11 +68,14 @@ const BulletinBoard = () => {
             </Stack>
           ) : (
             <>
-              <WritePost toPostFalse={() => setToPost(false)} classes={`${toPost ? "!block absolute" : "hidden"}`} />
+              {
+                localStorage.getItem('role') !== "Women" &&
+                <WritePost toPostFalse={() => setToPost(false)} classes={`${toPost ? "!block absolute" : "hidden"}`} />
+              }
               <Content bulletins={bulletins} />
             </>
           )}
-        {!toPost && (
+        { localStorage.getItem('role') !== "Women" && !toPost && (
           <div className="w-full flex justify-end cursor-pointer group" onClick={handlePostClick}>
             <IconButton
               className={`!fixed top-24 group-hover:!rounded-md opacity-40 group-hover:opacity-100 !bg-blue-500 ${toPost && isScrolled ? "" : "hidden !text-md"}`}

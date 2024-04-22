@@ -9,7 +9,6 @@ const Testimonial = () => {
     const [index, setIndex] = useState(0);
     const [open, setOpen] = useState(false);
     const [report, setReport] = useState(false);
-    const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
     const [testimonies, setTestimonies] = useState(null);
 
     useEffect(() => {
@@ -18,25 +17,20 @@ const Testimonial = () => {
             try {
                 const response = await TestimonyApi.getAllTestimony();
                 setTestimonies(response)
+                console.log(response)
             } catch (error) {
                 console.error(error)
-                setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
 
             }
         }
+        getAllTestimonys()
         const timer = setTimeout(() => {
-            if (testimonies !== null) {
-                setIndex(prevIndex => (prevIndex + 1) % testimonies.length);
-            }
+            setIndex((prevIndex) => (prevIndex + 1) % testimonies.length);
         }, 2000);
 
-        const intervalId = setInterval(getAllTestimonys, pollingInterval);
-        return () => {
-            clearInterval(intervalId)
-            clearTimeout(timer)
-        };
+        return () => clearTimeout(timer);
 
-    }, []);
+    }, [index]);
     const testimonial = testimonies !== null ? testimonies[index] : { fullName: "", content: "", created: "" };
 
     return (
@@ -88,12 +82,11 @@ const Testimonial = () => {
                     <CardHeader
                         title={
                             <div className='!flex flex-row justify-end items-center gap-2 '>
-                                <div className='!flex flex-col justify-end items-center gap-2'>
+                                <div className='!flex flex-col justify-end items-center gap-2 capitalize'>
 
                                     {testimonial.fullName}
                                     <Typography variant='body2'>
-                                        {testimonial.fullName}
-                                        {testimonial.created}
+                                        {new Date(testimonial.created).toDateString().split(" ").splice(1).join(" ")}
                                     </Typography>
 
                                 </div>
