@@ -26,6 +26,7 @@ import Livelihood from "./components/Workshop/Livelihood"
 import SelfDefense from "./components/Workshop/SelfDefense"
 import Resources from "./components/Workshop/Resources"
 import SelfGrowth from "./components/Workshop/SelfGrowth"
+import AllTestimonial from "./components/Testimonials/AllTestimonial"
 function App() {
 
   const router = createBrowserRouter(
@@ -47,7 +48,10 @@ function App() {
                 <Route path="/bulletin" element={<BulletinBoard />} />
                 <Route path="/manage-users" element={<ManageUsers />} />
                 <Route path="/workshop" element={<Workshop />} />
-                <Route path="/testimonial" element={<Testimonial />} />
+                <Route path="/testimonial/*" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Testimonial />} />
+                  <Route path="view" element={<AllTestimonial />} />
+                </Route>
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
@@ -84,7 +88,10 @@ function App() {
                 <Route path="/bulletin" element={<BulletinBoard />} />
                 <Route path="/manage-users" element={<ManageUsers />} />
                 <Route path="/analytics" element={<Analytics />} />
-                <Route path="/testimonial" element={<Testimonial />} />
+                <Route path="/testimonial/*" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Testimonial />} />
+                  <Route path="view" element={<AllTestimonial />} />
+                </Route>
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
@@ -122,7 +129,10 @@ function App() {
               localStorage.getItem('role') === 'Women' &&
               <>
                 <Route path="/bulletin" element={<BulletinBoard />} />
-                <Route path="/testimonial" element={<Testimonial />} />
+                <Route path="/testimonial/*" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<Testimonial />} />
+                  <Route path="view" element={<AllTestimonial />} />
+                </Route>
                 <Route path="/workshop" element={<Workshop />} />
 
                 <Route path="/forum/*" element={<Forum />} >

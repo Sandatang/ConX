@@ -3,6 +3,7 @@ import { Button, Card, CardContent, CardHeader, Stack, Typography } from '@mui/m
 import { useEffect, useState } from 'react';
 import ModalTestimonyOrReport from '../components/Testimonials/ModalTestimonyOrReport';
 import * as TestimonyApi from "../network/testimony_api";
+import { NavLink } from 'react-router-dom';
 
 
 const Testimonial = () => {
@@ -12,25 +13,33 @@ const Testimonial = () => {
     const [testimonies, setTestimonies] = useState(null);
 
     useEffect(() => {
+        let isMounted = true;
 
         const getAllTestimonys = async () => {
             try {
                 const response = await TestimonyApi.getAllTestimony();
-                setTestimonies(response)
-                console.log(response)
+                if (isMounted) {
+                    setTestimonies(response);
+
+                    if (response && response.length > 0) {
+                        const timer = setInterval(() => {
+                            setIndex(prevIndex => (prevIndex + 1) % response.length);
+                        }, 2000);
+
+                        return () => clearInterval(timer);
+                    }
+                }
             } catch (error) {
-                console.error(error)
-
+                console.error(error);
             }
-        }
-        getAllTestimonys()
-        const timer = setTimeout(() => {
-            setIndex((prevIndex) => (prevIndex + 1) % testimonies.length);
-        }, 2000);
+        };
 
-        return () => clearTimeout(timer);
+        getAllTestimonys();
 
-    }, [index]);
+        return () => {
+            isMounted = false;
+        };
+    }, []);
     const testimonial = testimonies !== null ? testimonies[index] : { fullName: "", content: "", created: "" };
 
     return (
@@ -67,7 +76,6 @@ const Testimonial = () => {
             </Stack>
             <Stack className='!flex-row gap-4 pb-10'>
 
-
                 <Card
                     style={{
                         transform: `rotate(${index % 2 === 0 ? 1 : -1}deg)`,
@@ -98,6 +106,8 @@ const Testimonial = () => {
                     <CardContent>
                         <Typography variant="body1">{testimonial.content}</Typography>
                     </CardContent>
+
+                    <Button component={NavLink} to={"../testimonial/view"} className='!absolute bottom-0 right-0 !text-slate-600'>See all</Button>
                 </Card >
 
                 <div className='border-[1px] h-full' />

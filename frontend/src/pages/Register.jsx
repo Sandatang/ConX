@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { PendingOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
-import { Alert, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoItem } from '@mui/x-date-pickers/internals/demo';
@@ -18,6 +18,7 @@ const Register = () => {
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
   const togglePassword = () => setShowPassword(!showPassword);
+  const [val, setVal] = useState('none')
 
   const handleCheckboxChange1 = (event) => {
     setChecked1(event.target.checked);
@@ -26,8 +27,12 @@ const Register = () => {
 
   async function addWomen(data) {
     try {
-
-      const response = await UserApi.registerWomen(data);
+      const formData = {
+        ...data,
+        "civilStatus": val,
+        "role": "Women",
+      }
+      const response = await UserApi.registerWomen(formData);
       console.log(response)
       if (response.field) {
         setError(response.message)
@@ -46,15 +51,16 @@ const Register = () => {
     } catch (error) {
       console.error(error)
     }
-
-
-
   }
+
+  const handleChange = (event) => {
+    setVal(event.target.value);
+  };
 
   return (
     <Stack className='md:!flex-row !justify-evenly'>
       <Stack className='!items-center !justify-center'>
-      <img src={conxLogo} className="object-contain mix-blend-color-burn" alt="ConX logo" />
+        <img src={conxLogo} className="object-contain mix-blend-color-burn" alt="ConX logo" />
         <h1 className="absolute top-[75%] !text-center">
           ConX: Connecting and Empowering Female Communities
           <br />
@@ -115,6 +121,24 @@ const Register = () => {
                 />
                 <Typography variant="caption" color="error">{errors.lastname?.message}</Typography>
 
+                {/* <Typography variant="caption">Civil Status: </Typography> */}
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  className='!w-full'
+                  value={val}
+                  onChange={handleChange}
+
+                >
+                  <MenuItem value="none" disabled>Civil Status</MenuItem>
+                  <MenuItem value="single">Single</MenuItem>
+                  <MenuItem value="married">Married</MenuItem>
+                  <MenuItem value="divorced">Divorced</MenuItem>
+                  <MenuItem value="separated">Separated</MenuItem>
+                  <MenuItem value="widowed">Widowed</MenuItem>
+                  <MenuItem value="civil_union">Civil Union</MenuItem>
+                  <MenuItem value="domestic_partnership">Domestic Partnership</MenuItem>
+                </Select>
               </Stack>
 
               <Stack className='gap-2'>
@@ -167,6 +191,14 @@ const Register = () => {
                 />
                 <Typography variant="caption" color="error">{errors.confirmPassword?.message}</Typography>
 
+                <TextField
+                  label="Income per. month"
+                  variant="outlined"
+                  name="income"
+                  {...register("income", { required: "Required" })}
+                  fullWidth
+                />
+                <Typography variant="caption" color="error">{errors.income?.message}</Typography>
 
               </Stack>
 

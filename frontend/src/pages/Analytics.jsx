@@ -4,9 +4,8 @@ import LineChartUI from "../components/Analytics/LineChartUI"
 
 const Analytics = () => {
     return (
-        <Stack className="!flex-row  h-screen justify-center items-center">
+        <Stack className=" h-screen my-8">
             <BarChartUI />
-            <LineChartUI />
         </Stack>
     )
 }

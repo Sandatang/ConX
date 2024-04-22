@@ -5,6 +5,7 @@ import ModalHeading from "../ModalHeading";
 import * as TestimonyApi from "../../network/testimony_api";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { VideoFile } from "@mui/icons-material";
 
 const ModalTestimonyOrReport = (props) => {
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
@@ -12,13 +13,13 @@ const ModalTestimonyOrReport = (props) => {
 
     const createTestimony = async (data) => {
         try {
-            const formData = {
-                "userId": localStorage.getItem('userId'),
-                ...data
-            }
+            const formData = new FormData()
+            formData.append("Content", data.content);
+            formData.append("Video", data.file[0]);
+            formData.append("UserId", localStorage.getItem('userId'));
 
             const response = await TestimonyApi.addTestimony(formData);
-
+            console.log(response)
             if (response.status === "Success") {
                 setMessage(response.message)
             }
@@ -51,6 +52,11 @@ const ModalTestimonyOrReport = (props) => {
                                     InputLabelProps={{ style: { fontSize: '0.775rem' } }}
                                     {...register("content")}
                                 />
+
+                                <Typography variant="caption" className="!text-slate-500">Upload video for evidence</Typography>
+                                <Button component="label" variant="ghost" startIcon={<VideoFile className="!text-red-500" />}  >
+                                    <input type="file" {...register('file')} />
+                                </Button>
 
                                 <Button
                                     disabled={isSubmitting}

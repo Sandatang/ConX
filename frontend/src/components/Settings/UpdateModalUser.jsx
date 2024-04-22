@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Alert, Button, Stack, TextField } from "@mui/material"
+import { Alert, Button, MenuItem, Select, Stack, TextField } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import dayjs from "dayjs"
@@ -12,14 +12,18 @@ import ModalHeading from "../ModalHeading"
 
 const UpdateModalUser = (props) => {
   const navigate = useNavigate()
-  const { register, setValue, handleSubmit, formState: {isSubmitting} } = useForm();
+  const { register, setValue, handleSubmit, formState: { isSubmitting } } = useForm();
   const [error, setError] = useState(null)
+  const [val, setVal] = useState(props.user.civilStatus)
+
 
   const updateUser = async (data) => {
     try {
       const formData = {
         ...data,
         'userName': props.user.username,
+        "civilStatus": val,
+        "role": "Women",
         userId: localStorage.getItem("userId")
       }
       const response = await UserApi.updateUser(formData);
@@ -33,9 +37,13 @@ const UpdateModalUser = (props) => {
     }
   }
 
+  const handleChange = (event) => {
+    setVal(event.target.value);
+  };
+
   return (
     <Modal
-      heading={<ModalHeading title="Update Profile" desc="" onDismiss={props.onClose}/>}
+      heading={<ModalHeading title="Update Profile" desc="" onDismiss={props.onClose} />}
       width=" w-[35%]"
     >
       <div className="w-full ">
@@ -76,6 +84,33 @@ const UpdateModalUser = (props) => {
                   defaultValue={props.user.lastname}
                   {...register("lastname")}
 
+                />
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  className='!w-full'
+                  value={val}
+                  onChange={handleChange}
+                  size="small"
+
+                >
+                  <MenuItem value="none" disabled>Civil Status</MenuItem>
+                  <MenuItem value="single">Single</MenuItem>
+                  <MenuItem value="married">Married</MenuItem>
+                  <MenuItem value="divorced">Divorced</MenuItem>
+                  <MenuItem value="separated">Separated</MenuItem>
+                  <MenuItem value="widowed">Widowed</MenuItem>
+                  <MenuItem value="civil_union">Civil Union</MenuItem>
+                  <MenuItem value="domestic_partnership">Domestic Partnership</MenuItem>
+                </Select>
+
+                <TextField
+                  label="Income per. month"
+                  variant="outlined"
+                  name="income"
+                  defaultValue={props.user.income}
+                  {...register("income", { required: "Required" })}
+                  fullWidth
                 />
 
                 <LocalizationProvider dateAdapter={AdapterDayjs} >

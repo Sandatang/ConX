@@ -202,3 +202,22 @@ export const category = [
   },
 ]
 
+export const civilStatus = [
+  {
+    link: "single",
+    title: "Single"
+  },
+  {
+    link: "divorced",
+    title: "Divorced"
+  },
+  {
+    link: "separated",
+    title: "Separated"
+  },
+  {
+    link: "widowed",
+    title: "Widowed"
+  },
+]
+
