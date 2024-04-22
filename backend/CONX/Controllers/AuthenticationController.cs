@@ -70,6 +70,8 @@ namespace CONX.Controllers
             user.UserName = registerUser.Username;
             user.Firstname = registerUser.Firstname;
             user.Lastname = registerUser.Lastname;
+            user.Income = registerUser.Income;
+            user.CivilStatus = registerUser.CivilStatus;
             user.Middlename = registerUser.Middlename;
             user.Birthdate = registerUser.Birthdate;
 
@@ -97,7 +99,7 @@ namespace CONX.Controllers
 
         // Add a personnel
         [HttpPost]
-        [Route("register/personnel")]
+        [Route("register/personnel")]  
         public async Task<IActionResult> RegisterPersonnel([FromBody] AddPersonnel addPersonnel)
         {
             // Check user if exist in DB
@@ -269,6 +271,8 @@ namespace CONX.Controllers
                     Birthdate = ((User)user).Birthdate,
                     Lastname = ((User)user).Lastname,
                     UserName = user.UserName,
+                    Income = ((User)user).Income,
+                    CivilStatus = ((User)user).CivilStatus,
                     IsDeleted = ((User)user).IsDeleted,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
@@ -482,6 +486,8 @@ namespace CONX.Controllers
                 middlename = selectedUser.Middlename,
                 lastname = selectedUser.Lastname,
                 birthdate = selectedUser.Birthdate,
+                income = selectedUser.Income,
+                civilStatus = selectedUser.CivilStatus,
                 username = selectedUser.UserName,
                 employeNum = selectedUser.EmployeeNumber,
                 email = selectedUser.Email,
@@ -568,6 +574,11 @@ namespace CONX.Controllers
             if (updateUser.UserName != null)
             {
                 userToUpdate.UserName = updateUser.UserName;
+            }
+            if (updateUser.Role == "Women")
+            {
+                userToUpdate.Income = updateUser.Income;
+                userToUpdate.CivilStatus = updateUser.CivilStatus;
             }
             userToUpdate.Firstname = updateUser.Firstname;
             userToUpdate.Middlename = updateUser.Middlename;

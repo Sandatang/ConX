@@ -4,5 +4,7 @@
     {
         public string UserId { get; set; }
         public string Content { get; set; }
+        public IFormFile Video { get; set; }
+
     }
 }

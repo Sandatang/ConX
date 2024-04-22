@@ -9,11 +9,10 @@ namespace CONX.Models
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Middlename { get; set; }
-
+        public string Income { get; set; }
+        public string CivilStatus { get; set; }
         public DateTime Birthdate { get; set; }
-
         public bool DeActivate { get; set; }
-
         public bool IsDeleted { get; set; } = false;
     }
 

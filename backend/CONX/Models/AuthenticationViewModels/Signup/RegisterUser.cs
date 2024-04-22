@@ -15,7 +15,12 @@ namespace CONX.Models.Authentication.Signup
         public string? Middlename { get; set; }
 
         [Required(ErrorMessage = "Lastname is required")]
-        public string? Lastname { get; set; } 
+        public string? Lastname { get; set; }
+
+        [Required(ErrorMessage = "Income is required")]
+        public string? Income { get; set; }
+        [Required(ErrorMessage = "CivilStatus is required")]
+        public string? CivilStatus { get; set; }
 
         [EmailAddress]
         [Required(ErrorMessage = "Email is required")]
