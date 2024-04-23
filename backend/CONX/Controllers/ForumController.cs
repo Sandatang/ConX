@@ -252,21 +252,21 @@ namespace CONX.Controllers
 
             var forumFollows = await _context.ForumFollows.Where(ff => ff.ForumId ==  forum.Id).ToListAsync();
 
-            if (!forumFollows.Any())
-            {
-                return StatusCode(StatusCodes.Status404NotFound,
-                    new Response { Status = "Error", Message = " Cannot find this comment. ", Field = "failed" });
-            }
+            //if (!forumFollows.Any())
+            //{
+              //  return StatusCode(StatusCodes.Status404NotFound,
+                //    new Response { Status = "Error", Message = " Cannot find this comment. ", Field = "failed" });
+            //}
 
             // Que query for deleting the data
             _context.ForumFollows.RemoveRange(forumFollows);
             var followResult = await _context.SaveChangesAsync();
 
-            if (followResult <= 0)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "Error", Message = " Something went wrong. ", Field = "failed" });
-            }
+            //if (followResult <= 0)
+            //{
+              //  return StatusCode(StatusCodes.Status500InternalServerError,
+                //    new Response { Status = "Error", Message = " Something went wrong. ", Field = "failed" });
+            //}
 
 
             if (forum == null)

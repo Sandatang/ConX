@@ -120,7 +120,7 @@ namespace CONX.Controllers
             }
 
             //Default password
-            string defaultPassword = "Barangay123@";
+            string defaultPassword = "Barangay123@";    
 
             var user = new User();
 
@@ -522,11 +522,7 @@ namespace CONX.Controllers
         [Route("changepass")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePassword changePassword)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
+            
             var user = await _userManager.FindByIdAsync(changePassword.UserId);
 
             if (user == null)

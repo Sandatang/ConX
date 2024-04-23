@@ -13,7 +13,7 @@ namespace CONX.Models.AuthenticationViewModels
         [Required]
         public string NewPassword { get; set; }
         [Required]
-        [Compare("Password", ErrorMessage = "Password and Confirmation Password must match.")]
+        [Compare("NewPassword", ErrorMessage = "Password and Confirmation Password must match.")]
         public string ConfirNewPassword { get; set; }
     }
 }
