@@ -47,6 +47,7 @@ function App() {
               <>
                 <Route path="/bulletin" element={<BulletinBoard />} />
                 <Route path="/manage-users" element={<ManageUsers />} />
+                <Route path="/analytics" element={<Analytics />} />
                 <Route path="/workshop" element={<Workshop />} />
                 <Route path="/testimonial/*" element={<ForumSpecificTopicContainer />} >
                   <Route index element={<Testimonial />} />

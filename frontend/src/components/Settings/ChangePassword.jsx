@@ -53,26 +53,26 @@ const ChangePassword = () => {
                             />
 
                             <TextField
-                                name="NewPassword"
+                                name="newPassword"
                                 InputProps={{
                                     startAdornment: <Password />
                                 }}
                                 label="New Password"
                                 type="password"
                                 fullWidth
-                                {...register("NewPassword", { required: true })}
+                                {...register("newPassword", { required: true })}
 
                             />
 
                             <TextField
-                                name="ConfirNewPassword"
+                                name="confirNewPassword"
                                 InputProps={{
                                     startAdornment: <Password />
                                 }}
                                 label="Confirm Password"
                                 type="password"
                                 fullWidth
-                                {...register("ConfirNewPassword", { required: true })}
+                                {...register("confirNewPassword", { required: true })}
 
                             />
                             <Button type="submit" disabled={isSubmitting} className="self-end mt-4 !px-8" variant="contained">Submit</Button>

@@ -21,39 +21,41 @@ const OfficialsHotline = () => {
   }, [])
 
   return (
-    <Stack className="!text-md !p-0 !m-0">
-      {
+    <>
+      <Stack className="!text-md h-[300px] !p-0 !m-0">
+        {
 
-        hotlines ? hotlines.map(hs => (
-          <div key={hs.hotlineId}>
+          hotlines ? hotlines.map(hs => (
+            <div key={hs.hotlineId}>
 
-            <Stack className="!flex-row items-center justify-between">
-              <span className=" capitalize">{hs.name}</span>
-              <Stack className=" items-end ">
-                <span className="font-bold underline underline-offset-2 flex gap-2 items-center">
-                  {hs.hotline}
-                  <IconButton><CopyAll fontSize="small" /></IconButton>
-                  {
-                    localStorage.getItem('role') === 'Personnel' &&
-                    <IconButton
-                      onClick={() => {
-                        setHotlineToUpdate(hs)
-                        setOpenUpdate(true)
-                      }}
-                    ><Edit className="!text-green-500" fontSize="small" /></IconButton>
-                  }
-                </span>
+              <Stack className="!flex-row items-center justify-between">
+                <span className=" capitalize">{hs.name}</span>
+                <Stack className=" items-end ">
+                  <span className="font-bold underline underline-offset-2 flex gap-2 items-center">
+                    {hs.hotline}
+                    <IconButton><CopyAll fontSize="small" /></IconButton>
+                    {
+                      localStorage.getItem('role') === 'Personnel' &&
+                      <IconButton
+                        onClick={() => {
+                          setHotlineToUpdate(hs)
+                          setOpenUpdate(true)
+                        }}
+                      ><Edit className="!text-green-500" fontSize="small" /></IconButton>
+                    }
+                  </span>
+                </Stack>
               </Stack>
-            </Stack>
 
-          </div>
-        )) : (
-          <Alert severity="info">No data yet</Alert>
-        )
-      }
+            </div>
+          )) : (
+            <Alert severity="info">No data yet</Alert>
+          )
+        }
 
+      </Stack>
       {openUpdate && <AddHotline update={true} onClose={() => setOpenUpdate(false)} hotline={hotlineToUpdate} />}
-    </Stack>
+    </>
 
   )
 }

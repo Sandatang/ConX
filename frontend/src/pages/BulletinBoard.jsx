@@ -6,11 +6,13 @@ import WritePost from "../components/Board/WritePost";
 import OfficialsHotline from "../components/Contacts/OfficialsHotline";
 import TopForum from "../components/Forum/TopForum";
 import * as BulletinApi from "../network/bulletin_api"
+import AddHotline from "../components/Contacts/AddHotline";
 
 
 const BulletinBoard = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [toPost, setToPost] = useState(false);
+  const [open, setOpen] = useState(false)
   const writePostRef = useRef(null);
   const [loading, setLoading] = useState(true)
   const [bulletins, setBulletins] = useState(null)
@@ -75,7 +77,7 @@ const BulletinBoard = () => {
               <Content bulletins={bulletins} />
             </>
           )}
-        { localStorage.getItem('role') !== "Women" && !toPost && (
+        {localStorage.getItem('role') !== "Women" && !toPost && (
           <div className="w-full flex justify-end cursor-pointer group" onClick={handlePostClick}>
             <IconButton
               className={`!fixed top-24 group-hover:!rounded-md opacity-40 group-hover:opacity-100 !bg-blue-500 ${toPost && isScrolled ? "" : "hidden !text-md"}`}
@@ -99,7 +101,7 @@ const BulletinBoard = () => {
                 <Typography className="!text-[18px] pb-2 !font-semibold">Official Hotlines</Typography>
                 {
                   localStorage.getItem('role') === 'Personnel' &&
-                  <Button><Add /> hotline</Button>
+                  <Button onClick={() => setOpen(true)}><Add /> hotline</Button>
                 }
               </Stack>
               <OfficialsHotline />
@@ -108,6 +110,8 @@ const BulletinBoard = () => {
 
         </Stack>
       </Stack>
+      {open && <AddHotline onClose={() => setOpen(false)} />}
+
     </Stack>
   );
 };

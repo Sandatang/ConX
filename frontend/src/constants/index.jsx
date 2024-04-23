@@ -42,6 +42,12 @@ export const brgyLinks = [
   },
 
   {
+    id: "analytics",
+    link: "/analytics",
+    title: "Analytics",
+    icon: <Analytics fontSize="medium" className="!text-orange-500" />
+  },
+  {
     id: "setting",
     link: "/settings",
     title: "Settings",
