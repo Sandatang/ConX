@@ -11,6 +11,11 @@ import Layout from "./components/Layout"
 import ChangePassword from "./components/Settings/ChangePassword"
 import ChangeUnConfirmed from "./components/Settings/ChangeUnConfirmed"
 import PersonalInformation from "./components/Settings/PersonalInformation"
+import AllTestimonial from "./components/Testimonials/AllTestimonial"
+import SelfDefense from "./components/Workshop/CategoryContainer"
+import Livelihood from "./components/Workshop/Livelihood"
+import Resources from "./components/Workshop/Resources"
+import SelfGrowth from "./components/Workshop/SelfGrowth"
 import Analytics from "./pages/Analytics"
 import BulletinBoard from "./pages/BulletinBoard"
 import Forum from "./pages/Forum"
@@ -22,11 +27,7 @@ import Register from "./pages/Register"
 import Settings from "./pages/Settings"
 import Testimonial from "./pages/Testimonial"
 import Workshop from "./pages/Workshop"
-import Livelihood from "./components/Workshop/Livelihood"
-import SelfDefense from "./components/Workshop/SelfDefense"
-import Resources from "./components/Workshop/Resources"
-import SelfGrowth from "./components/Workshop/SelfGrowth"
-import AllTestimonial from "./components/Testimonials/AllTestimonial"
+import CategoryContainer from "./components/Workshop/CategoryContainer"
 function App() {
 
   const router = createBrowserRouter(
@@ -60,12 +61,10 @@ function App() {
                 </Route>
 
                 <Route path="/workshop/*" element={<Workshop />} >
-                  <Route path="livelihood" element={<Livelihood />} />
-                  <Route path="self-defense" element={<SelfDefense />} />
-                  <Route path="self-growth" element={<SelfGrowth />} />
+                  <Route path=":categoryTitle/:categoryId" element={<CategoryContainer />} />
                 </Route>
 
-                <Route path="workshop/:category/:workshopTitle/:id" element={<ForumSpecificTopicContainer />} >
+                <Route path="workshop/:categoryTitle/:categoryId/:workshopTitle/:id" element={<ForumSpecificTopicContainer />} >
                   <Route index element={<Resources />} />
                 </Route>
 

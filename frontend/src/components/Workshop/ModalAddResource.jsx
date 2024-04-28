@@ -22,7 +22,7 @@ const ModalAddResource = (props) => {
             const response = await WorkshopApi.addVideoResource(formData)
             console.log(response)
             if (response.status == "Success") {
-                return;
+                props.onClose()
             }
         } catch (error) {
             console.error(error)

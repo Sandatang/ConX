@@ -12,7 +12,7 @@ const AddJob = (props) => {
     const [message, setMessage] = useState(null)
     const [open, setOpen] = useState(false)
     const [error, setError] = useState(false)
-    const [val, setVal] = useState('none');
+    const [val, setVal] = useState(props.job ? props.job.experienceReq : 'none');
 
 
     const addAndUpdateJob = async (data) => {

@@ -8,12 +8,13 @@ import ModalAddResource from "./ModalAddResource";
 import BreadCrumb from "../BreadCrumb";
 
 const Resources = () => {
-    const { workshopTitle, id, category } = useParams()
+    const { categoryId, categoryTitle,workshopTitle, id } = useParams()
     const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
     const [open, setOpen] = useState(false)
     const [resources, setResources] = useState(null)
+    const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
     const breadCrumbUrl = [
-        { url: `../workshop/${category}`, name: "Self-Defense" },
+        { url: `../workshop/${categoryTitle}/${categoryId}`, name: categoryTitle },
         { name: workshopTitle.split("-").join(" ") }
     ]
 
@@ -24,10 +25,13 @@ const Resources = () => {
                 setResources(response)
             } catch (error) {
                 console.error(error)
+                setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
+
             }
         }
-        viewResource()
-    }, [])
+        const intervalId = setInterval(viewResource, pollingInterval);
+        return () => clearInterval(intervalId);
+    }, [id, pollingInterval])
 
     const handleVideoClick = (videoUrl) => {
         setSelectedVideoUrl(videoUrl);
@@ -68,7 +72,7 @@ const Resources = () => {
 
                     <Stack className="bg-black h-[80%] w-[30%] rounded-md p-2 ">
                         {
-                            resources && resources.map((r, index) => (
+                            resources && resources.length > 0 && resources.map((r, index) => (
                                 <Stack key={index} className="!flex-row h-[80px] border-b-[1px] py-2 gap-2 border-b-white">
 
                                     <Button

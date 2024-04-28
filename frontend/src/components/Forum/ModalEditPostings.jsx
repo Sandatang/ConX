@@ -7,7 +7,7 @@ import * as ThreadApi from "../../network/thread_api"
 import Modal from "../Modal"
 import ModalHeading from "../ModalHeading"
 
-const ModalEditPostings = (props) => {
+const  ModalEditPostings = (props) => {
     const [message, setMessage] = useState(null)
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
 

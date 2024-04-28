@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
 import { Alert, Button, MenuItem, Select, TextField } from "@mui/material";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as WorkshopApi from "../../network/workshop_api";
 import Modal from "../Modal";
 import ModalHeading from "../ModalHeading";
-import { useState } from "react";
-import * as WorkshopApi from "../../network/workshop_api"
-import { useForm } from "react-hook-form";
 
 const ModalAddWorkshop = (props) => {
-    const [val, setVal] = useState('none')
+    const [val, setVal] = useState(props.shop ? props.shop.categoryId : 'none')
     const [message, setMessage] = useState(null)
-    const { register, handleSubmit, formState: { isSubmitting } } = useForm()
+    const { register, reset, handleSubmit, formState: { isSubmitting } } = useForm()
 
     const handleChange = (event) => {
         setVal(event.target.value);
@@ -19,12 +19,30 @@ const ModalAddWorkshop = (props) => {
         try {
             const formData = {
                 ...data,
-                "category": val,
+                "categoryId": val,
                 "creatorId": localStorage.getItem('userId')
             }
             const response = await WorkshopApi.addWorkShop(formData)
             if (response.status === "Success") {
                 setMessage(response.message)
+                reset()
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    const updateWorkShop = async (data) => {
+        try {
+            const formData = {
+                ...data,
+                "categoryId": val,
+                "workshopId": props.shop.workshopId,
+                "creatorId": localStorage.getItem('userId')
+            }
+            const response = await WorkshopApi.updateWorkShop(formData)
+            if (response.status === "Success") {
+                setMessage(response.message)
+                reset()
             }
         } catch (error) {
             console.error(error)
@@ -32,7 +50,7 @@ const ModalAddWorkshop = (props) => {
     }
     return (
         <Modal
-            heading={<ModalHeading title={`Add Workshop`} desc="" onDismiss={() => {
+            heading={<ModalHeading title={`${props.shop ? 'Update': 'Add' } Workshop`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
             width=" w-[35%]"
@@ -40,7 +58,7 @@ const ModalAddWorkshop = (props) => {
             {message && <Alert severity="success">{message}</Alert>}
             <div className="w-full " >
                 <div className="p-2">
-                    <form action="" onSubmit={handleSubmit(addWorkshop)}>
+                    <form action="" onSubmit={handleSubmit(props.shop ? updateWorkShop : addWorkshop)}>
                         <div className="w-full sm:gap-1">
                             <div className="w-full flex-col flex gap-3">
                                 <TextField
@@ -49,6 +67,7 @@ const ModalAddWorkshop = (props) => {
                                     label="Title "
                                     size="small"
                                     className="!w-full"
+                                    defaultValue={props.shop ? props.shop.workshopTitle : ''}
                                     {...register('workshopTitle', { required: true })}
                                 />
 
@@ -57,6 +76,7 @@ const ModalAddWorkshop = (props) => {
                                     name="tags"
                                     label="Tags"
                                     size="small"
+                                    defaultValue={props.shop ? props.shop.tags : ''}
                                     {...register('tags', { required: true })}
 
                                 />
@@ -66,6 +86,7 @@ const ModalAddWorkshop = (props) => {
                                     name="description"
                                     label="Description"
                                     size="small"
+                                    defaultValue={props.shop ? props.shop.description : ''}
                                     {...register('description', { required: true })}
 
                                 />
@@ -78,9 +99,12 @@ const ModalAddWorkshop = (props) => {
 
                                 >
                                     <MenuItem value={'none'} disabled>Category</MenuItem>
-                                    <MenuItem value={'1'}>Livelihood</MenuItem>
-                                    <MenuItem value={'2'}>Self-Defense</MenuItem>
-                                    <MenuItem value={'3'}>Self-Growth</MenuItem>
+                                    {
+                                        props.category && props.category.length > 0 && props.category.map((ct, index) => (
+
+                                            <MenuItem key={index} value={ct.id}>{ct.categoryName}</MenuItem>
+                                        ))
+                                    }
                                 </Select>
 
 
@@ -90,7 +114,6 @@ const ModalAddWorkshop = (props) => {
                                     disabled={isSubmitting}
                                     type="submit"
                                     variant="contained"
-                                    size="small"
                                     className="text-white font-bold
                                     w-full md:w-full flex place-self-end justify-end  rounded-lg
                                     py-4 !mt-2 tracking-wider md:py-2"
