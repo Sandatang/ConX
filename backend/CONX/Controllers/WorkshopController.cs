@@ -419,6 +419,42 @@ namespace CONX.Controllers
 
         }
 
+        [HttpDelete]
+        [Route("resoure/delete/{resourceId}")]
+        public async Task<IActionResult> DeleteResource(string resourceId)
+        {
+            var convertedId = Int32.Parse(resourceId);
+
+            var resource = await _context.EmpResources.FindAsync(convertedId);
+            if(resource == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = "Resource not found", Field = "failed" });
+            }
+
+            var juncWorkshpResource = await _context.WorkshopResources.Where(wr => wr.ResourceId == resource.Id).ToListAsync();
+
+            _context.WorkshopResources.RemoveRange(juncWorkshpResource);
+            var result = await _context.SaveChangesAsync();
+
+            if (result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Deletion not push through", Field = "failed" });
+            }
+
+            _context.EmpResources.RemoveRange(resource);
+            var resultResource = await _context.SaveChangesAsync();
+
+            if (resultResource <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Deletion not push through", Field = "failed" });
+            }
+
+            return Ok(new Response { Status = "Success", Message = "Video deleted successfully" });
+
+        }
 
         [HttpGet]
         [Route("resource/{workshopId}")]
