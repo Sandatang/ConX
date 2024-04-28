@@ -51,6 +51,14 @@ export async function addVideoResource(data) {
   return response.json();
 }
 
+export async function updateVideoResource(data) {
+  const response = await fetchData("/api/workshop/resource/update", {
+    method: "PUT",
+    body: data,
+  });
+  return response.json();
+}
+
 export async function getWorkshopResource(data) {
   const response = await fetchData(`/api/workshop/resource/${data}`, {
     method: "GET",

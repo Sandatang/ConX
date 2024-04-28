@@ -6,12 +6,16 @@ import { useParams } from "react-router-dom";
 import * as WorkshopApi from "../../network/workshop_api";
 import ModalAddResource from "./ModalAddResource";
 import BreadCrumb from "../BreadCrumb";
+import ResourcesActionDropDown from "./ResourcesActionDropDown";
+import ResourcesUpdateModal from "./ResourcesUpdateModal";
 
 const Resources = () => {
-    const { categoryId, categoryTitle,workshopTitle, id } = useParams()
+    const { categoryId, categoryTitle, workshopTitle, id } = useParams()
     const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
     const [open, setOpen] = useState(false)
+    const [updateResources, setUpdateResources] = useState(false)
     const [resources, setResources] = useState(null)
+    const [resourceToUpdate, setResourceToUpdate] = useState(null)
     const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
     const breadCrumbUrl = [
         { url: `../workshop/${categoryTitle}/${categoryId}`, name: categoryTitle },
@@ -78,7 +82,8 @@ const Resources = () => {
                                     <Button
                                         onClick={() => handleVideoClick(r.videoUrl)}
                                         component={"div"}
-                                        className="!w-full !flex !flex-row justify-start !p-0 gap-2 hover:!bg-slate-700"
+                                        variant="contained"
+                                        className="!w-full relative !flex !flex-row justify-start !p-0 gap-2 hover:!bg-slate-700 !bg-slate-600 !py-1"
                                     >
 
                                         <ReactPlayer
@@ -96,7 +101,11 @@ const Resources = () => {
                                             <Typography variant="body1" className="!text-white !capitalize">{r.videoTtile}</Typography>
                                             <Typography variant="body2" className="!text-slate-300 !normal-case !line-clamp-2">{r.videoDescription}</Typography>
                                         </Stack>
+                            {/* <ShopActionDropDown toDelete={w.workshopId} setUpdatePost={() => setUpdateShop(true)} setPostToUpdate={() => setShopToUpdate(w)} /> */}
+
+                                        <ResourcesActionDropDown toDelete={r.resourceId} setUpdatePost={() => setUpdateResources(true)} setPostToUpdate={() => setResourceToUpdate(r)}  />
                                     </Button>
+
                                 </Stack>
                             ))
                         }
@@ -105,6 +114,8 @@ const Resources = () => {
             </Stack>
 
             {open && <ModalAddResource onClose={() => setOpen(false)} />}
+            {updateResources && <ResourcesUpdateModal onClose={() => setUpdateResources(false)} resource={resourceToUpdate} />}
+
         </Stack>
     )
 }

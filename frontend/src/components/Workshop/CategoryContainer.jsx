@@ -73,7 +73,7 @@ const CategoryContainer = () => {
 
             }
 
-            {updateShop && <ModalAddWorkshop shop={shopToUpdate} category={cat}/>}
+            {updateShop && <ModalAddWorkshop onClose={() => setUpdateShop(false)} shop={shopToUpdate} category={cat}/>}
 
         </>
     )

@@ -55,8 +55,8 @@ const Workshop = () => {
                     </Button>
                 </Stack>
             }
-            <Stack className="!flex-row justify-between border-[1px] py-2 px-4 w-full bg-white">
-                <Stack className="!flex-row gap-20 ">
+            <Stack className="!flex-row justify-between border-b-[1px] py-2 px-4 w-full bg-white">
+                <Stack className="!flex-row gap-20 pt-6">
                     <Stack className="!flex-row gap-20 overflow-x-auto">
 
                         {category && category.length > 0 ? category.map((ct, index) => (
@@ -82,7 +82,12 @@ const Workshop = () => {
                         )}
 
                     </Stack>
-                    {category && category.length > 0 && <Button onClick={() => setDeleteCategory(true)} className="!text-[0.4rem] !text-red-500">delete category</Button>}
+                    {
+                        localStorage.getItem("role") !== "Women" &&
+                        <>
+                            {category && category.length > 0 && <Button onClick={() => setDeleteCategory(true)} className="!text-[0.4rem] !text-red-500">delete category</Button>}
+                        </>
+                    }
                 </Stack>
             </Stack>
             <Stack className="my-10 gap-4 px-16 ">

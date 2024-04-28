@@ -29,9 +29,13 @@ const Content = (props) => {
                                         <Typography variant="body2" className="!text-sm">Barangay Personnel</Typography>
                                     </Stack>
                                 </Stack>
-                                <Stack className="relative">
-                                    <ActionDropDown toDelete={bulletin.bulletinPost.bulletinId} setUpdatePost={() => setUpdatePost(true)} setPostToUpdate={() => setPostToUpdate(bulletin)} />
-                                </Stack>
+                                {
+                                    localStorage.getItem("role") !== "Women" &&
+                                    <Stack className="relative">
+                                        <ActionDropDown toDelete={bulletin.bulletinPost.bulletinId} setUpdatePost={() => setUpdatePost(true)} setPostToUpdate={() => setPostToUpdate(bulletin)} />
+                                    </Stack>
+                                }
+
                             </Stack>
                             <Stack className="py-4">
                                 <Typography variant="h1" className="!text-lg capitalize !font-bold !text-black">
