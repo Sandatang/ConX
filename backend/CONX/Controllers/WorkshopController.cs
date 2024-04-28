@@ -1,7 +1,7 @@
 ﻿using CONX.Models;
+using CONX.Models.WorkshopViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CONX.Models.WorkshopViewModel;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -74,10 +74,10 @@ namespace CONX.Controllers
         {
             var category = await _context.Category.ToListAsync();
 
-            if(category == null)
+            if (category == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent,
-                 new Response { Status = "Success", Message = "No category been made yet"});
+                 new Response { Status = "Success", Message = "No category been made yet" });
             }
 
             return Ok(category);
@@ -98,7 +98,7 @@ namespace CONX.Controllers
 
             var workshop = await _context.Workshops.Where(ws => ws.CategoryId == category.Id).ToListAsync();
 
-            if(workshop.Count() > 0)
+            if (workshop.Count() > 0)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
                 new Response { Status = "Error", Message = "Delete the workshops first, before deleting the category", Field = "failed" });
@@ -328,7 +328,7 @@ namespace CONX.Controllers
                 UploaderId = model.UploaderId,
                 VideoUrl = fileName,
             };
-            
+
 
             _context.EmpResources.Add(resource);
             var resourcesResult = await _context.SaveChangesAsync();
@@ -346,7 +346,7 @@ namespace CONX.Controllers
                  new Response { Status = "Error", Message = "Uploaded image is corrupted", Field = "failed" });
 
             }
-            
+
 
             // Que data to be inserted in Db
             _context.WorkshopResources.Add(new JuncWorkshopResource
@@ -370,6 +370,56 @@ namespace CONX.Controllers
 
         }
 
+        [HttpPut]
+        [Route("resource/update")]
+        public async Task<IActionResult> UpdateRsource([FromForm] UpdateResource model)
+        {
+
+            // Check if user is null 
+            var user = await _userManager.FindByIdAsync(model.UploaderId);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = "User not found", Field = "failed" });
+            }
+
+            var resource = await _context.EmpResources.FindAsync(model.ResourceId);
+            if (resource == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " Resource not exist", Field = "failed" });
+            }
+
+            resource.VideoTitle = model.VideoTitle;
+            resource.VideoDescription = model.VideoDescription;
+            resource.UploaderId = model.UploaderId;
+            if (model.Video != null && model.Video.Length > 0)
+            {
+                //process File and copy to path
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Video.FileName);
+                var filePath = Path.Combine(_uploadPath, fileName); // Specify your file upload path
+                resource.VideoUrl = fileName;
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.Video.CopyToAsync(fileStream);
+                }
+            }
+
+            _context.EmpResources.Update(resource);
+            var resourcesResult = await _context.SaveChangesAsync();
+
+            if (resourcesResult <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = " Something went wrong. Try again later", Field = "failed" });
+            }
+
+            // If there's no error occured
+            return Ok(new Response { Status = "Success", Message = "Resource updated to succesfully", });
+
+        }
+
+
         [HttpGet]
         [Route("resource/{workshopId}")]
         public async Task<IActionResult> ViewThread(string workshopId)
@@ -381,6 +431,7 @@ namespace CONX.Controllers
                                     {
                                         workshopId = x.WorkShopId,
                                         userId = x.Resource.Uploader.Id,
+                                        ResourceId = x.Resource.Id,
                                         videoTtile = x.Resource.VideoTitle,
                                         videoDescription = x.Resource.VideoDescription,
                                         videoUrl = x.Resource.VideoUrl,
