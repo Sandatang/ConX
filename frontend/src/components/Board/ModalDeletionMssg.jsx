@@ -1,35 +1,42 @@
 /* eslint-disable react/prop-types */
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as UserApi from "../../network/user_api";
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { useForm } from 'react-hook-form'
+import * as BulletinApi from "../../network/bulletin_api"
+import { useState } from 'react'
 
 
-const ModalDeletion = (props) => {
-    const { handleSubmit } = useForm()
+const ModalDeletionMssg = (props) => {
+
     const [message, setMessage] = useState(null)
     const [error, setError] = useState(false)
+    const { handleSubmit, formState: { isSubmitting } } = useForm()
 
-    const userDeletion = async () => {
+
+    const bulletinDeletion = async () => {
         try {
-            const response = await UserApi.deleteUser(props.userId);
-
+            const response = await BulletinApi.deleteBulletin(props.postToDelete)
             if (response.status === "Success") {
                 setMessage(response.message)
 
                 setTimeout(() => {
-                    props.onclose()
+                    props.handleClose()
+                    setMessage(null)
+
                 }, 1000)
             }
             if (response.status === "Error") {
                 setError(true)
                 setMessage(response.message)
             }
-
         } catch (error) {
             console.error(error)
         }
+    }
 
+    const handleClose = () => {
+        setError(false)
+        setMessage(null)
+        props.close()
     }
 
     return (
@@ -41,13 +48,13 @@ const ModalDeletion = (props) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle className="!text-lg" id="alert-dialog-title">
-                    {message ? 'Message' : 'Do you want to delete this user?'}
+                    Do you want to delete this post?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         {!error && message && <Alert severity="success">{message}</Alert>}
-                        {error && message && message}
-                        {!error && !message && 'Account can no longer be used and retrieve if deleted!!!'}
+                        {error && message && <Alert severity="error">{message}</Alert>}
+                        {!error && !message && 'Post will be permanently deleted!!!'}
 
                     </DialogContentText>
                 </DialogContent>
@@ -55,10 +62,10 @@ const ModalDeletion = (props) => {
                     {
                         !error && !message &&
                         <>
-                            <form action="" onSubmit={handleSubmit(userDeletion)}>
-                                <Button type="submit">Yes</Button>
+                            <form action="" onSubmit={handleSubmit(bulletinDeletion)}>
+                                <Button disabled={isSubmitting} type="submit">Yes</Button>
                             </form>
-                            <Button onClick={props.close} autoFocus variant="contained">
+                            <Button disabled={isSubmitting} onClick={handleClose} autoFocus variant="contained">
                                 No
                             </Button>
                         </>
@@ -69,4 +76,4 @@ const ModalDeletion = (props) => {
     )
 }
 
-export default ModalDeletion
+export default ModalDeletionMssg

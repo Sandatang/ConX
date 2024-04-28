@@ -2,14 +2,18 @@
 import { AccountCircle, Comment, Favorite } from "@mui/icons-material"
 import { Alert, Badge, Button, Stack, Typography } from "@mui/material"
 import { useState } from "react"
+import ActionDropDown from "./ActionDropDown"
 import BulletinComments from "./BulletinComments"
+import UpdatePost from "./UpdatePost"
 
 const Content = (props) => {
     const [bulletinToOPen, setBulletinToOPen] = useState(null)
     const [open, setOpen] = useState(false)
+    const [updatePost, setUpdatePost] = useState(false)
+    const [postToUpdate, setPostToUpdate] = useState(null)
 
     return (
-        <Stack className=" gap-10">
+        <Stack className="gap-10">
             {
                 !props.bulletins ? (
                     <Alert severity="info">No data yet</Alert>
@@ -17,11 +21,16 @@ const Content = (props) => {
                     props.bulletins.map((bulletin) => (
 
                         <Stack key={bulletin.bulletinPost.bulletinId} className="border-[1px] px-4 py-6 rounded-2xl bg-white shadow-xl">
-                            <Stack className="!flex-row items-center gap-4">
-                                <AccountCircle className="!text-[3rem]" />
-                                <Stack>
-                                    <Typography variant="h2" className="!text-md !font-bold">{bulletin.bulletinPost.user != " " ? bulletin.bulletinPost.user : "User name"}</Typography>
-                                    <Typography variant="body2" className="!text-sm">Barangay Personnel</Typography>
+                            <Stack className="!flex-row justify-between">
+                                <Stack className="!flex-row items-center gap-4">
+                                    <AccountCircle className="!text-[3rem]" />
+                                    <Stack>
+                                        <Typography variant="h2" className="!text-md !font-bold capitalize">{bulletin.bulletinPost.user != " " ? bulletin.bulletinPost.user : "User name"}</Typography>
+                                        <Typography variant="body2" className="!text-sm">Barangay Personnel</Typography>
+                                    </Stack>
+                                </Stack>
+                                <Stack className="relative">
+                                    <ActionDropDown toDelete={bulletin.bulletinPost.bulletinId} setUpdatePost={() => setUpdatePost(true)} setPostToUpdate={() => setPostToUpdate(bulletin)} />
                                 </Stack>
                             </Stack>
                             <Stack className="py-4">
@@ -32,9 +41,12 @@ const Content = (props) => {
                                     {bulletin.bulletinPost.content}
                                 </Typography>
                             </Stack>
-                            <Stack className="p-4 border-[1px] rounded-xl">
-                                <img src={`https://localhost:44398/api/image/name/${bulletin.bulletinPost.imageName}`} className="w-full aspect-video" alt="Bulletin Image" />
-                            </Stack>
+                            {
+                                bulletin.bulletinPost.imageName !== null &&
+                                <Stack className="p-4 border-[1px] rounded-xl">
+                                    <img src={`https://localhost:44398/api/image/name/${bulletin.bulletinPost.imageName}`} className="w-full aspect-video" alt="Bulletin Image" />
+                                </Stack>
+                            }
                             <Stack className="my-2 !flex-row justify-evenly ">
                                 <Button className="gap-2 items-center !text-slate-600 !text-sm cursor-pointer">
                                     <Favorite className="cursor-pointer" />
@@ -59,8 +71,10 @@ const Content = (props) => {
                 )
             }
             {open && <BulletinComments open={open} bulletin={bulletinToOPen} close={() => setBulletinToOPen(false)} />}
+            {updatePost && <UpdatePost post={postToUpdate} setUpdateClose={() => setUpdatePost(false)} />}
         </Stack>
     )
 }
 
 export default Content
+

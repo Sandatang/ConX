@@ -8,7 +8,7 @@ import { useState } from "react";
 import { VideoFile } from "@mui/icons-material";
 
 const ModalTestimonyOrReport = (props) => {
-    const { register, handleSubmit, formState: { isSubmitting } } = useForm()
+    const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm()
     const [message, setMessage] = useState(null);
 
     const createTestimony = async (data) => {
@@ -19,9 +19,10 @@ const ModalTestimonyOrReport = (props) => {
             formData.append("UserId", localStorage.getItem('userId'));
 
             const response = await TestimonyApi.addTestimony(formData);
-            console.log(response)
             if (response.status === "Success") {
                 setMessage(response.message)
+                reset()
+                props.onClose()
             }
         } catch (error) {
             console.error(error)

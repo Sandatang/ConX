@@ -55,15 +55,15 @@ const BulletinBoard = () => {
 
 
   return (
-    <Stack className="!flex-row mx-16 relative">
+    <Stack className="!flex-row relative">
       <Stack
         ref={writePostRef}
-        className="w-full h-screen py-4 overflow-y-auto no-scrollbar px-4"
+        className="w-full h-screen py-10 overflow-y-auto no-scrollbar px-4"
         onScroll={handleScroll}
       >
         {
           loading ? (
-            <Stack className="animate-pulse gap-6">
+            <Stack className="animate-pulse gap-6 mx-16">
               <div className="bg-gray-300/50 h-[300px] round-2xl"></div>
               <div className="bg-gray-300/50 h-[300px] round-2xl"></div>
               <div className="bg-gray-300/50 h-[300px] round-2xl"></div>
@@ -72,22 +72,27 @@ const BulletinBoard = () => {
             <>
               {
                 localStorage.getItem('role') !== "Women" &&
-                <WritePost toPostFalse={() => setToPost(false)} classes={`${toPost ? "!block absolute" : "hidden"}`} />
+                <WritePost toPostFalse={() => setToPost(false)} classes={`${toPost ? "!block absolute " : "hidden"}`} />
               }
-              <Content bulletins={bulletins} />
+              {localStorage.getItem('role') !== "Women" && !toPost && (
+                <div className="w-full flex justify-end cursor-pointer group" onClick={handlePostClick}>
+                  <IconButton
+                    className={`!fixed top-24 z-50 group-hover:!rounded-md opacity-40 group-hover:opacity-100 !bg-blue-500 ${toPost && isScrolled ? "" : "hidden !text-md"}`}
+                  >
+                    <span className="text-white font-bold uppercase ">
+                      <PostAdd className="group-hover:!text-lg" /> <span className="hidden group-hover:inline-block">Postings</span>
+                    </span>
+                  </IconButton>
+                </div>
+
+              )}
+              <Stack className="relative mx-16">
+                <Content bulletins={bulletins} />
+              </Stack>
+
             </>
           )}
-        {localStorage.getItem('role') !== "Women" && !toPost && (
-          <div className="w-full flex justify-end cursor-pointer group" onClick={handlePostClick}>
-            <IconButton
-              className={`!fixed top-24 group-hover:!rounded-md opacity-40 group-hover:opacity-100 !bg-blue-500 ${toPost && isScrolled ? "" : "hidden !text-md"}`}
-            >
-              <span className="text-white font-bold uppercase ">
-                <PostAdd className="group-hover:!text-lg" /> <span className="hidden group-hover:inline-block">Postings</span>
-              </span>
-            </IconButton>
-          </div>
-        )}
+
       </Stack>
 
       <Stack className=" h-screen w-[320px] bg-white">

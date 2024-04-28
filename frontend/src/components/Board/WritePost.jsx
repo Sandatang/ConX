@@ -28,10 +28,10 @@ const WritePost = (props) => {
         }
     }
     return (
-        <div className={`${props.classes} bg-white shadow-lg px-2 pt-4 rounded-md top-0 w-[655px] z-50`} >
+        <div className={`${props.classes} bg-white shadow-lg px-2 pt-4 rounded-md top-0 mx-16 w-[655px] z-50`} >
             {message && <Alert severity="error">{message}</Alert>}
             <Stack className='relative w-full !flex-row py-2'>
-                <Typography variant='h5'>Update the citizens</Typography>
+                <Typography variant='h5'>Share the news of today</Typography>
                 <div className='absolute right-0 top-0'>
                     <Button component="span" className='!text-red-500 ' onClick={() => props.toPostFalse()}><Cancel /></Button>
                 </div>
