@@ -1,4 +1,5 @@
-﻿using CONX.Models;
+﻿using CONX.Migrations;
+using CONX.Models;
 using CONX.Models.BulletinViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -98,6 +99,98 @@ namespace CONX.Controllers
             return Ok(new Response { Status = "Success", Message = " Postings added succesfully", });
 
         }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdatePosting([FromForm] UpdateBulletin updateBulletin)
+        {
+
+
+            // Check if user is null 
+            var user = await _userManager.FindByIdAsync(updateBulletin.UserId);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " User not exist", Field = "failed" });
+            }
+
+            var bulletin = await _context.BulletinPost.FindAsync(updateBulletin.BulletinId);
+            if (bulletin == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = " Bulletin not exist", Field = "failed" });
+            }
+
+            bulletin.PostTitle = updateBulletin.Title;
+            bulletin.PostBody = updateBulletin.Content;
+            bulletin.DateCreated = DateTime.Now;
+
+            if (updateBulletin.Image != null)
+            {
+                //process File and copy to path
+                if (updateBulletin.Image == null && updateBulletin.Image.Length <= 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound,
+                     new Response { Status = "Error", Message = "Uploaded image is corrupted", Field = "failed" });
+
+                }
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(updateBulletin.Image.FileName);
+                var filePath = Path.Combine(_uploadPath, fileName); // Specify your file upload path
+                bulletin.ImgUrl = fileName;
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await updateBulletin.Image.CopyToAsync(fileStream);
+                }
+
+
+
+            }
+
+            _context.BulletinPost.Update(bulletin);
+            var result = await _context.SaveChangesAsync();
+
+            if(result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
+            }
+
+            // If there's no error occured
+            return Ok(new Response { Status = "Success", Message = " Postings updated succesfully", });
+
+        }
+
+        [HttpDelete]
+        [Route("delete/{bulletinId}")]
+        public async Task<IActionResult> DeleteJob(string bulletinId)
+        {
+            var convertedId = Int32.Parse(bulletinId);
+            // Find the job
+            var bulletin = await _context.BulletinPost.FindAsync(convertedId);
+            if (bulletin == null)
+            {
+                return NotFound(new Response { Status = "Error", Message = " Bulletin not exist ", Field = "failed" });
+
+            }
+            var juncBulletinComments = await _context.BulletinComments.Where(bc => bc.BulletinPostId == bulletin.Id).ToListAsync();
+
+
+            _context.BulletinComments.RemoveRange(juncBulletinComments);
+            var bullComResult= await _context.SaveChangesAsync();
+
+
+            _context.BulletinPost.Remove(bulletin);
+            var result = await _context.SaveChangesAsync();
+            if (result <= 0)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
+            }
+            return Ok(new Response { Status = "Success", Message = "Bulletin deleted successfully" });
+        }
+
 
         [HttpGet]
         [Route("view/all")]

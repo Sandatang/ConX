@@ -2,10 +2,12 @@
 
 namespace CONX.Models.BulletinViewModel
 {
-    public class AddBulletin
+    public class UpdateBulletin
     {
         [Required(ErrorMessage = "User Id is required")]
         public string UserId { get; set; }
+        [Required(ErrorMessage = "Bulletin Id is required")]
+        public int BulletinId { get; set; }
 
         [Required(ErrorMessage = " Title is required")]
         public string Title { get; set; }
