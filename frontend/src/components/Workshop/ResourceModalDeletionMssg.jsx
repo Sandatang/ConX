@@ -12,9 +12,9 @@ const ResourceModalDeletionMssg = (props) => {
     const { handleSubmit, formState: { isSubmitting } } = useForm()
 
 
-    const workshopDeletion = async () => {
+    const resourceDeletion = async () => {
         try {
-            const response = await WorkshopApi.deleteWorkshop(props.postToDelete)
+            const response = await WorkshopApi.deleteVideoResource(props.postToDelete)
             if (response.status === "Success") {
                 setMessage(response.message)
 
@@ -62,7 +62,7 @@ const ResourceModalDeletionMssg = (props) => {
                     {
                         !error && !message &&
                         <>
-                            <form action="" onSubmit={handleSubmit(workshopDeletion)}>
+                            <form action="" onSubmit={handleSubmit(resourceDeletion)}>
                                 <Button disabled={isSubmitting} type="submit">Yes</Button>
                             </form>
                             <Button disabled={isSubmitting} onClick={handleClose} autoFocus variant="contained">
