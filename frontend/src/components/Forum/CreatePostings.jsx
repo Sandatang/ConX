@@ -7,7 +7,7 @@ import * as ThreadApi from "../../network/thread_api"
 
 const CreatePostings = () => {
     const [addComment, setAddComment] = useState(false)
-    const { register, handleSubmit, formState: { isSubmitting } } = useForm()
+    const { register, reset, handleSubmit, formState: { isSubmitting } } = useForm()
     const { id } = useParams()
 
 
@@ -19,6 +19,7 @@ const CreatePostings = () => {
         formData.append("Image", data.file[0]);
         formData.append("userId", localStorage.getItem('userId'));
         await ThreadApi.addThread(formData)
+        reset()
         setAddComment(false)
     }
 

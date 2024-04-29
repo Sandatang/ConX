@@ -4,6 +4,7 @@ import { IconButton, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import * as ForumApi from "../../network/forum_api"
+import DeleteConfirmation from "./DeleteConfirmation"
 
 const Topics = () => {
     const navigate = useNavigate()
@@ -82,6 +83,11 @@ const Topics = () => {
                                         </Stack>
                                         <Stack className="!flex-row gap-1 absolute top-0 right-0 z-10 ">
 
+                                            {/* <Button className="!text-[0.58rem] ">
+                                                Delete
+                                            </Button> */}
+                                            <DeleteConfirmation forumToRemove={tp.id} removeForum={true} />
+
                                             {/* <DeleteConfirmation forumToRemove={tp.id} removeForum={true} /> */}
                                             {
                                                 followedForum.some(ff => ff.forumId === tp.id)
@@ -96,7 +102,6 @@ const Topics = () => {
                                                     </IconButton>
 
                                             }
-
                                         </Stack>
                                     </Stack>
                                 ))}

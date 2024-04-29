@@ -1,4 +1,4 @@
-import { Add, Close, Comment, Report, ThumbUp } from "@mui/icons-material"
+import { Add, Comment, Report, ThumbUp } from "@mui/icons-material"
 import { Alert, Avatar, Badge, Button, Divider, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
@@ -7,11 +7,12 @@ import { useParams } from "react-router-dom"
 import * as ForumApi from "../../network/forum_api"
 import * as ThreadApi from "../../network/thread_api"
 import BreadCrumb from "../BreadCrumb"
+import OfficialsHotline from "../Contacts/OfficialsHotline"
+import ThreadCommentModa from "../Thread/ThreadCommentModa"
+import ClosedThreadDialog from "./ClosedThreadDialog"
 import CreatePostings from "./CreatePostings"
 import ModalEditPostings from "./ModalEditPostings"
 import TopForum from "./TopForum"
-import ThreadCommentModa from "../Thread/ThreadCommentModa"
-import OfficialsHotline from "../Contacts/OfficialsHotline"
 
 
 
@@ -45,7 +46,7 @@ const Thread = () => {
                 }
             } catch (error) {
                 console.error(error)
-                setPollingInterval(interval => Math.min(interval * 2, 60000)); // Exponential backoff with max interval of 1 minute
+                setPollingInterval(interval => Math.min(interval * 2, 5000)); // Exponential backoff with max interval of 1 minute
 
             } finally {
                 setTimeout(() => {
@@ -55,7 +56,8 @@ const Thread = () => {
         }
         const intervalId = setInterval(getForum, pollingInterval);
         return () => clearInterval(intervalId);
-    }, [id, pollingInterval])
+    }, [pollingInterval])
+
     return (
         <Stack className="h-full no-scrollbar overflow-y-auto !flex-row">
             <Stack className="h-auto w-full px-2 md:px-20 gap-4 pt-2">
@@ -132,15 +134,27 @@ const Thread = () => {
 
                                                                 {/* UPDATE */}
                                                                 <Stack className="!absolute right-0 top-0 ">
-
-                                                                    <Button component="span" variant="ghost" className="!text-sm group"><Close className="!text-sm group-hover:!text-red-500" /></Button>
                                                                     {
-                                                                        localStorage.getItem("userId") === thread.thread.userId &&
-                                                                        <Button variant="ghost" onClick={() => {
-                                                                            setThreadToUpdate(thread.thread)
-                                                                            setUpdatePostings(true)
-                                                                        }} className="!text-sm hover:!text-green-400">update</Button>
+                                                                        localStorage.getItem('role') === "Women" && thread.thread.userId === localStorage.getItem('userId') &&
+                                                                        <>
+                                                                            <ClosedThreadDialog threadId={thread.thread.threadId} />
+                                                                            <Button variant="ghost" onClick={() => {
+                                                                                setThreadToUpdate(thread.thread)
+                                                                                setUpdatePostings(true)
+                                                                            }} className="!text-sm !capitalize hover:!text-green-400">update</Button>
+                                                                        </>
                                                                     }
+                                                                     {
+                                                                        localStorage.getItem('role') !== "Women" &&
+                                                                        <>
+                                                                            <ClosedThreadDialog threadId={thread.thread.threadId} />
+                                                                            <Button variant="ghost" onClick={() => {
+                                                                                setThreadToUpdate(thread.thread)
+                                                                                setUpdatePostings(true)
+                                                                            }} className="!text-sm !capitalize hover:!text-green-400">update</Button>
+                                                                        </>
+                                                                    }
+
 
                                                                 </Stack>
 

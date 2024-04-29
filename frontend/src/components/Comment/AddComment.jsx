@@ -53,29 +53,60 @@ const AddComment = (props) => {
                     </Stack>
                 ))
             }
-            <Stack className={` border-[1px] rounded-md py-4 px-2 sticky ${toComment ? 'bg-slate-200/50' : 'bg-transparent'} bottom-0 gap-2`} onClick={() => setToComment(true)}>
-                <form action="" onSubmit={handleSubmit(createComment)}>
+            {
+                props.thread ?
+                    (
+                        !props.thread.thread.isClose &&
+                        <Stack className={` border-[1px] rounded-md py-4 px-2 sticky ${toComment ? 'bg-slate-200/50' : 'bg-transparent'} bottom-0 gap-2`} onClick={() => setToComment(true)}>
+                            <form action="" onSubmit={handleSubmit(createComment)}>
 
-                    <Stack className="">
-                        <Stack className="!flex-row">
-                            <Avatar className="!mr-2 !border-md" />
-                            <TextField
-                                multiline
-                                fullWidth
-                                name="content"
-                                variant="outlined"
-                                rows={toComment ? 2 : 1}
-                                placeholder="Write your thoughts here..."
-                                className="bg-white !rounded-sm !text-sm "
-                                {...register("content", { required: true })}
-                            />
+                                <Stack className="">
+                                    <Stack className="!flex-row">
+                                        <Avatar className="!mr-2 !border-md" />
+                                        <TextField
+                                            multiline
+                                            fullWidth
+                                            name="content"
+                                            variant="outlined"
+                                            rows={toComment ? 2 : 1}
+                                            placeholder="Write your thoughts here..."
+                                            className="bg-white !rounded-sm !text-sm "
+                                            {...register("content", { required: true })}
+                                        />
+                                    </Stack>
+                                    <div className="flex w-full justify-end">
+                                        <Button type="submit" disabled={isSubmitting} className="!self-end !mt-2" variant="contained">Post</Button>
+                                    </div>
+                                </Stack>
+                            </form>
                         </Stack>
-                        <div className="flex w-full justify-end">
-                            <Button type="submit" disabled={isSubmitting} className="!self-end !mt-2" variant="contained">Post</Button>
-                        </div>
-                    </Stack>
-                </form>
-            </Stack>
+                    ) : (
+                        <Stack className={` border-[1px] rounded-md py-4 px-2 sticky ${toComment ? 'bg-slate-200/50' : 'bg-transparent'} bottom-0 gap-2`} onClick={() => setToComment(true)}>
+                            <form action="" onSubmit={handleSubmit(createComment)}>
+
+                                <Stack className="">
+                                    <Stack className="!flex-row">
+                                        <Avatar className="!mr-2 !border-md" />
+                                        <TextField
+                                            multiline
+                                            fullWidth
+                                            name="content"
+                                            variant="outlined"
+                                            rows={toComment ? 2 : 1}
+                                            placeholder="Write your thoughts here..."
+                                            className="bg-white !rounded-sm !text-sm "
+                                            {...register("content", { required: true })}
+                                        />
+                                    </Stack>
+                                    <div className="flex w-full justify-end">
+                                        <Button type="submit" disabled={isSubmitting} className="!self-end !mt-2" variant="contained">Post</Button>
+                                    </div>
+                                </Stack>
+                            </form>
+                        </Stack>
+                    )
+            }
+
         </>
 
     )
