@@ -237,7 +237,7 @@ namespace CONX.Controllers
                     new Response { Status = "Error", Message = " Something went wrong", Field = "failed" });
             }
 
-            return Ok("Thread is closed.");
+            return Ok(new Response { Status = "Success", Message = "Thread is closed"});
         }
 
         [HttpGet]
@@ -257,7 +257,8 @@ namespace CONX.Controllers
                                                             Title = x.Thread.PostTitle,
                                                             Content = x.Thread.PostBody,
                                                             Created = x.Thread.DateCreated,
-                                                            ImgUrl = x.Thread.ImgUrl
+                                                            ImgUrl = x.Thread.ImgUrl,
+                                                            isClose = x.Thread.isClosed
                                                         },
                                                         Comment = _context.ThreadComments
                                                                                         .Where(tc => tc.ThreadId == x.ThreadId)

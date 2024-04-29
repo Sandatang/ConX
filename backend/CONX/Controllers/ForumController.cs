@@ -117,7 +117,7 @@ namespace CONX.Controllers
         public async Task<IActionResult> FollowForum([FromBody] FollowForum model)
         {
             var forum = await _context.Forums.FindAsync(model.ForumId);
-            
+
 
             if (forum == null)
             {
@@ -250,23 +250,39 @@ namespace CONX.Controllers
             var convertId = Convert.ToInt32(id);
             var forum = await _context.Forums.FindAsync(convertId);
 
-            var forumFollows = await _context.ForumFollows.Where(ff => ff.ForumId ==  forum.Id).ToListAsync();
 
-            //if (!forumFollows.Any())
-            //{
-              //  return StatusCode(StatusCodes.Status404NotFound,
-                //    new Response { Status = "Error", Message = " Cannot find this comment. ", Field = "failed" });
-            //}
 
-            // Que query for deleting the data
+            var juncForumThreads = await _context.ForumThreads
+                .Where(ft => ft.ForumId == forum.Id)
+                .ToListAsync();
+
+            foreach (var juncForumThread in juncForumThreads)
+            {
+                var thread = await _context.Threads.FindAsync(juncForumThread.ThreadId);
+
+                var juncThreadComments = await _context.ThreadComments
+                                                                    .Where(ft => ft.ThreadId == juncForumThread.ThreadId)
+                                                                    .ToListAsync();
+                foreach (var juncThreadComment in juncThreadComments)
+                {
+                    var comment = await _context.Comments.FindAsync(juncThreadComment.CommentId);
+                    _context.Comments.Remove(comment);
+                }
+
+                _context.Threads.Remove(thread);
+                _context.ThreadComments.RemoveRange(juncThreadComments);
+
+            }
+
+            // Delete all junction records
+            _context.ForumThreads.RemoveRange(juncForumThreads);
+
+
+
+            var forumFollows = await _context.ForumFollows.Where(ff => ff.ForumId == forum.Id).ToListAsync();
+
             _context.ForumFollows.RemoveRange(forumFollows);
             var followResult = await _context.SaveChangesAsync();
-
-            //if (followResult <= 0)
-            //{
-              //  return StatusCode(StatusCodes.Status500InternalServerError,
-                //    new Response { Status = "Error", Message = " Something went wrong. ", Field = "failed" });
-            //}
 
 
             if (forum == null)
@@ -282,7 +298,7 @@ namespace CONX.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                  new Response { Status = "Error", Message = " Something went wrong, Updates not push through", Field = "failed" });
             }
-            return Ok(new Response { Status = "Success", Message = "User deactivated " });
+            return Ok(new Response { Status = "Success", Message = "Forum deleted deactivated " });
 
         }
     }
