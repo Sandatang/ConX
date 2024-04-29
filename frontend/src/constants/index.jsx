@@ -1,4 +1,4 @@
-import { AccountCircle, Analytics, Announcement, Approval, Book, Forum, ManageAccounts, Password, Settings, VideoCameraFront } from "@mui/icons-material";
+import { AccountCircle, Analytics, Announcement, Approval, Book, BugReport, Forum, ManageAccounts, Password, Settings, VideoCameraFront } from "@mui/icons-material";
 
 export const brgyLinks = [
   {
@@ -100,6 +100,13 @@ export const adminLinks = [
     link: "/analytics",
     title: "Analytics",
     icon: <Analytics fontSize="medium" className="!text-orange-500" />
+  },
+  
+  {
+    id: "bugreport",
+    link: "/bugReport",
+    title: "Bug Reports",
+    icon: <BugReport fontSize="medium" className="!text-red-800" />
   },
   {
     id: "setting",

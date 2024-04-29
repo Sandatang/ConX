@@ -25,6 +25,7 @@ import Register from "./pages/Register"
 import Settings from "./pages/Settings"
 import Testimonial from "./pages/Testimonial"
 import Workshop from "./pages/Workshop"
+import BugReport from "./pages/BugReport"
 function App() {
 
   const router = createBrowserRouter(
@@ -111,6 +112,9 @@ function App() {
                   <Route index element={<JobLisintgs />} />
                   <Route path=":id/details" element={<JobDetails />} />
                 </Route>
+
+                <Route path="/bugReport" element={<BugReport />} />
+
               </>
             }
 

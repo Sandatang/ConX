@@ -2,13 +2,16 @@ import { useEffect, useState } from "react"
 import * as TestimonyApi from "../../network/testimony_api"
 import { Alert, Avatar, Button, Stack, Typography } from "@mui/material"
 import { civilStatus } from "../../constants"
-import { ArrowBack } from "@mui/icons-material"
+import { ArrowBack, PlayArrow } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import ReactPlayer from "react-player"
+import ModalPlayVideo from "./ModalPlayVideo"
 const AllTestimonial = () => {
     // eslint-disable-next-line no-unused-vars
     const navigate = useNavigate()
+    const [playVideo, setPlayVideo] = useState(false)
     const [testimonies, setTestimonies] = useState(null)
+    const [videoToPlay, setVideoToPlay] = useState(null)
     const [active, setActive] = useState(null)
 
     useEffect(() => {
@@ -17,7 +20,6 @@ const AllTestimonial = () => {
             try {
                 const response = await TestimonyApi.getAllTestimony();
                 setTestimonies(response)
-                console.log(response)
             } catch (error) {
                 console.error(error)
             }
@@ -66,13 +68,24 @@ const AllTestimonial = () => {
                                         </Stack>
                                     </Stack>
                                     <Stack className="shadow-lg">
-                                        <ReactPlayer
-                                            className='react-player'
-                                            url={`https://localhost:44398/api/video/name/${t.videoUrl}`}
-                                            width='100%'
-                                            height='100%'
-                                            light={false}
-                                        />
+                                        <Button
+                                            component={"div"}
+                                            variant="contained"
+                                            className="!w-full relative !flex !flex-row justify-start !p-0 gap-2 hover:!bg-slate-700 !bg-slate-600 !py-1"
+                                        >
+                                            <ReactPlayer
+                                                className='react-player'
+                                                url={`https://localhost:44398/api/video/name/${t.videoUrl}`}
+                                                width='100%'
+                                                height='100%'
+                                                light={false}
+                                                onClick={() => {
+                                                    setVideoToPlay(t.videoUrl)
+                                                    setPlayVideo(true)
+                                                }}
+                                            />
+                                            <PlayArrow className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black" style={{ fontSize: 40 }} />
+                                        </Button>
                                     </Stack>
                                 </Stack>
                             )) : (
@@ -81,6 +94,7 @@ const AllTestimonial = () => {
                     }
                 </div>
             </Stack >
+            {playVideo && <ModalPlayVideo videoToPlay={videoToPlay} onClose={() => setPlayVideo(false)} />}
         </Stack >
     )
 }
@@ -88,7 +102,7 @@ const AllTestimonial = () => {
 export default AllTestimonial
 
 // eslint-disable-next-line react/prop-types
-const DynamicText = ({ text, maxHeight }) => {
+export const DynamicText = ({ text, maxHeight }) => {
     const [fontSize, setFontSize] = useState(12);
 
     useEffect(() => {
