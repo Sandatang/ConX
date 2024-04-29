@@ -83,7 +83,7 @@ export default function AddAdminModal(props) {
             heading={<ModalHeading title={`${props.update ? "Update user" : "Add Admin"}`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
-            width=" w-[35%]"
+            width=" md:w-[35%]"
         >
 
             {error && <Typography variant="caption" color="error">{error}</Typography>}

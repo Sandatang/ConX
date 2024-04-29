@@ -28,7 +28,7 @@ const WritePost = (props) => {
         }
     }
     return (
-        <div className={`${props.classes} bg-white shadow-lg px-2 pt-4 rounded-md top-0 mx-16 w-[655px] z-50`} >
+        <div className={`${props.classes} bg-white shadow-lg px-2 pt-4 rounded-md top-0 mx-0 md:mx-16 w-full md:w-[655px] z-50`} >
             {message && <Alert severity="error">{message}</Alert>}
             <Stack className='relative w-full !flex-row py-2'>
                 <Typography variant='h5'>Share the news of today</Typography>

@@ -38,7 +38,7 @@ const CategoryContainer = () => {
         <>
 
             {!loading ? (workshop && workshop.length > 0 ? workshop.map((w,index) => (
-                <Stack key={index} className="mx-16 bg-slate-200 pl-8 py-2 rounded-md">
+                <Stack key={index} className="md:mx-16 bg-slate-200 pl-8 py-2 rounded-md">
 
                     <Stack className="!flex-row justify-between border-b-[1px]">
                         <Stack className="!flex-row gap-10 border-b-[1px]">

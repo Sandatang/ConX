@@ -27,12 +27,12 @@ const AllTestimonial = () => {
         getAllTestimonys()
     }, [])
     return (
-        <Stack className="p-8">
-            <Stack className="!flex-row justify-center items-center">
+        <Stack className="px-2 pt-6 md:p-8">
+            <Stack className="!flex-row justify-start md:justify-center items-center">
                 <ArrowBack onClick={() => {
                     navigate(-1)
                 }} className="!text-slate-500 cursor-pointer hover:!text-slate-800" />
-                <Stack className="!w-3/4 !flex-row justify-evenly items-center">
+                <Stack className="md:!w-3/4 !flex-row justify-evenly items-center">
                     {
                         civilStatus.map((cs) => (
                             <Button
@@ -46,13 +46,13 @@ const AllTestimonial = () => {
                     }
                 </Stack>
             </Stack>
-            <Stack className="p-16">
-                <div className="mt-4 grid grid-cols-1 gap-4">
+            <Stack className="md:p-16">
+                <div className="mt-4 md:px-8 grid grid-cols-1 md:grid-cols-2">
 
                     {
                         testimonies !== null && testimonies.filter((a) => active && a.civilStatus === active).length > 0 ?
                             testimonies.filter((a) => active && a.civilStatus === active).map((t, index) => (
-                                <Stack className="w-[350px] p-2 border-[1px] rounded-md shadow-sm" key={index}>
+                                <Stack className="md:w-[350px] p-2 border-[1px] rounded-md shadow-sm" key={index}>
                                     <Stack>
                                         <Stack className="!flex-row gap-2">
                                             <Avatar />

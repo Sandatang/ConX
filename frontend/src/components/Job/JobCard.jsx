@@ -17,7 +17,7 @@ const JobCard = (props) => {
                 props.filteredData.filter(jb => jb.isActive)
                     .map((jb) => (
 
-                        <Card key={jb.id} className=" !rounded-lg border-[1px] shadow-sm !border-gray-400 !w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
+                        <Card key={jb.id} className=" !rounded-lg border-[1px] shadow-sm !border-gray-400  w-full sm:!w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
                             <CardContent className="!flex !flex-col justify-between !h-56 !bg-yellow-500/60 rounded-lg">
                                 <Stack >
                                     <Stack className='!flex-row relative justify-between items-center'>
@@ -84,7 +84,7 @@ const JobCard = (props) => {
                 .filter(jb => jb.isActive)
                 .map((jb) => (
 
-                    <Card key={jb.id} className=" !rounded-lg border-[1px] shadow-sm !border-gray-400 !w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
+                    <Card key={jb.id} className=" !rounded-lg border-[1px] shadow-sm !border-gray-400 w-full sm:!w-[17rem] p-2 hover:transform hover:scale-105 transition-transform ease-in-out duration-300">
                         <CardContent className="!flex !flex-col justify-between !h-56 !bg-yellow-500/60 rounded-lg">
                             <Stack >
                                 <Stack className='!flex-row relative justify-between items-center'>

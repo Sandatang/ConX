@@ -59,6 +59,7 @@ const JobLisintgs = () => {
                     <form className="flex flex-row items-center justify-center mb-4" >
                         <input
                             type="text"
+                            name="searched"
                             placeholder="Search..."
                             className="p-2 border-2 rounded-md w-full"
                             {...register('searched')}
@@ -86,7 +87,8 @@ const JobLisintgs = () => {
                 </Stack>
 
                 <Stack className="w-full">
-                    <div className=" mt-4 grid grid-cols-3 gap-y-8">
+                    <div className=" mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8">
+
                         <JobCard job={job} filteredData={filteredData} />
                     </div>
                 </Stack>

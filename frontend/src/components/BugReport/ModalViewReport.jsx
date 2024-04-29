@@ -10,7 +10,7 @@ const ModalViewReport = (props) => {
             heading={<ModalHeading title={`View Report`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
-            width=" w-[60%]"
+            width=" md:w-[60%]"
             height="h-[500px]"
         >
             <div className="w-full " >

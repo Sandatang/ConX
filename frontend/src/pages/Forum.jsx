@@ -40,11 +40,11 @@ const Forum = () => {
 
             <Stack className=" h-full no-scrollbar overflow-y-auto !flex-row" >
                 {/* Empowering text and Picture Container*/}
-                < Stack className="h-auto w-full px-20 pt-2" >
+                < Stack className="h-auto w-full px-2 md:px-20 pt-2" >
                     <Stack className=" bg-pinkish !flex-row rounded-xl mb-2 ">
                         <Stack className="w-full justify-between px-10 pb-10 pt-8">
                             <Stack className="w-full ">
-                                <Typography className="!text-[1.7rem] !font-bold !text-[#21062E] !leading-[2.4rem] !tracking-tight">
+                                <Typography className="!text-[1.7rem] !font-bold !text-[#21062E] line-clamp-1 lg:line-clamp-none !leading-[2.4rem] !tracking-tight">
                                     Empowering Women: Igniting Strength, Inspiring Change.
                                 </Typography>
                                 <span className="text-sm !text-[#21062E] pr-2">
@@ -56,7 +56,7 @@ const Forum = () => {
                                 {/* <Button size="small" className="!bg-white !text-[12px] !text-pinkis !capitalize" >Learn more</Button> */}
                             </Stack>
                         </Stack>
-                        <Stack className="w-[70%]">
+                        <Stack className="w-full lg:w-[70%]">
                             <img src={woman} className="rounded-r-lg h-full" />
                         </Stack>
 
@@ -111,7 +111,7 @@ const Forum = () => {
                 {/* End Empowering text and Picture */}
 
                 {/* Threads right aside */}
-                <Stack className=" h-screen w-[320px] bg-white">
+                <Stack className="!hidden md:!block h-screen w-[320px] bg-white">
                     <Stack className="border-l-2 h-dvh w-[250px] fixed top-[5rem] right-0 ">
                         <Stack className="h-1/2 pt-5 overflow-y-auto border-b-2">
                             <TopForum />

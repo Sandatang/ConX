@@ -33,7 +33,7 @@ const ModalAddResource = (props) => {
             heading={<ModalHeading title={`Add Resource Video`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
-            width=" w-[35%]"
+            width=" md:w-[35%]"
         >
             <div className="w-full " >
                 <div className="p-2">

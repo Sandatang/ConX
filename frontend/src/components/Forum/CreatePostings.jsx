@@ -36,7 +36,7 @@ const CreatePostings = () => {
                         <Avatar className="!mr-2 !border-md"><Avatar /></Avatar>
                         <Typography variant="body1" component="span" className="!capitalize">{localStorage.getItem("username")}</Typography>
                     </Stack>
-                    <Stack className="ml-4 !w-full py-4 pr-4 gap-2">
+                    <Stack className="md:ml-4 !w-full py-4 pr-4 gap-2">
                         <form action="" onSubmit={handleSubmit(createPostings)} className="flex flex-col gap-2">
 
                             <TextField
@@ -45,19 +45,18 @@ const CreatePostings = () => {
                                 label="Title"
                                 variant="outlined"
                                 // placeholder="Write your thoughts here..."
-                                className="bg-white !rounded-sm !text-sm "
+                                className="bg-white !w-[95%] md:!w-full !rounded-sm !text-sm "
                                 {...register('title', { required: true })}
                             />
 
                             <TextField
                                 multiline
-                                fullWidth
                                 name="content"
                                 variant="outlined"
                                 rows={4}
                                 // placeholder="Write your thoughts here..."
                                 label="Content"
-                                className="bg-white !rounded-sm !text-sm "
+                                className="bg-white !w-[95%] md:!w-full !rounded-sm !text-sm "
                                 {...register('content', { required: true })}
 
                             />

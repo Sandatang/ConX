@@ -136,8 +136,6 @@ const Register = () => {
                   <MenuItem value="divorced">Divorced</MenuItem>
                   <MenuItem value="separated">Separated</MenuItem>
                   <MenuItem value="widowed">Widowed</MenuItem>
-                  <MenuItem value="civil_union">Civil Union</MenuItem>
-                  <MenuItem value="domestic_partnership">Domestic Partnership</MenuItem>
                 </Select>
               </Stack>
 

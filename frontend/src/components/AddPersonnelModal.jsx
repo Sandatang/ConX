@@ -83,7 +83,7 @@ export default function AddPeronnelModal(props) {
             heading={<ModalHeading title={`${props.update ? "Update user" : "Add personnel"}`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
-            width=" w-[35%]"
+            width=" md:w-[35%]"
         >
 
             {error && <Typography variant="caption" color="error">{error}</Typography>}

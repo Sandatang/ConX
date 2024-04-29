@@ -34,7 +34,7 @@ const ForumAddTopic = (props) => {
         <Modal
 
             heading={<ModalHeading title={`Add Forum`} class="!text-pinkish font-bold !text-[1.5rem]" desc="" onDismiss={props.onClose} />}
-            width=" w-[35%]"
+            width=" md:w-[35%]"
         >
             <div className="w-full ">
                 <div className="p-2">

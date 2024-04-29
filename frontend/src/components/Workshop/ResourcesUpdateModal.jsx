@@ -38,7 +38,7 @@ const ResourcesUpdateModal = (props) => {
         <Modal
 
             heading={<ModalHeading title={`Update Resource`} desc="" onDismiss={props.onClose} />}
-            width=" w-[50%]"
+            width=" md:w-[50%]"
             height="h-[500px]"
         >
             {message && <Alert severity="error">{message}</Alert>}

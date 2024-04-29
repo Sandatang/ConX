@@ -30,7 +30,7 @@ const AddCategory = (props) => {
             heading={<ModalHeading title={`Add Workshop Category`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
-            width=" w-[35%]"
+            width=" md:w-[35%]"
         >
             <div className="w-full " >
                 {message && <Alert>{message}</Alert>}

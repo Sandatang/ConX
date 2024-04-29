@@ -86,7 +86,7 @@ const BulletinBoard = () => {
                 </div>
 
               )}
-              <Stack className="relative mx-16">
+              <Stack className="relative mx-2 md:mx-16">
                 <Content bulletins={bulletins} />
               </Stack>
 
@@ -95,7 +95,7 @@ const BulletinBoard = () => {
 
       </Stack>
 
-      <Stack className=" h-screen w-[320px] bg-white">
+      <Stack className="!hidden md:!block h-screen w-[320px] bg-white">
         <Stack className="border-l-2 h-dvh w-[250px] fixed top-[5rem] right-0 ">
           <Stack className="h-1/2 pt-5 overflow-y-auto border-b-2">
             <TopForum />

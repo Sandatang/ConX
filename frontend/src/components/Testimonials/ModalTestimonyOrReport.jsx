@@ -50,7 +50,7 @@ const ModalTestimonyOrReport = (props) => {
             heading={<ModalHeading title={`${props.report ? "Report a bug" : "Add Testimony"}`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
-            width=" w-[35%]"
+            width=" md:w-[35%]"
         >
             {message && <Alert severity="success">{message}</Alert>}
             <div className="w-full ">

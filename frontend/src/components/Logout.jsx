@@ -31,7 +31,7 @@ const Logout = () => {
                         <Badge color="error">
                             <NotificationsSharp />
                         </Badge>
-                        <Typography fontSize="small" className="!mr-2 !text-slate-900 capitalize !font-semibold">{localStorage.getItem("username")}</Typography>
+                        <Typography fontSize="small" className="!hidden md:!block !mr-2 !text-slate-900 capitalize !font-semibold">{localStorage.getItem("username")}</Typography>
                         <IconButton>
                             <div className="border-2 border-pinkish !absolute h-8 w-8 rounded-full p-1">
                                 <img src={dog} alt="user img" className="bg-cover"/>

@@ -53,7 +53,7 @@ const ModalAddWorkshop = (props) => {
             heading={<ModalHeading title={`${props.shop ? 'Update': 'Add' } Workshop`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
-            width=" w-[35%]"
+            width=" md:w-[35%]"
         >
             {message && <Alert severity="success">{message}</Alert>}
             <div className="w-full " >

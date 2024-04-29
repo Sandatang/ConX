@@ -9,7 +9,7 @@ const ModalPlayVideo = (props) => {
             heading={<ModalHeading title={`Video Player`} desc="" onDismiss={() => {
                 props.onClose()
             }} />}
-            width=" w-[60%]"
+            width=" md:w-[60%]"
         >
             <div className="w-full " >
                 <div className="p-2">

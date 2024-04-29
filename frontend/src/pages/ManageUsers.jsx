@@ -176,24 +176,24 @@ const ManageUsers = () => {
 
       <div className="bg-white overflow-auto no-scrollbar rounded-lg shadow-md p-6">
         {/* View users by role */}
-        <Stack className='!flex-row justify-between items-center mb-4'>
+        <Stack className='!flex-row-reverse sm:!flex-row justify-between items-start md:items-center mb-4'>
 
-          {/* Button for showing user base on role */}
-          <Stack className='!flex-row items-center gap-2 !text-slate-400'>
-            <Button onClick={allUser} variant={active3 ? 'contained' : 'text'}>All User</Button>|
-            <Button onClick={generatePersonnelUser} variant={active2 ? 'contained' : 'text'}>Personnel</Button>|
-            <Button onClick={generateWomenUser} variant={active1 ? 'contained' : 'text'}>Women</Button>|
+          {/* Button for showing user base on role SMALL DEVICE */}
+          <Stack className='!grid !grid-cols-2 sm:items-center sm:!flex sm:!flex-row  gap-2 !text-slate-400'>
+            <Button onClick={allUser} variant={active3 ? 'contained' : 'text'}>All User</Button>
+            <Button onClick={generatePersonnelUser} variant={active2 ? 'contained' : 'text'}>Personnel</Button>
+            <Button onClick={generateWomenUser} variant={active1 ? 'contained' : 'text'}>Women</Button>
             {
               localStorage.getItem('role') === "Admin" &&
               <>
-                <Button onClick={generateAdminUser} variant={active4 ? 'contained' : 'text'}>Admin</Button>|
+                <Button onClick={generateAdminUser} variant={active4 ? 'contained' : 'text'}>Admin</Button>
                 <Button onClick={generateDeletedAccounts} variant={active5 ? 'contained' : 'text'}>Deleted accounts</Button>
               </>
             }
           </Stack>
           {/* End button for showing user base on role */}
 
-          <Stack className='!flex-row gap-2'>
+          <Stack className=' !flex-col-reverse sm:!flex-row gap-2'>
             {
               localStorage.getItem('role') === "Admin" &&
               <Button variant='contained' onClick={() => setAddAdmin(!addAdmin)}> <Add /> Admin</Button>
@@ -202,7 +202,7 @@ const ManageUsers = () => {
           </Stack>
         </Stack>
 
-        <Stack className='!flex-row my-10 justify-between'>
+        <Stack className='!grid !grid-cols-2 sm:!grid-cols-3 md:!grid-cols-4 my-10 justify-between'>
           <Stack className='bg-yellow-500 p-4 !text-white w-56 aspect-video rounded-md'>
             <Stack className='!flex-row justify-between '>
               <Typography className='!text-lg !font-bold tracking-widest'>

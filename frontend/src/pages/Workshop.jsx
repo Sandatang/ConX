@@ -55,7 +55,7 @@ const Workshop = () => {
                     </Button>
                 </Stack>
             }
-            <Stack className="!flex-row justify-between border-b-[1px] py-2 px-4 w-full bg-white">
+            <Stack className="!flex-row justify-between border-b-[1px] py-2 px-2 md:px-4 w-full bg-white">
                 <Stack className="!flex-row gap-20 pt-6">
                     <Stack className="!flex-row gap-20 overflow-x-auto">
 
@@ -90,7 +90,7 @@ const Workshop = () => {
                     }
                 </Stack>
             </Stack>
-            <Stack className="my-10 gap-4 px-16 ">
+            <Stack className="my-10 gap-4 px-2 md:px-16 ">
                 {location.pathname === "/workshop" ? (
                     <Stack className="items-center gap-6">
                         <Typography variant="h4">Welcome to Our Empowerment Workshop!</Typography>

@@ -7,9 +7,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { useState } from "react";
 import { BiMenu } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { brgyLinks } from "../constants/index";
+import { adminLinks, brgyLinks, womenLinks } from "../constants/index";
 
 export default function SmallDeviceDrawer() {
+    const userRole = localStorage.getItem('role')
     const [open, setOpen] = useState(false);
 
     const toggleDrawer = (isOpen) => (event) => {
@@ -37,8 +38,19 @@ export default function SmallDeviceDrawer() {
                     onKeyDown={toggleDrawer(false)}
                 >
                     <List>
-                        {/* {userRole === "Student" && */}
-                        {
+                        {userRole === "Women" &&
+                            womenLinks.map((route, index) => (
+                                <ListItem key={index}>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            {route.icon}
+                                        </ListItemIcon>
+                                        <Link to={route.link}>{route.title}</Link>
+                                    </ListItemButton>
+                                </ListItem>
+                            ))
+                        }
+                        {userRole === "Personnel" &&
                             brgyLinks.map((route, index) => (
                                 <ListItem key={index}>
                                     <ListItemButton>
@@ -48,7 +60,20 @@ export default function SmallDeviceDrawer() {
                                         <Link to={route.link}>{route.title}</Link>
                                     </ListItemButton>
                                 </ListItem>
-                            ))}
+                            ))
+                        }
+                        {userRole === "Admin" &&
+                            adminLinks.map((route, index) => (
+                                <ListItem key={index}>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            {route.icon}
+                                        </ListItemIcon>
+                                        <Link to={route.link}>{route.title}</Link>
+                                    </ListItemButton>
+                                </ListItem>
+                            ))
+                        }
 
                         <ListItem >
                             <ListItemButton>

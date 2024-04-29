@@ -24,7 +24,7 @@ const BugReport = () => {
     const removeReport = async (id) => {
         try {
             const response = await ReportApi.deleteReport(id)
-            if(response.status === "Success"){
+            if (response.status === "Success") {
                 return
             }
         } catch (error) {
@@ -32,45 +32,47 @@ const BugReport = () => {
         }
     }
     return (
-        <Stack className="m-16">
+        <Stack className=" m-6 md:m-16">
             <Typography variant="h5" className="!text-slate-600">Bug(s) Reported</Typography>
             <Divider />
-            <Stack className="!flex-row px-8 py-4">
-                {
-                    reports && reports.length > 0 ?
-                        reports.map((t, index) => (
-                            <Stack className="w-[300px] relative p-2 border-[1px] rounded-md shadow-md" key={index}>
-                                <Stack>
-                                    <Stack className="!flex-row gap-2">
-                                        <Avatar />
-                                        <Stack>
-                                            <Typography variant='h6' className="!text-slate-800 !capitalize">{t.fullName}</Typography>
+            <Stack className="md:px-8 py-4">
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-8">
+                    {
+                        reports && reports.length > 0 ?
+                            reports.map((t, index) => (
+                                <Stack className="w-[300px] relative p-2 border-[1px] rounded-md shadow-md" key={index}>
+                                    <Stack>
+                                        <Stack className="!flex-row gap-2">
+                                            <Avatar />
+                                            <Stack>
+                                                <Typography variant='h6' className="!text-slate-800 !capitalize">{t.fullName}</Typography>
 
+                                            </Stack>
+                                        </Stack>
+                                        <Stack className="my-4 line-clamp-2">
+                                            <DynamicText text={t.content} maxHeight={100} />
                                         </Stack>
                                     </Stack>
-                                    <Stack className="my-4 line-clamp-2">
-                                        <DynamicText text={t.content} maxHeight={100} />
+
+                                    <Stack className="absolute top-0 right-0 gap-2 pr-4 pt-2">
+                                        <button
+                                            className="!text-slate-500 !text-sm hover:!text-slate-900"
+                                            onClick={() => {
+                                                setReportToView(t)
+                                                setView(true)
+                                            }}
+                                        >view</button>
+                                        <button
+                                            className="!text-slate-500 !text-sm hover:!text-slate-900"
+                                            onClick={() => removeReport(t.id)}
+                                        >solved</button>
                                     </Stack>
                                 </Stack>
-
-                                <Stack className="absolute top-0 right-0 gap-2 pr-4 pt-2">
-                                    <button
-                                        className="!text-slate-500 !text-sm hover:!text-slate-900"
-                                        onClick={() => {
-                                            setReportToView(t)
-                                            setView(true)
-                                        }}
-                                    >view</button>
-                                    <button
-                                        className="!text-slate-500 !text-sm hover:!text-slate-900"
-                                        onClick={() => removeReport(t.id)}
-                                    >solved</button>
-                                </Stack>
-                            </Stack>
-                        )) : (
-                            <Alert severity="info">No data yet.</Alert>
-                        )
-                }
+                            )) : (
+                                <Alert severity="info">No data yet.</Alert>
+                            )
+                    }
+                </div>
             </Stack>
             {view && <ModalViewReport onClose={() => setView(false)} report={reportToView} />}
         </Stack>

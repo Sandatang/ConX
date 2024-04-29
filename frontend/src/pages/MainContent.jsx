@@ -13,12 +13,9 @@ const MainContent = () => {
             <Stack className="!flex-row h-dvh bg-gray-200 flex">
                 {/* Side Navigation */}
 
-                <Stack className=" !h-screen w-[250px] justify-start bg-white p-4 ">
-                    <Stack className="!flex-row fixed top-18 left-0 z-10 !h-screen flex-none w-[200px] justify-start p-4 ">
-                        <Stack spacing={2}
-
-                            className='w-full '>
-
+                <Stack className="!hidden md:!block !h-screen w-[250px] justify-start bg-white p-4 ">
+                    <Stack className="!hidden md:!block !flex-row fixed top-18 left-0 z-10 !h-screen flex-none w-[200px] justify-start p-4 ">
+                        <Stack spacing={2} className='w-full !hidden md:!block'>
                             <NavigationMapping />
                         </Stack>
                     </Stack>
