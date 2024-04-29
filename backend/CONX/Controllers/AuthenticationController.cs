@@ -92,14 +92,14 @@ namespace CONX.Controllers
             _emailService.SendEmail(message);
 
             return StatusCode(StatusCodes.Status200OK,
-                   new Response { Status = "Success", Message = $" User created successfully & Email is sent {user.Email} for verification"});
+                   new Response { Status = "Success", Message = $" User created successfully & Email is sent {user.Email} for verification" });
 
 
         }
 
         // Add a personnel
         [HttpPost]
-        [Route("register/personnel")]  
+        [Route("register/personnel")]
         public async Task<IActionResult> RegisterPersonnel([FromBody] AddPersonnel addPersonnel)
         {
             // Check user if exist in DB
@@ -120,7 +120,7 @@ namespace CONX.Controllers
             }
 
             //Default password
-            string defaultPassword = "Barangay123@";    
+            string defaultPassword = "Barangay123@";
 
             var user = new User();
 
@@ -154,8 +154,8 @@ namespace CONX.Controllers
                    new Response { Status = "Success", Message = $" User created successfully & Email is sent {user.Email} for verification" });
 
 
-           // return StatusCode(StatusCodes.Status200OK,
-             //      new Response { Status = "Success", Message = " User created successfully" });
+            // return StatusCode(StatusCodes.Status200OK,
+            //      new Response { Status = "Success", Message = " User created successfully" });
 
 
         }
@@ -229,7 +229,7 @@ namespace CONX.Controllers
             var user = await _userManager.FindByEmailAsync(email);
 
             if (user != null)
-            { 
+            {
                 var result = await _userManager.ConfirmEmailAsync(user, token);
 
                 if (result.Succeeded)
@@ -306,17 +306,17 @@ namespace CONX.Controllers
                 user = new User
                 {
 
-                Id = user.Id,
-                EmployeeNumber = ((User)user).EmployeeNumber,
-                Firstname = ((User)user).Firstname, // Cast to your custom User class
-                Middlename = ((User)user).Middlename,
-                Birthdate = ((User)user).Birthdate,
-                Lastname = ((User)user).Lastname,
-                UserName = user.UserName,
-                IsDeleted = ((User)user).IsDeleted,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                DeActivate = ((User)user).DeActivate,
+                    Id = user.Id,
+                    EmployeeNumber = ((User)user).EmployeeNumber,
+                    Firstname = ((User)user).Firstname, // Cast to your custom User class
+                    Middlename = ((User)user).Middlename,
+                    Birthdate = ((User)user).Birthdate,
+                    Lastname = ((User)user).Lastname,
+                    UserName = user.UserName,
+                    IsDeleted = ((User)user).IsDeleted,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    DeActivate = ((User)user).DeActivate,
                 }
 
             })
@@ -382,23 +382,23 @@ namespace CONX.Controllers
             var deUsers = users
                 .Where(us => ((User)us).IsDeleted == false)
                 .Select(us => new
-            {
-                user = new User
                 {
+                    user = new User
+                    {
 
-                    Id = us.Id,
-                    EmployeeNumber = ((User)us).EmployeeNumber,
-                    Firstname = ((User)us).Firstname, // Cast to your custom User class
-                    Middlename = ((User)us).Middlename,
-                    Birthdate = ((User)us).Birthdate,
-                    Lastname = ((User)us).Lastname,
-                    UserName = us.UserName,
-                    IsDeleted = ((User)us).IsDeleted,
-                    Email = us.Email,
-                    PhoneNumber = us.PhoneNumber,
-                    DeActivate = ((User)us).DeActivate,
-                }
-            })
+                        Id = us.Id,
+                        EmployeeNumber = ((User)us).EmployeeNumber,
+                        Firstname = ((User)us).Firstname, // Cast to your custom User class
+                        Middlename = ((User)us).Middlename,
+                        Birthdate = ((User)us).Birthdate,
+                        Lastname = ((User)us).Lastname,
+                        UserName = us.UserName,
+                        IsDeleted = ((User)us).IsDeleted,
+                        Email = us.Email,
+                        PhoneNumber = us.PhoneNumber,
+                        DeActivate = ((User)us).DeActivate,
+                    }
+                })
              .ToList();
 
             // Return if user is not null
@@ -522,7 +522,7 @@ namespace CONX.Controllers
         [Route("changepass")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePassword changePassword)
         {
-            
+
             var user = await _userManager.FindByIdAsync(changePassword.UserId);
 
             if (user == null)
@@ -619,7 +619,7 @@ namespace CONX.Controllers
             var customUser = (User)user;
 
             // Update the DeActivate property
-            customUser.DeActivate = !customUser.DeActivate; 
+            customUser.DeActivate = !customUser.DeActivate;
 
             // Save the data
             var result = await _userManager.UpdateAsync(customUser);
@@ -654,7 +654,7 @@ namespace CONX.Controllers
         [Route("user/delete/{userId}")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
-            
+
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
@@ -665,7 +665,7 @@ namespace CONX.Controllers
 
 
 
-           
+
             // Cast the IdentityUser
             var customUser = (User)user;
 
@@ -682,6 +682,30 @@ namespace CONX.Controllers
             return Ok(new Response { Status = "Success", Message = "User deleted " });
         }
 
+        [HttpGet]
+        [Route("monthlyUser")]
+        public async Task<IActionResult> MonthylUser()
+        {
+            var result = GetMonthlyUserStatistics();
+            return Ok(result);
+        }
+
+        private List<MonthlyUserStat> GetMonthlyUserStatistics()
+        {
+            var monthlyUserStats = _context.LoginLogs
+                                                    .GroupBy(log => new { Year = log.LoginTime.Year, Month = log.LoginTime.Month })
+                                                    .Select(group => new MonthlyUserStat
+                                                    {
+                                                        Year = group.Key.Year,
+                                                        Month = group.Key.Month,
+                                                        UserCount = group.Select(log => log.UserId).Distinct().Count()
+                                                    })
+                                                    .OrderBy(stat => stat.Year)
+                                                    .ThenBy(stat => stat.Month)
+                                                    .ToList();
+
+            return monthlyUserStats;
+        }
 
         // Authentication for logging in
         [HttpPost]
@@ -717,6 +741,16 @@ namespace CONX.Controllers
                     return StatusCode(StatusCodes.Status200OK,
                            new Response { Status = "Success", Message = $" User Email is not verified, Email is sent to {user.Email} for verification" });
                 }
+
+                // Log successful login
+                var loginLog = new LoginLog
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    LoginTime = DateTime.UtcNow
+                };
+                _context.LoginLogs.Add(loginLog);
+                await _context.SaveChangesAsync();
 
                 var authClaims = new List<Claim>
                 {
