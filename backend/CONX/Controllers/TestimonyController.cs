@@ -1,4 +1,6 @@
 ﻿using CONX.Models;
+using CONX.Models.BulletinViewModel;
+using CONX.Models.ReportViewModel;
 using CONX.Models.TestimonyViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -99,5 +101,7 @@ namespace CONX.Controllers
 
             return Ok(testimonys);
         }
+
+       
     }
 }
