@@ -3,7 +3,6 @@ export async function fetchData(path, header) {
   return response;
 }
 
-
 export async function registerWomen(data) {
   const response = await fetchData("/api/auth/register/women", {
     method: "POST",
@@ -137,9 +136,11 @@ export async function updateUser(data) {
   return response.json();
 }
 
-export async function deleteUser(id){
-  const response = await fetchData(`/api/auth/user/delete/${id}`, { method: "DELETE"})
-  return response.json()
+export async function deleteUser(id) {
+  const response = await fetchData(`/api/auth/user/delete/${id}`, {
+    method: "DELETE",
+  });
+  return response.json();
 }
 
 export async function passwordConfirmation(data) {
@@ -172,5 +173,10 @@ export async function deActivateUser(data) {
     },
     body: JSON.stringify(data),
   });
+  return response.json();
+}
+
+export async function getMonthlyUser() {
+  const response = await fetchData("/api/auth/monthlyUser", { method: "GET" });
   return response.json();
 }

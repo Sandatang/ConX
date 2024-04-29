@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Stack, Typography } from "@mui/material";
-import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 
-const BarChartUI = ({ testimonies }) => {
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import MonthlyUserChart from "./MonthlyUserChart";
+
+const BarChartUI = ({ testimonies, monthlyUser }) => {
 
     const data = [
         {
@@ -64,26 +66,28 @@ const BarChartUI = ({ testimonies }) => {
                 <Stack className="w-full border-[1px] rounded-md">
                     <Typography className="!text-sm !font-bold px-4">Empowered Users</Typography>
                     <Stack className="md:!flex-row justify-evenly w-full gap-8">
-                        <div className="">
-                            <PieChart width={500} height={400}>
-                                <Pie
-                                    data={data}
-                                    dataKey="value"
-                                    nameKey="name"
-                                    cx="50%"
-                                    cy="50%"
-                                    outerRadius={100}
-                                    fill="#8884d8"
-                                    label
-                                >
-                                    {data.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                                    ))}
-                                </Pie>
-                                <Tooltip />
-                                <Legend />
-                            </PieChart>
-                        </div>
+                        {/* <div className=""> */}
+                            <ResponsiveContainer height={400}>
+                                <PieChart >
+                                    <Pie
+                                        data={data}
+                                        dataKey="value"
+                                        nameKey="name"
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={100}
+                                        fill="#8884d8"
+                                        label
+                                    >
+                                        {data.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        {/* </div> */}
 
                         <div>
                             <h3>Additional Information For Empowered Users</h3>
@@ -117,7 +121,7 @@ const BarChartUI = ({ testimonies }) => {
                 </Stack>
 
                 {/* MONTHLY USERS */}
-                {/* <MonthlyUserChart testimonies={testimonies}/> */}
+                <MonthlyUserChart monthlyUser={monthlyUser}/>
             </Stack>
         </Stack>
     )
