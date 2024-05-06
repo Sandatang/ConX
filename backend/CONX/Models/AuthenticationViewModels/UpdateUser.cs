@@ -9,7 +9,7 @@ namespace CONX.Models.AuthenticationViewModels
         public string UserName {  get; set; }
         public string Firstname { get; set; }
         public string Middlename { get; set; }
-        public string Income { get; set; }
+        public string? Income { get; set; }
         public string CivilStatus { get; set; }
         public string Lastname { get; set; }
         public string Role {  get; set; }

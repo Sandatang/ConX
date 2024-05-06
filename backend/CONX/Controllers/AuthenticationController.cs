@@ -102,7 +102,6 @@ namespace CONX.Controllers
         [Route("register/personnel")]
         public async Task<IActionResult> RegisterPersonnel([FromBody] AddPersonnel addPersonnel)
         {
-            // Check user if exist in DB
             var userExist = await _userManager.FindByEmailAsync(addPersonnel.Email);
             if (userExist != null)
             {
@@ -110,13 +109,35 @@ namespace CONX.Controllers
                     new Response { Status = "Error", Message = " Email already exist ", Field = "failed" });
             }
 
-
             //Check if username exist in DB
             var usernameExist = await _userManager.FindByNameAsync(addPersonnel.Username);
             if (usernameExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
                     new Response { Status = "Error", Message = "Username already exist", Field = "failed" });
+            }
+
+
+            // Check user if exist in DB
+            var check = await _userManager.Users.ToListAsync();
+            var deUsers = check
+                            .Select(us => new
+                            {
+                                user = new User
+                                {
+
+                                    EmployeeNumber = ((User)us).EmployeeNumber,
+                                    Email = us.Email,
+                                }
+                            })
+                         .ToList();
+            foreach (var checkUser in deUsers)
+            {
+                if (checkUser.user.EmployeeNumber == addPersonnel.EmployeeNumber)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden,
+                        new Response { Status = "Error", Message = "Employee number already exists", Field = "employeeNumber" });
+                }
             }
 
             //Default password
@@ -130,6 +151,7 @@ namespace CONX.Controllers
             user.UserName = addPersonnel.Username;
             user.Firstname = addPersonnel.Firstname;
             user.Lastname = addPersonnel.Lastname;
+            user.CivilStatus = addPersonnel.CivilStatus;
             user.Middlename = addPersonnel.Middlename;
             user.Birthdate = addPersonnel.Birthdate;
 
@@ -314,6 +336,7 @@ namespace CONX.Controllers
                     Lastname = ((User)user).Lastname,
                     UserName = user.UserName,
                     IsDeleted = ((User)user).IsDeleted,
+                    CivilStatus = ((User)user).CivilStatus,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     DeActivate = ((User)user).DeActivate,
