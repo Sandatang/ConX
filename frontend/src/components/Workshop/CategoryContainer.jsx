@@ -37,7 +37,7 @@ const CategoryContainer = () => {
     return (
         <>
 
-            {!loading ? (workshop && workshop.length > 0 ? workshop.map((w,index) => (
+            {!loading ? (workshop && workshop.length > 0 ? workshop.map((w, index) => (
                 <Stack key={index} className="md:mx-16 bg-slate-200 pl-8 py-2 rounded-md">
 
                     <Stack className="!flex-row justify-between border-b-[1px]">
@@ -58,7 +58,10 @@ const CategoryContainer = () => {
                             </Stack>
                         </Stack>
                         <Stack className="relative">
-                            <ShopActionDropDown toDelete={w.workshopId} setUpdatePost={() => setUpdateShop(true)} setPostToUpdate={() => setShopToUpdate(w)} />
+                            {
+                                localStorage.getItem('role') !== "Women" &&
+                                <ShopActionDropDown toDelete={w.workshopId} setUpdatePost={() => setUpdateShop(true)} setPostToUpdate={() => setShopToUpdate(w)} />
+                            }
                         </Stack>
                     </Stack>
                 </Stack >
@@ -73,7 +76,7 @@ const CategoryContainer = () => {
 
             }
 
-            {updateShop && <ModalAddWorkshop onClose={() => setUpdateShop(false)} shop={shopToUpdate} category={cat}/>}
+            {updateShop && <ModalAddWorkshop onClose={() => setUpdateShop(false)} shop={shopToUpdate} category={cat} />}
 
         </>
     )

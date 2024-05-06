@@ -5,10 +5,10 @@ import ModalHeading from '../ModalHeading'
 import * as HotlineApi from "../../network/hotline_api"
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 const AddHotline = (props) => {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const [message, setMessage] = useState(null)
     const [error, setError] = useState(null)
     const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm()
@@ -22,10 +22,7 @@ const AddHotline = (props) => {
             const response = await HotlineApi.addHotline(formData)
             if (!response.status) {
                 reset()
-                setMessage("Added successfully")
-                setTimeout(() => {
-                    navigate(0)
-                }, 1000)
+                setMessage("Added successfully, changed will be reflected once page is refreshed.")
             }
         } catch (error) {
             console.error(error)
@@ -48,6 +45,9 @@ const AddHotline = (props) => {
                 // setTimeout(() => {
                 //     navigate(0)
                 // }, 1000)
+            }
+            if (response.status === "Success") {
+                setMessage("Updated successfully, changed will be reflected once page is refreshed.")
             }
         } catch (error) {
             console.error(error)

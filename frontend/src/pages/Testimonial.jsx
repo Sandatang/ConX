@@ -89,22 +89,34 @@ const Testimonial = () => {
 
                     <CardHeader
                         title={
-                            <div className='!flex flex-row justify-end items-center gap-2 '>
-                                <div className='!flex flex-col justify-end items-center gap-2 capitalize'>
+                            testimonial ? (
+                                <div className='!flex flex-row justify-end items-center gap-2 '>
+                                    <div className='!flex flex-col justify-end items-center gap-2 capitalize'>
 
-                                    {testimonial.fullName}
-                                    <Typography variant='body2'>
-                                        {new Date(testimonial.created).toDateString().split(" ").splice(1).join(" ")}
-                                    </Typography>
+                                        {testimonial.fullName}
+                                        <Typography variant='body2'>
+                                            {new Date(testimonial.created).toDateString().split(" ").splice(1).join(" ")}
+                                        </Typography>
 
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className='!flex flex-row justify-end items-center gap-2 '>
+                                    <div className='!flex flex-col justify-end items-center gap-2 capitalize'>
+
+                                        <Typography variant='body1'>
+                                            List of our Testimonials
+                                        </Typography>
+
+                                    </div>
+                                </div>
+                            )
                         }
                     />
 
 
                     <CardContent>
-                        <Typography variant="body1">{testimonial.content}</Typography>
+                        <Typography variant="body1">{testimonial && testimonial.content}</Typography>
                     </CardContent>
 
                     <Button component={NavLink} to={"../testimonial/view"} className='!absolute bottom-0 right-0 !text-slate-600'>See all</Button>

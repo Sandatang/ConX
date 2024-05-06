@@ -111,12 +111,14 @@ const PersonalInformation = () => {
                                         {userInfo.civilStatus}
                                     </Typography>
                                 </Stack>
-                                <Stack className="w-[33%] gap-1">
-                                    <Typography className="capitalize !text-md !text-slate-500">Monthly income</Typography>
-                                    <Typography className="!text-md pb-1 w-full !text-slate-800">
-                                        Php {userInfo.income}
-                                    </Typography>
-                                </Stack>
+                                {localStorage.getItem('role') === "Women" &&
+                                    <Stack className="w-[33%] gap-1">
+                                        <Typography className="capitalize !text-md !text-slate-500">Monthly income</Typography>
+                                        <Typography className="!text-md pb-1 w-full !text-slate-800">
+                                            Php {userInfo.income}
+                                        </Typography>
+                                    </Stack>
+                                }
                             </Stack>
 
 

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Alert, Button, TextField, Typography } from "@mui/material";
+import { Alert, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
@@ -15,11 +15,15 @@ export default function AddPeronnelModal(props) {
     const { register, setValue, reset, handleSubmit, formState: { isSubmitting }, } = useForm();
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null)
+    const [val, setVal] = useState(props.update ? props.user.user.civilStatus : 'none')
 
     async function onAddPersonnel(credentials) {
         try {
-
-            const response = await UserApi.registerPersonnel(credentials);
+            const formData = {
+                ...credentials,
+                "civilStatus": val,
+            }
+            const response = await UserApi.registerPersonnel(formData);
 
             console.log(response)
             if (response.field) {
@@ -42,10 +46,6 @@ export default function AddPeronnelModal(props) {
         } catch (error) {
             console.error('An unexpected error occurred:', error);
             setError('An unexpected error occurred. Please check your inputs.');
-        } finally {
-            setTimeout(() => {
-                setError(null)
-            }, 3000);
         }
     }
 
@@ -53,7 +53,9 @@ export default function AddPeronnelModal(props) {
         try {
             const formData = {
                 ...credentials,
-                userId: props.user.id
+                userId: props.user.user.id,
+                "civilStatus": val,
+                "role": "Women",
             }
             const response = await UserApi.updateUser(formData);
 
@@ -71,12 +73,13 @@ export default function AddPeronnelModal(props) {
         } catch (error) {
             console.error('An unexpected error occurred:', error);
             setError('An unexpected error occurred. Please check your inputs.');
-        } finally {
-            setTimeout(() => {
-                setError(null)
-            }, 3000);
         }
     }
+
+
+    const handleChange = (event) => {
+        setVal(event.target.value);
+    };
 
     return (
         <Modal
@@ -84,6 +87,7 @@ export default function AddPeronnelModal(props) {
                 props.onClose()
             }} />}
             width=" md:w-[35%]"
+            height="h-[500px]"
         >
 
             {error && <Typography variant="caption" color="error">{error}</Typography>}
@@ -160,6 +164,25 @@ export default function AddPeronnelModal(props) {
                                     {...register("email", { required: true })}
                                 />
 
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    className='!w-full'
+                                    value={val}
+                                    onChange={handleChange}
+                                    size="small"
+
+                                >
+                                    <MenuItem value="none" disabled>Civil Status</MenuItem>
+                                    <MenuItem value="single">Single</MenuItem>
+                                    <MenuItem value="married">Married</MenuItem>
+                                    <MenuItem value="divorced">Divorced</MenuItem>
+                                    <MenuItem value="separated">Separated</MenuItem>
+                                    <MenuItem value="widowed">Widowed</MenuItem>
+                                    <MenuItem value="civil_union">Civil Union</MenuItem>
+                                    <MenuItem value="domestic_partnership">Domestic Partnership</MenuItem>
+                                </Select>
+
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                                     <DatePicker
                                         name="birthdate"
@@ -176,11 +199,11 @@ export default function AddPeronnelModal(props) {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    variant="contained"
+                                    variant={`${error ? 'outlined':'contained'}`}
                                     size="small"
-                                    className="text-white font-bold
+                                    className={`text-white font-bold
                                     w-full md:w-full flex place-self-end justify-end  rounded-lg
-                                    py-4 !mt-2 tracking-wider md:py-2"
+                                    py-4 !mt-2 tracking-wider md:py-2 ${error && '!border-red-500'}`}
                                 >
                                     {props.update ? "Update" : "Add"}
                                 </Button>

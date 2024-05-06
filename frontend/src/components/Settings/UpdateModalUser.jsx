@@ -103,15 +103,17 @@ const UpdateModalUser = (props) => {
                   <MenuItem value="civil_union">Civil Union</MenuItem>
                   <MenuItem value="domestic_partnership">Domestic Partnership</MenuItem>
                 </Select>
-
-                <TextField
-                  label="Income per. month"
-                  variant="outlined"
-                  name="income"
-                  defaultValue={props.user.income}
-                  {...register("income", { required: "Required" })}
-                  fullWidth
-                />
+                {
+                  localStorage.getItem('role') === "Women" &&
+                  <TextField
+                    label="Income per. month"
+                    variant="outlined"
+                    name="income"
+                    defaultValue={props.user.income}
+                    {...register("income", { required: "Required" })}
+                    fullWidth
+                  />
+                }
 
                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                   <DatePicker

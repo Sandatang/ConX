@@ -14,7 +14,7 @@ const Workshop = () => {
     const [addCategory, setAddCategory] = useState(false);
     const [deleteCategory, setDeleteCategory] = useState(false);
     const [message, setMessage] = useState(null);
-    const [pollingInterval, setPollingInterval] = useState(5000); // Initial polling interval
+    const [pollingInterval, setPollingInterval] = useState(2000); // Initial polling interval
     let location = useLocation();
 
     useEffect(() => {

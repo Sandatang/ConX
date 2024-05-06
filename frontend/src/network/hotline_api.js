@@ -31,3 +31,11 @@ export async function viewHotlines() {
 
   return response.json();
 }
+
+export async function deleteHotline(data) {
+  const response = await fetchData(`/api/connectivity/delete/${data}`, {
+    method: "DELETE",
+  });
+
+  return response.json();
+}

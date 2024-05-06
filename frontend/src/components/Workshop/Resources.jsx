@@ -105,8 +105,10 @@ const Resources = () => {
                                                 <Typography variant="body2" className="!text-slate-300 !normal-case !line-clamp-2 !block sm:!hidden md:!block">{r.videoDescription}</Typography>
                                             </Stack>
                                             {/* <ShopActionDropDown toDelete={w.workshopId} setUpdatePost={() => setUpdateShop(true)} setPostToUpdate={() => setShopToUpdate(w)} /> */}
-
-                                            <ResourcesActionDropDown toDelete={r.resourceId} setUpdatePost={() => setUpdateResources(true)} setPostToUpdate={() => setResourceToUpdate(r)} />
+                                            {
+                                                localStorage.getItem('role') !== "Women" &&
+                                                <ResourcesActionDropDown toDelete={r.resourceId} setUpdatePost={() => setUpdateResources(true)} setPostToUpdate={() => setResourceToUpdate(r)} />
+                                            }
                                         </Button>
                                     </div>
 
@@ -135,8 +137,10 @@ const Resources = () => {
                                                 <Typography variant="body2" className="!text-slate-300 !normal-case !line-clamp-2 !block sm:!hidden md:!block">{r.videoDescription}</Typography>
                                             </Stack>
                                             {/* <ShopActionDropDown toDelete={w.workshopId} setUpdatePost={() => setUpdateShop(true)} setPostToUpdate={() => setShopToUpdate(w)} /> */}
-
-                                            <ResourcesActionDropDown toDelete={r.resourceId} setUpdatePost={() => setUpdateResources(true)} setPostToUpdate={() => setResourceToUpdate(r)} />
+                                            {
+                                                localStorage.getItem('role') !== "Women" &&
+                                                <ResourcesActionDropDown toDelete={r.resourceId} setUpdatePost={() => setUpdateResources(true)} setPostToUpdate={() => setResourceToUpdate(r)} />
+                                            }
                                         </Button>
                                     </div>
 
