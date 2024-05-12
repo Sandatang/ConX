@@ -19,6 +19,8 @@ namespace CONX.Models
         public DbSet<LoginLog> LoginLogs { get; set; }
         public DbSet<Workshop> Workshops { get; set; }
         public DbSet<Category> Category { get; set; }
+        public DbSet<Training> Trainings { get; set; }
+        public DbSet<TrainingRegistration> TrainingRegistrations { get; set; }
         public DbSet<JuncWorkshopResource> WorkshopResources { get; set; }
         public DbSet<JuncForumThread> ForumThreads { get; set; }
         public DbSet<JuncThreadComment> ThreadComments { get; set; }
