@@ -144,7 +144,7 @@ const Thread = () => {
                                                                             }} className="!text-sm !capitalize hover:!text-green-400">update</Button>
                                                                         </>
                                                                     }
-                                                                     {
+                                                                    {
                                                                         localStorage.getItem('role') !== "Women" &&
                                                                         <>
                                                                             <ClosedThreadDialog threadId={thread.thread.threadId} />
@@ -159,10 +159,13 @@ const Thread = () => {
                                                                 </Stack>
 
                                                                 <Divider className="!my-4" />
-                                                                <Typography className="!text-sm">
+                                                                {
+                                                                    thread.thread.imgUrl !== null &&
+                                                                    <Typography className="!text-sm">
 
-                                                                    <img src={`https://localhost:44398/api/image/name/${thread.thread.imgUrl}`} alt="Thread Image" />
-                                                                </Typography>
+                                                                        <img src={`https://localhost:44398/api/image/name/${thread.thread.imgUrl}`} alt="Thread Image" />
+                                                                    </Typography>
+                                                                }
 
                                                                 <Stack className="!flex-row mt-4">
                                                                     <Stack className=" !flex-row w-[70%] gap-4">

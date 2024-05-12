@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import { PendingOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Alert, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -220,13 +220,14 @@ const Register = () => {
             />
 
             <Button
-              // disabled={isSubmitting}
+              disabled={isSubmitting}
               type="submit"
-              style={{ backgroundColor: '#FF4081', color: 'white' }}
+              // style={{ backgroundColor: '#FF4081', color: 'white' }}
               variant="contained"
+              className='!bg-pinkish !text-white'
               fullWidth
             >
-              {isSubmitting ? <PendingOutlined /> : "Register"}
+              Register
             </Button>
             <Typography textAlign="center"> <span className='text-gray-600 '>Already have an account? </span> <Link className='text-blue-500 hover:underline' to="/login">Login</Link></Typography>
 

@@ -40,11 +40,14 @@ const ThreadCommentModa = ({ open, thread, close }) => {
 
                         </Stack>
                         {/* <Divider/> */}
-                        <Stack className="px-8 mt-4">
-                            <Typography className="!text-sm">
-                                <img src={`https://localhost:44398/api/image/name/${thread.thread.imgUrl}`} alt="Thread Image" />
-                            </Typography>
-                        </Stack>
+                        {
+                            thread.thread.imgUrl !== null &&
+                            <Stack className="px-8 mt-4">
+                                <Typography className="!text-sm">
+                                    <img src={`https://localhost:44398/api/image/name/${thread.thread.imgUrl}`} alt="Thread Image" />
+                                </Typography>
+                            </Stack>
+                        }
                         <Stack className="gap-4 my-4 py-4 border-[1px]">
                             <Stack className="px-4 gap-2">
 

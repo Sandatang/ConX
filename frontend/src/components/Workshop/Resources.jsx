@@ -134,7 +134,7 @@ const Resources = () => {
                                             }
                                             <Stack className="w-3/4 !p-0">
                                                 <Typography variant="body1" className="!text-white !capitalize">{r.videoTtile}</Typography>
-                                                <Typography variant="body2" className="!text-slate-300 !normal-case !line-clamp-2 !block sm:!hidden md:!block">{r.videoDescription}</Typography>
+                                                <Typography variant="body2" className="!text-slate-300 !normal-case !line-clamp-6 !block sm:!hidden md:!block">{r.videoDescription}</Typography>
                                             </Stack>
                                             {/* <ShopActionDropDown toDelete={w.workshopId} setUpdatePost={() => setUpdateShop(true)} setPostToUpdate={() => setShopToUpdate(w)} /> */}
                                             {

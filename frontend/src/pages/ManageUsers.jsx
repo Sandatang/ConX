@@ -336,19 +336,22 @@ const ManageUsers = () => {
                     }
 
                     {
-                      localStorage.getItem('role') === "Admin" &&
+                      localStorage.getItem('role') === "Admin" ?
                         active5 ? (
-                        <Button className="!text-sm !font-medium" variant='text' disabled={true}>Deleted</Button>
-                      ) : (
+                          <Button className="!text-sm !font-medium" variant='text' disabled={true}>Deleted</Button>
+                        ) : (
 
-                        <Button onClick={() => {
-                          setUserToDelete(user.user.id)
-                          setDeleteModal(true)
-                        }}
-                          className="!text-sm !font-medium !text-red-500" variant="ghost">
-                          Delete
-                        </Button>
-                      )
+                          <Button onClick={() => {
+                            setUserToDelete(user.user.id)
+                            setDeleteModal(true)
+                          }}
+                            className="!text-sm !font-medium !text-red-500" variant="ghost">
+                            Delete
+                          </Button>
+                        ) : (
+                          <Button className="!text-sm !font-medium" variant='text' disabled={true}>Deleted</Button>
+
+                        )
                     }
                   </td>
                 </tr>

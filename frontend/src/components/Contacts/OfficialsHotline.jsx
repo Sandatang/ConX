@@ -6,7 +6,6 @@ import AddHotline from "./AddHotline"
 
 
 const OfficialsHotline = () => {
-
   const [openUpdate, setOpenUpdate] = useState(false)
   const [hotlines, setHotlines] = useState(null)
   const [hotlineToUpdate, setHotlineToUpdate] = useState(null)
@@ -32,13 +31,13 @@ const OfficialsHotline = () => {
     await HotlineApi.deleteHotline(id);
   }
   return (
-    <Stack className={`!text-md h-[300px] ${localStorage.getItem('role') !== "Women" && 'gap-6'} !p-0 !m-0`}>
+    <Stack className={`!text-md h-[300px] ${localStorage.getItem('role') === "Women" ?  'gap-4':'gap-6'} !p-0 !m-0`}>
       {
 
         hotlines ? hotlines.map(hs => (
           <div key={hs.hotlineId}>
 
-            <Stack className="!flex-row items-center justify-between">
+            <Stack className={`!flex-row items-center justify-between`}>
               <span className=" capitalize">{hs.name}</span>
               <Stack className=" items-end relative">
                 <span className="font-bold underline underline-offset-2 flex gap-2 items  -center">

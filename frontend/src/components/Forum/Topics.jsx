@@ -86,7 +86,14 @@ const Topics = () => {
                                             {/* <Button className="!text-[0.58rem] ">
                                                 Delete
                                             </Button> */}
-                                            <DeleteConfirmation forumToRemove={tp.id} removeForum={true} />
+                                            {
+                                                tp.creatorId === localStorage.getItem('userId') ? (
+
+                                                    <DeleteConfirmation forumToRemove={tp.id} removeForum={true} />
+                                                ) : (
+                                                    localStorage.getItem('role') !== "Women" && <DeleteConfirmation forumToRemove={tp.id} removeForum={true} />
+                                                )
+                                            }
 
                                             {/* <DeleteConfirmation forumToRemove={tp.id} removeForum={true} /> */}
                                             {

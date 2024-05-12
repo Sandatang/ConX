@@ -43,11 +43,19 @@ const JobLisintgs = () => {
         // Replace propertyName with the actual property name you want to check against
         return Object.values(item).some(value => {
             if (typeof value === 'string') {
-                return value.includes(searchedValue);
+                return item.jobTitle.includes(searchedValue);
             }
             return false; // You can handle other types if needed
         });
     });
+    // const filteredData = job && job.filter(item => {
+    //     // Check if item has a 'title' property and if it includes the searched value
+    //     console.log(item)
+    //     if (item.jobTitle && typeof item.jobTitle === 'string') {
+    //         return item.jobTitle.includes(searchedValue);
+    //     }
+    //     return false; // If title doesn't exist or is not a string, exclude the item
+    // });
     return (
         !loading ?
             <Stack className="overflow-y-auto no-scrollbar px-8 py-4">

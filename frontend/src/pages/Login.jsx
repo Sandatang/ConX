@@ -98,18 +98,18 @@ const Login = () => {
 
             <Button
               type="submit"
-              style={{ backgroundColor: '#FF4081', color: 'white' }}
+              // style={{ backgroundColor: '#FF4081', color: 'white' }}
               variant="contained"
               disabled={!isDirty || !isValid}
               fullWidth
-              className='!mt-2'
+              className='!mt-2 !bg-pinkish !text-white'
             >
               Login
             </Button>
 
-            <div className="text-center mt-4">
+            {/* <div className="text-center mt-4">
               <a href="#">Forgot Password?</a>
-            </div>
+            </div> */}
             <hr className="my-6 border-gray-300 w-full" />
             <p className="mt-2 text-gray-600 text-center">
               Do you have an account? <Link className='text-blue-500' to="/register">Register</Link>.

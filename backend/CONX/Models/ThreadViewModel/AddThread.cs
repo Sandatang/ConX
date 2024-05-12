@@ -18,7 +18,7 @@ namespace CONX.Models.ForumPostingsViewModel
 
         public DateTime Created { get; set; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
     }
 }

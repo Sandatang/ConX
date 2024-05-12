@@ -96,7 +96,7 @@ const ModalDeActivate = (props) => {
                         !error && !message &&
                         <form action="" onSubmit={handleSubmit(props.job ? deActivateJob : userDeActivation)} className={` ${props.status ? "" : "w-full flex flex-row pl-4 justify-between"} `}>
                             {
-                                props.status &&
+                                !props.status &&
                                 <TextField
                                     id="outline-idno"
                                     name="reason"
