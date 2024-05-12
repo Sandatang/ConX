@@ -26,6 +26,7 @@ import Settings from "./pages/Settings"
 import Testimonial from "./pages/Testimonial"
 import Workshop from "./pages/Workshop"
 import BugReport from "./pages/BugReport"
+import Training from "./pages/Training"
 function App() {
 
   const router = createBrowserRouter(
@@ -51,6 +52,9 @@ function App() {
                   <Route index element={<Testimonial />} />
                   <Route path="view" element={<AllTestimonial />} />
                 </Route>
+
+                <Route path="/training" element={<Training />} />
+
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
@@ -89,6 +93,9 @@ function App() {
                   <Route index element={<Testimonial />} />
                   <Route path="view" element={<AllTestimonial />} />
                 </Route>
+
+                
+                <Route path="/training" element={<Training />} />
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
@@ -132,6 +139,8 @@ function App() {
                   <Route path="view" element={<AllTestimonial />} />
                 </Route>
                 <Route path="/workshop" element={<Workshop />} />
+
+                <Route path="/training" element={<Training />} />
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />

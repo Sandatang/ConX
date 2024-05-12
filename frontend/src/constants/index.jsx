@@ -1,4 +1,4 @@
-import { AccountCircle, Analytics, Announcement, Approval, Book, BugReport, Forum, ManageAccounts, Password, Settings, VideoCameraFront } from "@mui/icons-material";
+import { AccountCircle, Analytics, Announcement, Approval, Book, BugReport, Forum, ManageAccounts, ModelTraining, Password, Settings, VideoCameraFront } from "@mui/icons-material";
 
 export const brgyLinks = [
   {
@@ -15,6 +15,12 @@ export const brgyLinks = [
     icon: <VideoCameraFront fontSize="medium" className="!text-yellow-500" />
   },
 
+  {
+    id: "training",
+    link: "/training",
+    title: "Trainings",
+    icon: <ModelTraining fontSize="medium" className="!text-yellow-800" />
+  },
   {
     id: "joblistings",
     link: "/jobs",
@@ -69,6 +75,12 @@ export const adminLinks = [
     icon: <VideoCameraFront fontSize="medium" className="!text-yellow-500" />
   },
 
+  {
+    id: "training",
+    link: "/training",
+    title: "Trainings",
+    icon: <ModelTraining fontSize="medium" className="!text-yellow-800" />
+  },
   {
     id: "joblistings",
     link: "/jobs",
@@ -129,6 +141,13 @@ export const womenLinks = [
     link: "/workshop",
     title: "Workshop",
     icon: <VideoCameraFront fontSize="medium" className="!text-yellow-500" />
+  },
+  
+  {
+    id: "training",
+    link: "/training",
+    title: "Trainings",
+    icon: <ModelTraining fontSize="medium" className="!text-yellow-800" />
   },
   {
     id: "testimonial",
