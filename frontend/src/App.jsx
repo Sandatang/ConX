@@ -28,6 +28,7 @@ import Workshop from "./pages/Workshop"
 import BugReport from "./pages/BugReport"
 import Training from "./pages/Training"
 import TrainingDetails from "./components/Training/TrainingDetails"
+import TrainingApplicants from "./components/Training/TrainingApplicants"
 function App() {
 
   const router = createBrowserRouter(
@@ -60,6 +61,7 @@ function App() {
                 </Route> */}
                 <Route path="/training/*" element={<Layout />}>
                   <Route index element={<Training />} />
+                  <Route path="view/applicants" element={<TrainingApplicants />} />
                   <Route path="details/:id" element={<TrainingDetails />} />
                 </Route>
 

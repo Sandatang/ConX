@@ -4,6 +4,7 @@ import { Add } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import AddTraining from "../components/Training/AddTraining";
 import * as TrainingApi from "../network/training_api"
+import { Link } from "react-router-dom";
 
 const Training = () => {
     const [add, setAdd] = useState(false)
@@ -23,7 +24,8 @@ const Training = () => {
                 Upon successful completion, receive a certification validating your achievement.
                 Our training offers hands-on experience, expert guidance, and comprehensive learning materials to ensure your success.
             </Typography>
-            <Stack className="mr-4">
+            <Stack className="!flex-row justify-between mr-4">
+                <Button component={Link} to={"view/applicants"} className="!underline !underline-offset-1 ">View Applicants</Button>
                 <Button onClick={() => setAdd(true)} className="self-end" variant="contained">
                     <Add />
                     Training
