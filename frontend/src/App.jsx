@@ -27,6 +27,7 @@ import Testimonial from "./pages/Testimonial"
 import Workshop from "./pages/Workshop"
 import BugReport from "./pages/BugReport"
 import Training from "./pages/Training"
+import TrainingDetails from "./components/Training/TrainingDetails"
 function App() {
 
   const router = createBrowserRouter(
@@ -53,7 +54,14 @@ function App() {
                   <Route path="view" element={<AllTestimonial />} />
                 </Route>
 
-                <Route path="/training" element={<Training />} />
+                {/* <Route path="/training" element={<Training />} />
+                <Route path="training/details/:trainingId/" element={<ForumSpecificTopicContainer />} >
+                  <Route index element={<TrainingDetails />} />
+                </Route> */}
+                <Route path="/training/*" element={<Layout />}>
+                  <Route index element={<Training />} />
+                  <Route path="details/:id" element={<TrainingDetails />} />
+                </Route>
 
 
                 <Route path="/forum/*" element={<Forum />} >

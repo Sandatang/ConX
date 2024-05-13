@@ -2,13 +2,13 @@
 import { Button, Stack, TextField, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DemoItem } from '@mui/x-date-pickers/internals/demo'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as TrainingApi from "../../network/training_api"
 import Modal from '../Modal'
 import ModalDialogMessage from '../ModalDialogMessage'
 import ModalHeading from '../ModalHeading'
+import dayjs from 'dayjs'
 
 const AddTraining = (props) => {
     const { register, reset, setValue, handleSubmit, formState: { isSubmitting } } = useForm()
@@ -23,14 +23,15 @@ const AddTraining = (props) => {
             // let property = props.update ? { 'jobId': props.job.id } : { 'userId': localStorage.getItem('userId') }
             let response
             const formData = {
-                ...data
+                ...data,
+                ...(props.update && {"trainingId": props.training.id}),
             }
-            // if (props.update) {
-            //     response = await TrainingApi.updateJob(formData)
-            // }
-            //  else {
+            if (props.update) {
+                response = await TrainingApi.updateTraining(formData)
+            }
+             else {
                 response = await TrainingApi.addTraining(formData)
-            // }
+            }
 
             if (response.status === "Success") {
                 setError(false)
@@ -40,7 +41,7 @@ const AddTraining = (props) => {
                 setTimeout(() => {
                     setMessage(null)
                     setOpen(false)
-                }, 1000)
+                }, 2000)
             }
             else {
                 setMessage(response.message)
@@ -86,7 +87,7 @@ const AddTraining = (props) => {
                                     id="outline-idno"
                                     name="trainingName"
                                     size="small"
-                                    // defaultValue={props.update ? props.job.jobTitle : ""}
+                                    defaultValue={props.update ? props.training.trainingName : ""}
                                     className="!w-full"
                                     {...register("trainingName", { required: true })}
                                 />
@@ -96,7 +97,7 @@ const AddTraining = (props) => {
                                     rows={4}
                                     id="outline-idno"
                                     name="trainingDescription"
-                                    // defaultValue={props.update ? props.job.jobDescription : ""}
+                                    defaultValue={props.update ? props.training.trainingDescription : ""}
                                     size="small"
                                     className="!w-full"
                                     {...register("trainingDescription", { required: true })}
@@ -107,24 +108,36 @@ const AddTraining = (props) => {
                                     id="outline-idno"
                                     name="venue"
                                     size="small"
-                                    // defaultValue={props.update ? props.job.location : ""}
+                                    defaultValue={props.update ? props.training.venue : ""}
                                     className="!w-full"
                                     {...register("venue", { required: true })}
 
                                 />
                                 <Typography>Date Start <span className='text-red-500'>*</span></Typography>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                    <DemoItem>
-                                        <DatePicker name="dateStarted" label="Date Start" disabledTime onChange={(date) => { setValue('dateStarted', date, { shouldValidate: true }); }} />
-                                    </DemoItem>
+                                    <DatePicker
+                                        value={props.update ? dayjs(props.training.dateStarted) : null}
+                                        name="dateStarted"
+                                        label="Date Start"
+                                        disabledTime
+                                        onChange={(date) => { setValue('dateStarted', date, { shouldValidate: true }); }}
+                                        // {...(props.update && register("dateStarted"))} // Register the DatePicker with the form
+                                    />
+
                                 </LocalizationProvider>
                                 <Typography>Date End <span className='text-red-500'>*</span></Typography>
                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                    <DemoItem>
-                                        <DatePicker name="dateEnd" label="End Start" disabledTime onChange={(date) => { setValue('dateEnd', date, { shouldValidate: true }); }} />
-                                    </DemoItem>
+                                    <DatePicker
+                                        value={props.update ? dayjs(props.training.dateEnd) : null}
+                                        name="dateEnd"
+                                        label="End Start"
+                                        disabledTime
+                                        onChange={(date) => { setValue('dateEnd', date, { shouldValidate: true }); }}
+                                        // {...(props.update && register("dateEnd"))} // Register the DatePicker with the form
+                                        // {...(props.update && )} // Register the DatePicker with the form
+                                    />
                                 </LocalizationProvider>
-                                <Button type='submit' disabled={isSubmitting} variant='contained' className='!mt-2'>{props.update ? 'Update Job' : 'Add Job'}</Button>
+                                <Button type='submit' disabled={isSubmitting} variant='contained' className='!mt-2'>{props.update ? 'Update Training' : 'Add Training'}</Button>
                             </Stack>
                         </div>
                     </form>
@@ -135,29 +148,3 @@ const AddTraining = (props) => {
 }
 
 export default AddTraining
-
-{/* <Typography>Email <span className='text-red-500'>*</span></Typography>
-                                <TextField
-                                    id="outline-idno"
-                                    name="contactPerson"
-                                    // placeholder="Ex. Juan Luna "
-                                    size="small"
-                                    // defaultValue={props.update ? props.job.contactPerson : ""}
-                                    className="!w-full"
-                                    {...register("contactPerson", { required: true })}
-
-                                // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
-                                />
-                                <Typography>Contact Number <span className='text-red-500'>*</span></Typography>
-                                <TextField
-                                    type='number'
-                                    id="outline-idno"
-                                    name="contactNumber"
-                                    // placeholder="09XXXXXXXXX "
-                                    size="small"
-                                    defaultValue={props.update ? props.job.contactNumber : ""}
-                                    className="!w-full"
-                                    {...register("contactNumber", { required: true })}
-
-                                // InputLabelProps={{ style: { fontSize: '0.775rem' } }}
-                                /> */}
