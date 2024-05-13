@@ -180,10 +180,12 @@ namespace CONX.Controllers
         }
 
         [HttpGet]
-        [Route("getRegistered")]
-        public async Task<IActionResult> GetAllRegistered()
+        [Route("getRegistered/{id}")]
+        public async Task<IActionResult> GetAllRegistered(string id)
         {
+            var convertedId = Int32.Parse(id);
             var registered = await _context.TrainingRegistrations
+                                                                .Where(tr => tr.Id == convertedId)
                                                                 .Include(tr => tr.User) 
                                                                 .Include(tr => tr.Training) 
                                                                 .Select(tr => new
@@ -191,6 +193,7 @@ namespace CONX.Controllers
                                                                     UserId = tr.UserId,
                                                                     UserFirstname = tr.User.Firstname,
                                                                     UserMiddlename = tr.User.Middlename,
+                                                                    CivilStatus = tr.User.CivilStatus,
                                                                     UserLastname = tr.User.Lastname,
                                                                     TrainingId = tr.TrainingId,
                                                                     TrainingTitle = tr.Training.TrainingName,
@@ -199,5 +202,5 @@ namespace CONX.Controllers
                                                                 .ToListAsync();
             return Ok(registered);
         }
-    }
+    }ge
 }
