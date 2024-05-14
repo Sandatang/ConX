@@ -185,22 +185,99 @@ namespace CONX.Controllers
         {
             var convertedId = Int32.Parse(id);
             var registered = await _context.TrainingRegistrations
-                                                                .Where(tr => tr.Id == convertedId)
+                                                                .Where(tr => tr.TrainingId == convertedId)
                                                                 .Include(tr => tr.User) 
                                                                 .Include(tr => tr.Training) 
                                                                 .Select(tr => new
                                                                 {
                                                                     UserId = tr.UserId,
-                                                                    UserFirstname = tr.User.Firstname,
+                                                                    Email = tr.User.Email,
+                                                                    UserFirstname = tr.User.Firstname,  
                                                                     UserMiddlename = tr.User.Middlename,
                                                                     CivilStatus = tr.User.CivilStatus,
                                                                     UserLastname = tr.User.Lastname,
                                                                     TrainingId = tr.TrainingId,
                                                                     TrainingTitle = tr.Training.TrainingName,
                                                                     TrainingDescription = tr.Training.TrainingDescription,
+                                                                    Completer = tr.isCompleter ? tr.isCompleter : false,
                                                                 })
                                                                 .ToListAsync();
             return Ok(registered);
         }
-    }ge
+
+        [HttpPut]
+        [Route("update/status")]
+        public async Task<IActionResult> UpdateStatus([FromBody] UpdateStatus updateStatus)
+        {
+            // Fetch the single trainee record or null if not found
+            var trainee = await _context.TrainingRegistrations
+                                        .FirstOrDefaultAsync(tr => tr.UserId == updateStatus.UserId);
+
+            // Check if trainee exists
+            if (trainee == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = "Trainee does not exist", Field = "failed" });
+            }
+
+            // Convert the status from string to boolean
+            var status = updateStatus.Status == "1";
+
+            // Update the isCompleter field
+            trainee.isCompleter = status;
+
+            // Save the changes to the database
+            _context.TrainingRegistrations.Update(trainee);
+            var result = await _context.SaveChangesAsync();
+
+            // Check if the update was successful
+            if (result <= 0)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = "Something went wrong, please try again later", Field = "failed" });
+            }
+
+            // Return success response
+            return Ok(new Response { Status = "Success", Message = "Status updated successfully" });
+        }
+
+        [HttpGet]
+        [Route("get/mytraining/{userId}")]
+        public async Task<IActionResult> MyCompleteTraining(string userId)
+        {
+            // Fetch the single trainee record or null if not found
+            var trainee = await _context.TrainingRegistrations
+                                                              .Where(tr => tr.UserId == userId && tr.isCompleter == true)
+                                                                .Include(tr => tr.User)
+                                                                .Include(tr => tr.Training)
+                                                                .Select(tr => new
+                                                                {
+                                                                    UserId = tr.UserId,
+                                                                    Email = tr.User.Email,
+                                                                    UserFirstname = tr.User.Firstname,
+                                                                    Stared = tr.Training.DateStarted,
+                                                                    End = tr.Training.DateEnd,
+                                                                    UserMiddlename = tr.User.Middlename,
+                                                                    CivilStatus = tr.User.CivilStatus,
+                                                                    Venue = tr.Training.Venue,
+                                                                    UserLastname = tr.User.Lastname,
+                                                                    TrainingId = tr.TrainingId,
+                                                                    TrainingTitle = tr.Training.TrainingName,
+                                                                    TrainingDescription = tr.Training.TrainingDescription,
+                                                                    Completer = tr.isCompleter ? tr.isCompleter : false,
+                                                                })
+                                                                .ToListAsync();
+
+            // Check if trainee exists
+            if (trainee == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound,
+                    new Response { Status = "Error", Message = "You have no completed training", Field = "failed" });
+            }
+
+            // Return success response
+            return Ok(trainee);
+        }
+
+    }
 }
