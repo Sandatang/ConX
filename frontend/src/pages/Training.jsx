@@ -25,15 +25,21 @@ const Training = () => {
                 Our training offers hands-on experience, expert guidance, and comprehensive learning materials to ensure your success.
             </Typography>
             <Stack className="!flex-row justify-between mr-4">
-                <Button component={Link} to={"view/applicants"} className="!underline !underline-offset-1 ">View Applicants</Button>
-                <Button onClick={() => setAdd(true)} className="self-end" variant="contained">
-                    <Add />
-                    Training
-                </Button>
+                {localStorage.getItem('role') === "Women" && <Button component={Link} to={"view/completed"} className="!underline !underline-offset-1 ">My Completed Trainings</Button>}
+                {
+                    localStorage.getItem('role') !== "Women" &&
+                    <>
+                        <Button component={Link} to={"view/applicants"} className="!underline !underline-offset-1 ">View Applicants</Button>
+                        <Button onClick={() => setAdd(true)} className="self-end" variant="contained">
+                            <Add />
+                            Training
+                        </Button>
+                    </>
+                }
             </Stack>
             <div className=" mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8">
 
-                <TrainingCard trainings={trainings}/>
+                <TrainingCard trainings={trainings} />
             </div>
 
             {add && <AddTraining onClose={() => setAdd(false)} />}

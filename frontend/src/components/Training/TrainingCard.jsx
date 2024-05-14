@@ -26,7 +26,7 @@ const TrainingCard = (props) => {
                                     <Stack className='!flex-row relative justify-between items-center'>
                                         {/* <Typography className="!text-sm bg-white p-2 rounded-xl w-1/2 !text-center ">{new Date(jb.dateCreated).toDateString().split(" ").splice(1).join(" ")}</Typography> */}
                                         {
-                                            localStorage.getItem('role') === "Personnel" && (
+                                            localStorage.getItem('role') !== "Women" && (
                                                 <Stack className='absolute right-0'>
                                                     {/* <IconButton onClick={() => {
                                                     setJobToEdit(jb)
@@ -65,16 +65,17 @@ const TrainingCard = (props) => {
                                         </Stack>
                                         <Stack className='!flex-row gap-2'>
                                             <Stack>
-                                                <Typography className='!text-md !font-bold'>Venue :</Typography>
-                                                <Typography className='!text-md !font-bold'>Duration :</Typography>
+                                                <Typography className='!text-md !font-bold'>Venue : {t.venue}</Typography>
+                                                <Typography className='!text-md !font-bold'>Duration :  {differenceInDays(parseISO(t.dateEnd), parseISO(t.dateStarted))}{" day(s)"}</Typography>
+
                                             </Stack>
-                                            <Stack>
+                                            {/* <Stack>
                                                 <Typography className='!text-md !font-bold'>{t.venue}</Typography>
                                                 <Typography className='!text-md !font-bold'>
                                                     {differenceInDays(parseISO(t.dateEnd), parseISO(t.dateStarted))}
                                                     {" day(s)"}
                                                 </Typography>
-                                            </Stack>
+                                            </Stack> */}
                                         </Stack>
 
                                     </Stack>
@@ -92,7 +93,7 @@ const TrainingCard = (props) => {
                     <Alert severity='info'>No data yet</Alert>
                 )
             }
-            {update && <AddTraining update={true} training={toUpdate} onClose={() => setUpdate(false)}/>}
+            {update && <AddTraining update={true} training={toUpdate} onClose={() => setUpdate(false)} />}
         </>
     )
 }

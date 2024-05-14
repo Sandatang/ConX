@@ -13,7 +13,6 @@ const TrainingRegistrationModal = (props) => {
     const [success, setSuccess] = useState(null)
     const [open, setOpen] = useState(false)
     const { register, handleSubmit, formState: { isSubmitting } } = useForm()
-
     const regTraining = async (data) => {
         try {
             const formData = {

@@ -29,6 +29,7 @@ import BugReport from "./pages/BugReport"
 import Training from "./pages/Training"
 import TrainingDetails from "./components/Training/TrainingDetails"
 import TrainingApplicants from "./components/Training/TrainingApplicants"
+import WomenTrainingCompletion from "./components/Training/WomenTrainingCompletion"
 function App() {
 
   const router = createBrowserRouter(
@@ -62,6 +63,7 @@ function App() {
                 <Route path="/training/*" element={<Layout />}>
                   <Route index element={<Training />} />
                   <Route path="view/applicants" element={<TrainingApplicants />} />
+                  <Route path="view/completed" element={<WomenTrainingCompletion />} />
                   <Route path="details/:id" element={<TrainingDetails />} />
                 </Route>
 
@@ -104,8 +106,12 @@ function App() {
                   <Route path="view" element={<AllTestimonial />} />
                 </Route>
 
-                
-                <Route path="/training" element={<Training />} />
+                <Route path="/training/*" element={<Layout />}>
+                  <Route index element={<Training />} />
+                  <Route path="view/applicants" element={<TrainingApplicants />} />
+                  <Route path="view/completed" element={<WomenTrainingCompletion />} />
+                  <Route path="details/:id" element={<TrainingDetails />} />
+                </Route>
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
@@ -150,7 +156,11 @@ function App() {
                 </Route>
                 <Route path="/workshop" element={<Workshop />} />
 
-                <Route path="/training" element={<Training />} />
+                <Route path="/training/*" element={<Layout />}>
+                  <Route index element={<Training />} />
+                  <Route path="view/completed" element={<WomenTrainingCompletion />} />
+                  <Route path="details/:id" element={<TrainingDetails />} />
+                </Route>
 
                 <Route path="/forum/*" element={<Forum />} >
                   <Route path="topics" element={<Topics />} />
